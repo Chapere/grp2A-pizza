@@ -1,13 +1,62 @@
 body {
-    background-color: #d0e4fe;
+    color: black;
+    font-family: "Avenir Next";
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position: left top;
+    background-attachment: fixed;
+    background-image: url(../images/Background_Home.png);
 }
 
-h1 {
-    color: orange;
+ul.topnav {
+    position: fixed;
+    top: 0px;
+    margin: 0px;
+    width: 100%;
+    list-style-type: none;
+    padding: 0;
+    overflow: hidden;
+    
+    background-color: rgba(255, 255, 255, 0.70);
+}
+
+ul.topnav li {
+    float: left;
+}
+ul.topnav li a {
+
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 17px;
+
+}
+ul.topnav li a:hover {
+    background-color: rgb(255, 255, 255);
+}
+
+#jumbo {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: block;
     text-align: center;
 }
 
-p {
-    font-family: "Times New Roman";
-    font-size: 20px;
+h1 {
+    margin-top: 95px;
+    color: white;
+    font-size: 40px;
+}
+
+h2 {
+    color: white;
+    font-size: 30px;
+
 }

@@ -1,18 +1,27 @@
-@(userForm: Form[forms.CreateUserForm])
-
-@import views.html.helper
-
 @main(models.Company.name) {
 
-    <h1>Willkommen bei @models.Company.name</h1>
-    
-    <p>Registrieren:
-    	@helper.form(action = routes.UserController.addUser()) {
-  		@helper.inputText(userForm("Name"))
-		<input type="submit" value="Speichern" />
-	}
-	</p>
-    
-    <p><a href="/showUsers">Registrierte Benutzer</a></p>
-
+	<ul class="topnav" id="myTopNav">
+		<li class="icon">
+			<a href="javascript:void(0);" onclick="myNavBar()">☰</a>
+		</li>
+		<li><a href="/">Home</a></li>
+		<li><a href="/">Produkte</a></li>
+		<li><a href="/welcomeUser">Kundenportal</a></li>
+		<li><a href="/">Mitarbeiter-Login</a></li>
+		<li><a href="/">Kontakt</a></li>
+	</ul>
+	<script>
+        function myNavBar() {
+            var x = document.getElementById("myTopnav");
+            if (x.className === "topnav") {
+                x.className += " responsive";
+            } else {
+                x.className = "topnav";
+            }
+        }
+	</script>
+    <div id="jumbo">
+        <h1 align="center">Willkommen bei @models.Company.name</h1>
+        <h2 align="center">@models.Company.subtitle</h2>
+    </div>
 }

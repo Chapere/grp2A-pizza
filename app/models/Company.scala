@@ -7,6 +7,7 @@ package models
  */
 object Company {
 
-  val name = "Pizza-Flitza"
+  val name = "Pizza-Power"
+  val subtitle = "Make Pizza Great Again!"
 
 }

@@ -28,11 +28,11 @@ object UserController extends Controller {
   def addUser : Action[AnyContent] = Action { implicit request =>
     userForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.index(formWithErrors))
+        BadRequest(views.html.welcomeUser(formWithErrors))
       },
       userData => {
         val newUser = services.UserService.addUser(userData.name)
-        Redirect(routes.UserController.welcomeUser(newUser.name)).
+        Redirect(routes.UserController.newUserCreated(newUser.name)).
           flashing("success" -> "User saved!")
       })
   }
@@ -40,8 +40,12 @@ object UserController extends Controller {
   /**
    * Shows the welcome view for a newly registered user.
    */
-  def welcomeUser(username: String) : Action[AnyContent] = Action {
-    Ok(views.html.welcomeUser(username))
+  def welcomeUser : Action[AnyContent] = Action {
+    Ok(views.html.welcomeUser(controllers.UserController.userForm));
+  }
+
+  def newUserCreated(username: String) : Action[AnyContent] = Action {
+    Ok(views.html.newUserCreated(username));
   }
 
   /**
