@@ -1,8 +1,7 @@
-@(userForm: Form[forms.CreateUserForm])
-
-@import views.html.helper
+@(username: String)
 
 @main(models.Company.name) {
+
     <ul class="topnav" id="myTopNav">
         <li class="icon">
             <a href="javascript:void(0);" onclick="myNavBar()">☰</a>
@@ -23,16 +22,6 @@
                 }
             }
     </script>
-    <h1>Registrieren</h1>
-    <p> @helper.form(action = routes.UserController.addUser()) {
-            @helper.inputText(userForm("Name"))
-            @helper.inputText(userForm("Vorname"))
-            @helper.inputText(userForm("Strasse"))
-            @helper.inputText(userForm("Postleitzahl"))
-            @helper.inputText(userForm("Ort"))
-            <input type="submit" value="Registrieren" />
-        }
-    </p>
+    <h1 align="center">Willkommen @username bei @models.Company.name</h1>
 
-    
 }

@@ -37,6 +37,18 @@ object UserController extends Controller {
       })
   }
 
+  def addEmployee : Action[AnyContent] = Action { implicit request =>
+    userForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.welcomeUser(formWithErrors))
+      },
+      userData => {
+        val newUser = services.UserService.addUser(userData.name)
+        Redirect(routes.UserController.newUserCreated(newUser.name)).
+          flashing("success" -> "User saved!")
+      })
+  }
+
   /**
    * Shows the welcome view for a newly registered user.
    */
