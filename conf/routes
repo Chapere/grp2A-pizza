@@ -7,6 +7,7 @@ GET         /                    controllers.Application.index
 
 POST        /addUser             controllers.UserController.addUser
 GET         /welcomeUser         controllers.UserController.welcomeUser
+GET         /products            controllers.UserController.produkts
 GET         /showUsers           controllers.UserController.showUsers
 GET         /newUserCreated      controllers.UserController.newUserCreated(username)
 

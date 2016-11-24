@@ -56,6 +56,10 @@ object UserController extends Controller {
     Ok(views.html.welcomeUser(controllers.UserController.userForm));
   }
 
+  def produkts : Action[AnyContent] = Action {
+    Ok(views.html.produkts());
+  }
+
   def newUserCreated(username: String) : Action[AnyContent] = Action {
     Ok(views.html.newUserCreated(username));
   }
