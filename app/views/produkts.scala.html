@@ -1,8 +1,19 @@
-@main(models.Company.name) {
+@(pizzas: List[models.Pizza])
 
+@main(models.Company.name) {
 
     <div id="jumbo">
         <h1 align="center">Willkommen bei @models.Company.name</h1>
         <h2 align="center">@models.Company.subtitle</h2>
+        <h2 align="left">Produktauswahl</h2>
+        <h3>
+        @for(pizza <- pizzas) {
+            <li>@pizza.name</li>
+            <li>@pizza.price</li>
+            <li>@pizza.ingredients</li>
+            <li>@pizza.comment</li>
+            <li>@pizza.supplements</li>
+        }
+        </h3>
     </div>
 }

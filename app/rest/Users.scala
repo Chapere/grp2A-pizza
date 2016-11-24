@@ -10,18 +10,27 @@ import services.UserService
  */
 object Users extends Controller {
 
-  private case class HateoasUser(user: User, url: String)
+  private case class HateoasUser(user: User, url: String, lastname: String, adress: String, city: String, plz: String)
 
   private def mkHateoasUser(user: User)(implicit request: RequestHeader): HateoasUser = {
     val url = routes.Users.user(user.id).absoluteURL()
-    HateoasUser(user, url)
+    val lastname = routes.Users.user(user.id).absoluteURL()
+    val adress = routes.Users.user(user.id).absoluteURL()
+    val city = routes.Users.user(user.id).absoluteURL()
+    val plz = routes.Users.user(user.id).absoluteURL()
+
+    HateoasUser(user, url, lastname, adress, city, plz)
   }
 
   private implicit val hateoasUserWrites = new Writes[HateoasUser] {
     def writes(huser: HateoasUser): JsValue = Json.obj(
       "user" -> Json.obj(
         "id" -> huser.user.id,
-        "name" -> huser.user.name
+        "name" -> huser.user.name,
+        "lastname" -> huser.user.lastname,
+        "adress" -> huser.user.adress,
+        "city" -> huser.user.city,
+        "plz" -> huser.user.plz
       ),
       "links" -> Json.arr(
         Json.obj(
@@ -82,7 +91,7 @@ object Users extends Controller {
     }.getOrElse(NotFound)
   }
 
-  private case class Username(name: String)
+  private case class Username(name: String, lastname: String, adress: String, city: String, plz: String)
   private implicit val usernameReads = Json.reads[Username]
 
   /**
@@ -102,7 +111,7 @@ object Users extends Controller {
       },
       username => {
         Ok(Json.obj("status" -> "OK",
-          "user" -> Json.toJson(mkHateoasUser(UserService.addUser(username.name)))))
+          "user" -> Json.toJson(mkHateoasUser(UserService.addUser(username.name, username.lastname, username.adress, username.city, username.plz)))))
       }
     )
   }

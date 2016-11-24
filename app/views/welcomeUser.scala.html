@@ -1,18 +1,26 @@
-@(userForm: Form[forms.CreateUserForm])
+@(userForm: Form[forms.CreateUserForm], users: List[models.User])
+
 
 @import views.html.helper
 
 @main(models.Company.name) {
     <h1>Registrieren</h1>
-    <p> @helper.form(action = routes.UserController.addUser()) {
+    <h3> @helper.form(action = routes.UserController.addUser()) {
             @helper.inputText(userForm("Name"))
             @helper.inputText(userForm("Vorname"))
-            @helper.inputText(userForm("Strasse"))
-            @helper.inputText(userForm("Postleitzahl"))
-            @helper.inputText(userForm("Ort"))
+            @helper.inputText(userForm("Adresse"))
+            @helper.inputText(userForm("Stadt"))
+            @helper.inputText(userForm("PLZ"))
             <input type="submit" value="Registrieren" />
         }
-    </p>
+    </h3>
 
-    
+    <div class="dropdown">
+        <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+        <div id="myDropdown" class="dropdown-content">
+            @for(user <- users) {
+                <a href="#">@user.name</a>
+            }
+        </div>
+    </div>
 }

@@ -21,8 +21,8 @@ trait UserDaoT {
   def addUser(user: User): User = {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
-        SQL("insert into Users(name) values ({name})").on(
-          'name -> user.name).executeInsert()
+        SQL("insert into Users(name, lastname, adress, city, plz) values ({name}, {lastname}, {adress}, {city}, {plz})").on(
+          'name -> user.name, 'lastname -> user.lastname, 'adress -> user.adress, 'city -> user.city, 'plz -> user.plz).executeInsert()
       user.id = id.get
     }
     user
@@ -46,9 +46,9 @@ trait UserDaoT {
    */
   def registeredUsers: List[User] = {
     DB.withConnection { implicit c =>
-      val selectUsers = SQL("Select id, name from Users;")
+      val selectUsers = SQL("Select id, name, lastname, adress, city, plz from Users;")
       // Transform the resulting Stream[Row] to a List[(String,String)]
-      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"))).toList
+      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"))).toList
       users
     }
   }
