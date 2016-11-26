@@ -13,6 +13,7 @@ import forms.CreateUserForm
  */
 object UserController extends Controller {
 
+
   /**
    * Form object for user data.
    */
@@ -54,10 +55,6 @@ object UserController extends Controller {
    */
   def welcomeUser : Action[AnyContent] = Action {
     Ok(views.html.welcomeUser(controllers.UserController.userForm, UserService.registeredUsers))
-  }
-
-  def produkts : Action[AnyContent] = Action {
-    Ok(views.html.produkts(PizzaService.availablePizza))
   }
 
   def newUserCreated(username: String, name: String, adress: String, city: String, plz: String) : Action[AnyContent] = Action {

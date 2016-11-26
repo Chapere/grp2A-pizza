@@ -7,7 +7,7 @@ GET         /                    controllers.Application.index
 
 POST        /addUser             controllers.UserController.addUser
 GET         /welcomeUser         controllers.UserController.welcomeUser
-GET         /products            controllers.UserController.produkts
+GET         /products            controllers.PizzaController.produkts
 GET         /showUsers           controllers.UserController.showUsers
 GET         /newUserCreated      controllers.UserController.newUserCreated(username, lastname, adress, city, plz)
 
@@ -15,12 +15,12 @@ GET         /newUserCreated      controllers.UserController.newUserCreated(usern
 GET         /api                 rest.Api.api
 GET         /api/users           rest.Users.users
 GET         /api/user/:id        rest.Users.user(id: Long)
+GET         /api/pizzas          rest.Pizzas.pizzas
+GET         /api/pizza/:id       rest.Pizzas.pizza(id: Long)
+POST        /api/pizza           rest.Pizzas.addPizza
 POST        /api/user            rest.Users.addUser
 DELETE      /api/user/:id        rest.Users.rmUser(id: Long)
-GET         /api/users           rest.Pizzas.pizzas
-GET         /api/user/:id        rest.Pizzas.pizza(id: Long)
-POST        /api/user            rest.Pizzas.addPizza
-DELETE      /api/user/:id        rest.Pizzas.rmPizza(id: Long)
+DELETE      /api/pizza/:id       rest.Pizzas.rmPizza(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)

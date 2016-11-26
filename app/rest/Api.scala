@@ -27,6 +27,11 @@ object Api extends Controller {
           "rel" -> "users",
           "href" -> routes.Users.users.absoluteURL(),
           "method" -> "GET"
+        ),
+        Json.obj(
+          "rel" -> "pizzas",
+          "href" -> routes.Pizzas.pizzas.absoluteURL(),
+          "method" -> "GET"
         )
       )
     )

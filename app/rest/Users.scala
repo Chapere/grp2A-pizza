@@ -10,16 +10,17 @@ import services.UserService
  */
 object Users extends Controller {
 
-  private case class HateoasUser(user: User, url: String, lastname: String, adress: String, city: String, plz: String)
+  private case class HateoasUser(user: User, url: String, name: String, lastname: String, adress: String, city: String, plz: String)
 
   private def mkHateoasUser(user: User)(implicit request: RequestHeader): HateoasUser = {
     val url = routes.Users.user(user.id).absoluteURL()
+    val name = routes.Users.user(user.id).absoluteURL()
     val lastname = routes.Users.user(user.id).absoluteURL()
     val adress = routes.Users.user(user.id).absoluteURL()
     val city = routes.Users.user(user.id).absoluteURL()
     val plz = routes.Users.user(user.id).absoluteURL()
 
-    HateoasUser(user, url, lastname, adress, city, plz)
+    HateoasUser(user, url, name, lastname, adress, city, plz)
   }
 
   private implicit val hateoasUserWrites = new Writes[HateoasUser] {

@@ -91,7 +91,7 @@ object Pizzas extends Controller {
     }.getOrElse(NotFound)
   }
 
-  private case class PizzaName(name: String, price: Long, ingredients: String, comment: String, supplements: String)
+  private case class PizzaName(name: String, price: String, ingredients: String, comment: String, supplements: String)
   private implicit val PizzaReads = Json.reads[PizzaName]
 
   /**

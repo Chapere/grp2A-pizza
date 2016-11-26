@@ -28,15 +28,8 @@ CREATE TABLE Pizzas (
     supplements VARCHAR(255) NOT NULL
 );
 
-INSERT INTO Pizzas (name, price, ingredients, comment, supplements)
-VALUES (('Margherita', 'Funghi', 'Zwiebel', 'Hawaii'), (7.50, 8.20, 8.90, 9.99),
-        ('Pizzateig, Tomaten, Käse, Gewürze', 'Pizzateig, Tomaten, Schinken, Champignions, Käse, Gewürze',
-         'Pizzateig, Tomaten, Schinken, Zwiebeln, Käse, Gewürze', 'Pizzateig, Tomaten, Käse, Annanas, Gewürze'),
-        ('Die Originale', 'Der Klassisker mit Champignions', 'Für den guten Atem', 'Der deutschen Liebste'),
-        ('', '1,2,3', '1,6,4', '1,2,3,4,5,6,7,8,9'));
-INSERT INTO Employees (name, lastname, workplace, acces) VALUES ('Padron', 'Schulz', 'IT', 'root');
+INSERT INTO Pizzas (name, price, ingredients, comment, supplements) VALUES ('Margherita', 2.40, 'Pizza', 'Pizza', '1');
+
+INSERT INTO Users (name, lastname, adress, city, plz) VALUES ('Padron', 'Schulz', 'Lerchenauer Str. 12', 'München', 80935);
 
 # --- !Downs
- 
-DROP TABLE Users;
-DROP TABLE Pizzas;
