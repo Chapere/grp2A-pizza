@@ -1,19 +1,28 @@
 @(pizzas: List[models.Pizza])
 
+@import views.html.helper
+
 @main(models.Company.name) {
 
     <div id="jumbo">
         <h1 align="center">Willkommen bei @models.Company.name</h1>
         <h2 align="center">@models.Company.subtitle</h2>
-        <h2 align="left">Produktauswahl</h2>
-        <h3>
-        @for(pizza <- pizzas) {
-            <li>@pizza.name</li>
-            <li>@pizza.price</li>
-            <li>@pizza.ingredients</li>
-            <li>@pizza.comment</li>
-            <li>@pizza.supplements</li>
-        }
-        </h3>
+        <h2 align="left"; style="padding: 0px 30px 0px">Produktauswahl</h2>
+        <div id="O1" class="SK-unten">
+            <div class="container">
+                <div class="row">
+                @for(pizza <- pizzas) {
+                    <div class="col-sm-6 col-md-3"><h2>@pizza.name</h2>
+                        <h3>@pizza.comment</h3>
+                        <h3>@pizza.ingredients</h3>
+                        </h3>
+                        <input type="submit" value="Bestellen" />
+                        <button class="button button2">Bestellen</button>
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+
     </div>
 }

@@ -28,7 +28,20 @@ CREATE TABLE Pizzas (
     supplements VARCHAR(255) NOT NULL
 );
 
-INSERT INTO Pizzas (name, price, ingredients, comment, supplements) VALUES ('Margherita', 2.40, 'Pizza', 'Pizza', '1');
+CREATE TABLE Orders (
+    id serial PRIMARY KEY,
+    customerID VARCHAR(255) NOT NULL,
+    produktID VARCHAR(255) NOT NULL,
+    ammount VARCHAR(255) NOT NULL,
+    extras VARCHAR(255) NOT NULL,
+    price VARCHAR(255) NOT NULL,
+    orderTime VARCHAR(255) NOT NULL
+);
+
+INSERT INTO Pizzas (name, price, ingredients, comment, supplements)
+VALUES ('Margherita', 5.90, 'Pizzateig, Tomaten, Käse', 'Der Klassiker', '1,2,5'),
+    ('Funghi', 6.99, 'Pizzateig, Tomaten, Champignions, Schinken, Käse', 'Für Entwickler', '1,2,3,5,8'),
+    ('Hawaii', 8.76, 'Pizzateig, Tomaten, Ananas, Käse', 'Des Deutschen liebste', '1,2,3,5,6,7,8');
 
 INSERT INTO Users (name, lastname, adress, city, plz) VALUES ('Padron', 'Schulz', 'Lerchenauer Str. 12', 'München', 80935);
 
