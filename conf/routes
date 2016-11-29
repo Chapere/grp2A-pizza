@@ -17,6 +17,12 @@ GET         /api/users           rest.Users.users
 GET         /api/user/:id        rest.Users.user(id: Long)
 GET         /api/pizzas          rest.Pizzas.pizzas
 GET         /api/pizza/:id       rest.Pizzas.pizza(id: Long)
+GET         /api/orders          rest.Orders.orders
+GET         /api/order/:id       rest.Orders.order(id: Long)
+GET         /api/employees       rest.Employees.employees
+GET         /api/employee/:id    rest.Employees.employee(id: Long)
+POST        /api/employee        rest.Employees.addEmployee
+POST        /api/order           rest.Orders.addOrder
 POST        /api/pizza           rest.Pizzas.addPizza
 POST        /api/user            rest.Users.addUser
 DELETE      /api/user/:id        rest.Users.rmUser(id: Long)
