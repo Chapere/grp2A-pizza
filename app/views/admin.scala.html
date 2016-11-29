@@ -1,0 +1,26 @@
+@(employees: List[models.Employee])
+
+
+@main(models.Company.name) {
+
+    <div id="jumbo">
+        <h1 align="center">Willkommen bei @models.Company.name</h1>
+        <h2 align="center">@models.Company.subtitle</h2>
+        <h2 align="left"; style="padding: 0px 30px 0px">Produktauswahl</h2>
+        <div id="O1" class="SK-unten">
+            <div class="container">
+                <div class="row">
+                @for(employee <- employees) {
+                    <div class="col-sm-6 col-md-3"><h2>@employee.email</h2>
+                        <h3>@employee.name</h3>
+                        <h3>@employee.lastname</h3>
+                        <input type="submit" value="Bestellen" />
+                        <button class="button button2">Bestellen</button>
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+
+    </div>
+}

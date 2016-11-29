@@ -1,6 +1,6 @@
 package controllers
 
-import play.api.mvc.{Action, Controller, AnyContent}
+import play.api.mvc.{Action, AnyContent, Controller, Result}
 
 /**
  * Main controller of the Pizza Service application.
@@ -17,5 +17,6 @@ object Application extends Controller {
   def index : Action[AnyContent] = Action {
     Ok(views.html.index())
   }
+
 
 }

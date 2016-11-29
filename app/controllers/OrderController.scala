@@ -1,7 +1,6 @@
 package controllers
 
 import play.api.mvc.{Action, AnyContent, Controller}
-import services.OrderService
 import services.PizzaService
 
 /**
@@ -41,7 +40,7 @@ object OrderController extends Controller {
    */
 
   def orders : Action[AnyContent] = Action {
-    Ok(views.html.produkts(PizzaService.availablePizza))
+    Ok(views.html.products(PizzaService.availablePizza))
   }
 
   /**

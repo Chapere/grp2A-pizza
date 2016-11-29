@@ -6,7 +6,9 @@ CREATE TABLE Users (
     lastname VARCHAR(255) NOT NULL,
     adress VARCHAR(255) NOT NULL,
     city VARCHAR(255) NOT NULL,
-    plz VARCHAR(255) NOT NULL
+    plz VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR (255) NOT NULL
 );
 
 CREATE TABLE Employees (
@@ -15,7 +17,9 @@ CREATE TABLE Employees (
     lastname VARCHAR(255) NOT NULL,
     workplace VARCHAR(255) NOT NULL,
     acces VARCHAR(255) NOT NULL,
-    netRate VARCHAR(255) NOT NULL
+    netRate VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE Pizzas (
@@ -43,5 +47,5 @@ VALUES ('Margherita', 5.90, 'Pizzateig, Tomaten, Käse', 'Der Klassiker', '1,2,5
     ('Funghi', 6.99, 'Pizzateig, Tomaten, Champignions, Schinken, Käse', 'Für Entwickler', '1,2,3,5,8'),
     ('Hawaii', 8.76, 'Pizzateig, Tomaten, Ananas, Käse', 'Des Deutschen liebste', '1,2,3,5,6,7,8');
 
-INSERT INTO Users (name, lastname, adress, city, plz) VALUES ('Padron', 'Schulz', 'Lerchenauer Str. 12', 'München', 80935);
-INSERT INTO Employees (id, name, lastname, workplace, acces, netRate) ('Emil', 'Hubert', 'IT', 'root', '15.84')
+INSERT INTO Users ( name, lastname, adress, city, plz, email, password) VALUES ('Padron', 'Schulz', 'Lerchenauer Str. 12', 'München', 80935, 'root@pizza-power.de', 'alpine');
+INSERT INTO Employees (name, lastname, workplace, acces, netRate, email, password) VALUES ('Emil', 'Hubert', 'IT', 'root', '15.84', 'root', 'root');

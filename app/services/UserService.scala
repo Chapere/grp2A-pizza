@@ -17,11 +17,18 @@ trait UserServiceT {
    * @param name name of the new user.
    * @return the new user.
    */
-  def addUser(name: String, lastname: String, adress: String, city: String, plz: String): User = {
+  def addUser(name: String, lastname: String, adress: String, city: String, plz: String, email: String, password: String): User = {
     // create User
-    val newUser = User(-1, name, lastname, adress, city, plz)
+    val newUser = User(-1, name, lastname, adress, city, plz, email, password)
     // persist and return User
     userDao.addUser(newUser)
+  }
+
+  def logInUser(email: String, password: String): String = {
+    // create User
+    val newUser = User(-1, null, null, null, null, null, email, password)
+    // persist and return User
+    return userDao.logInUser(newUser)
   }
 
   /**

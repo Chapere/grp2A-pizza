@@ -17,11 +17,18 @@ trait EmployeeServiceT {
    * @param name name of the new user.
    * @return the new user.
    */
-  def addEmployee(name: String, lastname: String, workplace: String, acces: String, netRate: String): Employee = {
+  def addEmployee(name: String, lastname: String, workplace: String, acces: String, netRate: String, email: String, password: String): Employee = {
     // create User
-    val newEmployee = Employee(-1, name, lastname, workplace, acces, netRate)
+    val newEmployee = Employee(-1, name, lastname, workplace, acces, netRate, email, password)
     // persist and return User
     EmployeeDao.addEmployee(newEmployee)
+  }
+
+  def logInEmployee(email: String, password: String): String = {
+    // create User
+    val newEmployee = Employee(-1, null, null, null, null, null, email, password)
+    // persist and return User
+    return employeeDao.logInEmployee(newEmployee)
   }
 
   /**
@@ -35,7 +42,7 @@ trait EmployeeServiceT {
    * Gets a list of all registered users.
    * @return list of users.
    */
-  def availableEmployee: List[Employee] = {
+  def registredEmployees: List[Employee] = {
     EmployeeDao.availableEmployees
   }
 

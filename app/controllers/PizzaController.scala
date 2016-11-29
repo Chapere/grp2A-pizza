@@ -42,8 +42,8 @@ object PizzaController extends Controller {
    * Shows the welcome view for a newly registered user.
    */
 
-  def produkts : Action[AnyContent] = Action {
-    Ok(views.html.produkts(PizzaService.availablePizza))
+  def products : Action[AnyContent] = Action {
+    Ok(views.html.products(PizzaService.availablePizza))
   }
 
   /**

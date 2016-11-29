@@ -1,6 +1,6 @@
 package dbaccess
 
-import anorm.SQL
+import anorm.{SQL, SqlParser}
 import play.api.Play.current
 import play.api.db.DB
 import anorm.NamedParameter.symbol
@@ -21,11 +21,22 @@ trait EmployeeDaoT {
   def addEmployee(employee: Employee): Employee = {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
-        SQL("insert into Employees(name, lastname, workplace, acces, netRate) values ({name}, {lastname}, {workplace}, {acces}, {netRate})").on(
-          'name -> employee.name, 'lastname -> employee.lastname, 'workplace -> employee.workplace, 'acces -> employee.acces, 'netRate -> employee.netRate).executeInsert()
+        SQL("insert into Employees(name, lastname, workplace, acces, netRate, email, password) values ({name}, {lastname}, {workplace}, {acces}, {netRate}, {email}, {password})").on(
+          'name -> employee.name, 'lastname -> employee.lastname, 'workplace -> employee.workplace, 'acces -> employee.acces, 'netRate -> employee.netRate, 'email -> employee.acces, 'password -> employee.netRate).executeInsert()
       employee.id = id.get
     }
     employee
+  }
+
+
+  def logInEmployee(employee: Employee): String = {
+    DB.withConnection { implicit c =>
+      val lang: String =
+        SQL("Select name from Employees where email = {email} AND password = {password};").on(
+          'email -> employee.email, 'password -> employee.password).
+          as(SqlParser.str("name").single)
+      lang
+    }
   }
 
   /**
@@ -46,10 +57,10 @@ trait EmployeeDaoT {
    */
   def availableEmployees: List[Employee] = {
     DB.withConnection { implicit c =>
-      val selectEmployees = SQL("Select id, name, lastname, workplace, acces, netRate from Employees;")
+      val selectEmployees = SQL("Select id, name, lastname, workplace, acces, netRate, email, password from Employees;")
       // Transform the resulting Stream[Row] to a List[(String,String)]
       val employees = selectEmployees().map(row => Employee(row[Long]("id"), row[String]("name"), row[String]("lastname"),
-        row[String]("workplace"), row[String]("acces"), row[String]("netRate"))).toList
+        row[String]("workplace"), row[String]("acces"), row[String]("netRate"), null, null)).toList
       employees
     }
   }
