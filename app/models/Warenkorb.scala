@@ -14,5 +14,6 @@ object Warenkorb {
   var amount = 0
   var produktID = 0
   var customerID = 0
+  var size: Double = 0
 
 }

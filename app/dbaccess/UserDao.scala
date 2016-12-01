@@ -25,6 +25,13 @@ trait UserDaoT {
         SQL("insert into Users(name, lastname, adress, city, plz, email, password) values ({name}, {lastname}, {adress}, {city}, {plz}, {email}, {password})").on(
           'name -> user.name, 'lastname -> user.lastname, 'adress -> user.adress, 'city -> user.city, 'plz -> user.plz, 'email -> user.email, 'password -> user.password).executeInsert()
       user.id = id.get
+
+      models.activeUser.name = user.name
+      models.activeUser.lastname = user.lastname
+      models.activeUser.adress = user.adress
+      models.activeUser.city = user.city
+      models.activeUser.plz = user.plz
+      models.activeUser.email = user.email
     }
     user
   }

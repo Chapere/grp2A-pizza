@@ -31,16 +31,16 @@ trait OrderDaoT {
   def createOrder(order: Order): Double = {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
-        SQL("insert into Orders(customerID, produktID, amount, extras, price, orderTime) values ({customerID}, {produktID}, {amount}, {extras}, {price}, {orderTime})").on(
-          'customerID -> order.customerID, 'produktID -> order.produktID, 'amount -> order.amount, 'extras -> order.extras, 'price -> order.price,  'orderTime -> order.orderTime).executeInsert()
+        SQL("insert into Orders(customerID, produktID, amount, extras, price, orderTime, size) values ({customerID}, {produktID}, {amount}, {extras}, {price}, {orderTime}, {size})").on(
+          'customerID -> order.customerID, 'produktID -> order.produktID, 'amount -> order.amount, 'extras -> order.extras, 'price -> order.price,  'orderTime -> order.orderTime, 'size -> order.size).executeInsert()
 
       order.id = id.get
 
       val price: Double =
-      SQL("SELECT Orders.produktID, Orders.amount, Orders.extras, Orders.orderTime, Pizzas.id, Pizzas.name, Pizzas.price FROM Orders LEFT JOIN Pizzas ON Orders.produktID = Pizzas.id LIMIT 1").
+      SQL("SELECT Orders.produktID, Orders.amount, Orders.extras, Orders.orderTime, Orders.size, Pizzas.id, Pizzas.name, Pizzas.price FROM Orders LEFT JOIN Pizzas ON Orders.produktID = Pizzas.id LIMIT 1").
         as(SqlParser.double("price").single)
 
-      val newprice = price * order.amount
+      val newprice = price * order.amount * order.size
 
       models.Warenkorb.amount = order.amount
       models.Warenkorb.price = price
@@ -49,9 +49,14 @@ trait OrderDaoT {
       models.Warenkorb.customerID = order.customerID
 
       val name: String =
-        SQL("SELECT Orders.produktID, Orders.amount, Orders.extras, Orders.orderTime, Pizzas.id, Pizzas.name, Pizzas.price FROM Orders LEFT JOIN Pizzas ON Orders.produktID = Pizzas.id LIMIT 1").
-          as(SqlParser.str("name").single)
+        SQL("SELECT Orders.produktID, Orders.amount, Orders.extras, Orders.orderTime, Orders.size, Pizzas.id, Pizzas.name, Pizzas.price FROM Orders LEFT JOIN Pizzas ON Orders.produktID = Pizzas.id LIMIT 1").
+      as(SqlParser.str("name").single)
       models.Warenkorb.product = name
+
+      val size: Double =
+        SQL("SELECT Orders.produktID, Orders.amount, Orders.extras, Orders.orderTime, Orders.size, Pizzas.id, Pizzas.name, Pizzas.price FROM Orders LEFT JOIN Pizzas ON Orders.produktID = Pizzas.id LIMIT 1").
+          as(SqlParser.double("size").single)
+      models.Warenkorb.size = size
 
       newprice
 
@@ -77,10 +82,10 @@ trait OrderDaoT {
    */
   def availableOrders: List[Order] = {
     DB.withConnection { implicit c =>
-      val selectOrders = SQL("Select id, name, price, ingredients, comment, supplements from Orders;")
+      val selectOrders = SQL("Select id, customerID, produktID, amount, extras, price, orderTime, size from Orders;")
       // Transform the resulting Stream[Row] to a List[(String,String)]
       val orders = selectOrders().map(row => Order(row[Long]("id"), row[Int]("customerID"), row[Int]("produktID"),
-        row[Int]("amount"), row[String]("extras"), row[Double]("price"), row[String]("orderTime"))).toList
+        row[Int]("amount"), row[String]("extras"), row[Double]("price"), row[String]("orderTime"), row[Double]("size"))).toList
       orders
     }
   }

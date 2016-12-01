@@ -38,13 +38,14 @@ CREATE TABLE Orders (
     amount VARCHAR(255) NOT NULL,
     extras VARCHAR(255) NOT NULL,
     price VARCHAR(255) NOT NULL,
-    orderTime VARCHAR(255) NOT NULL
+    orderTime VARCHAR(255) NOT NULL,
+    size NUMERIC NOT NULL
 );
 
 INSERT INTO Pizzas (id, name, price, ingredients, comment, supplements)
-VALUES (1, 'Margherita', 5.90, 'Pizzateig, Tomaten, Käse', 'Der Klassiker', '1,2,5'),
-    (2, 'Funghi', 6.99, 'Pizzateig, Tomaten, Champignions, Schinken, Käse', 'Für Entwickler', '1,2,3,5,8'),
-    (3, 'Hawaii', 8.76, 'Pizzateig, Tomaten, Ananas, Käse', 'Des Deutschen liebste', '1,2,3,5,6,7,8');
+VALUES (1, 'Margherita', 0.60, 'Pizzateig, Tomaten, Käse', 'Der Klassiker', '1,2,5'),
+    (2, 'Funghi', 0.70, 'Pizzateig, Tomaten, Champignions, Schinken, Käse', 'Für Entwickler', '1,2,3,5,8'),
+    (3, 'Hawaii', 0.90, 'Pizzateig, Tomaten, Ananas, Käse', 'Des Deutschen liebste', '1,2,3,5,6,7,8');
 
 INSERT INTO Users ( name, lastname, adress, city, plz, email, password) VALUES ('Padron', 'Schulz', 'Lerchenauer Str. 12', 'München', 80935, 'root@pizza-power.de', 'alpine');
 INSERT INTO Employees (name, lastname, workplace, acces, netRate, email, password) VALUES ('Emil', 'Hubert', 'IT', 'root', '15.84', 'root', 'root');

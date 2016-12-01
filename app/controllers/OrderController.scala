@@ -4,7 +4,8 @@ import play.api.mvc.{Action, AnyContent, Controller}
 import services.{OrderService, PizzaService}
 import forms.CreateOrderForm
 import play.api.data.Form
-import play.api.data.Forms.{mapping, text, number}
+import play.api.data.Forms._
+import play.api.data.format.Formats._
 
 /**
  * Controller for user specific operations.
@@ -19,7 +20,7 @@ object OrderController extends Controller {
    */
   val orderForm = Form(
     mapping(
-      "Bestellnummer" -> number, "Anzahl" -> number)(CreateOrderForm.apply)(CreateOrderForm.unapply))
+      "Bestellnummer" -> number, "Anzahl" -> number, "Größe" -> of(doubleFormat))(CreateOrderForm.apply)(CreateOrderForm.unapply))
 
   /**
    * Adds a new user with the given data to the system.
@@ -32,7 +33,7 @@ object OrderController extends Controller {
         BadRequest(views.html.products(PizzaService.availablePizza, formWithErrors))
       },
       orderData => {
-        val newOrder = services.OrderService.createOrder(models.activeUser.id, orderData.orderNumber, orderData.amount, "N/A", 0, "N/A")
+        val newOrder = services.OrderService.createOrder(models.activeUser.id, orderData.orderNumber, orderData.amount, "N/A", 0, "N/A", orderData.size)
         Redirect(routes.OrderController.newOrderCreated(newOrder)).
           flashing("success" -> "Order saved!")
       })

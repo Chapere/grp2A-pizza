@@ -91,7 +91,7 @@ object Orders extends Controller {
     }.getOrElse(NotFound)
   }
 
-  private case class OrderName(customerID: Int, produktID: Int, amount: Int, extras: String, price: Double, orderTime: String)
+  private case class OrderName(customerID: Int, produktID: Int, amount: Int, extras: String, price: Double, orderTime: String, size: Double)
   private implicit val OrderReads = Json.reads[OrderName]
 
   /**
@@ -111,7 +111,7 @@ object Orders extends Controller {
       },
       ordername => {
         Ok(Json.obj("status" -> "OK",
-          "order" -> Json.toJson(mkHateoasOrder(OrderService.addOrder(ordername.customerID, ordername.produktID, ordername.amount, ordername.extras, ordername.price, ordername.orderTime)))))
+          "order" -> Json.toJson(mkHateoasOrder(OrderService.addOrder(ordername.customerID, ordername.produktID, ordername.amount, ordername.extras, ordername.price, ordername.orderTime, ordername.size)))))
       }
     )
   }

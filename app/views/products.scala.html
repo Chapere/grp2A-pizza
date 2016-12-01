@@ -13,16 +13,19 @@
                 <div class="row">
                 @for(pizza <- pizzas) {
                     <div class="col-sm-6 col-md-3">
-                        <h2>@pizza.name</h2>
+                        <h2>Name: @pizza.name</h2>
+                        <h3>Bestellnummer: @pizza.id</h3>
                         <h3>@pizza.comment</h3>
                         <h3>@pizza.ingredients</h3>
+                        <h3>Preis pro cm: @pizza.price €</h3>
                     </div>
                 }
                     <h3> @helper.form(action = routes.OrderController.createOrder()) {
 
                         @helper.inputText(orderForm("Bestellnummer"))
                         @helper.inputText(orderForm("Anzahl"))
-                        <input type="submit" value="Registrieren" />
+                        @helper.inputText(orderForm("Größe"))
+                        <input type="submit" value="Bestellen" />
                     }
                     </h3>
                 </div>
