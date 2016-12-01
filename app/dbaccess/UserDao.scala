@@ -10,7 +10,7 @@ import anorm.{ SQL, SqlParser }
 /**
  * Data access object for user related operations.
  *
- * @author ob, scs
+ * @author ob, scs, Kamil Gorszczyk
  */
 trait UserDaoT {
 
