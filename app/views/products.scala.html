@@ -1,4 +1,4 @@
-@(pizzas: List[models.Pizza])
+@(pizzas: List[models.Pizza], orderForm: Form[forms.CreateOrderForm])
 
 @import views.html.helper
 
@@ -12,14 +12,19 @@
             <div class="container">
                 <div class="row">
                 @for(pizza <- pizzas) {
-                    <div class="col-sm-6 col-md-3"><h2>@pizza.name</h2>
+                    <div class="col-sm-6 col-md-3">
+                        <h2>@pizza.name</h2>
                         <h3>@pizza.comment</h3>
                         <h3>@pizza.ingredients</h3>
-                        </h3>
-                        <input type="submit" value="Bestellen" />
-                        <button class="button button2">Bestellen</button>
                     </div>
                 }
+                    <h3> @helper.form(action = routes.OrderController.createOrder()) {
+
+                        @helper.inputText(orderForm("Bestellnummer"))
+                        @helper.inputText(orderForm("Anzahl"))
+                        <input type="submit" value="Registrieren" />
+                    }
+                    </h3>
                 </div>
             </div>
         </div>

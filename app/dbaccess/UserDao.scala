@@ -31,12 +31,51 @@ trait UserDaoT {
 
   def logInUser(user: User): String = {
     DB.withConnection { implicit c =>
-      val lang: String =
-          SQL("Select name from Users where email = {email} AND password = {password};").on(
-            'email -> user.email, 'password -> user.password).
-            as(SqlParser.str("name").single)
-      lang
+      val lastname: String =
+        SQL("Select lastname from Users where email = {email} AND password = {password};").on(
+          'email -> user.email, 'password -> user.password).
+          as(SqlParser.str("lastname").single)
+      models.activeUser.lastname = lastname
+
+      val adress: String =
+        SQL("Select adress from Users where email = {email} AND password = {password};").on(
+          'email -> user.email, 'password -> user.password).
+          as(SqlParser.str("adress").single)
+      models.activeUser.adress = adress
+
+      val city: String =
+        SQL("Select city from Users where email = {email} AND password = {password};").on(
+          'email -> user.email, 'password -> user.password).
+          as(SqlParser.str("city").single)
+      models.activeUser.city = city
+
+      val plz: String =
+        SQL("Select plz from Users where email = {email} AND password = {password};").on(
+          'email -> user.email, 'password -> user.password).
+          as(SqlParser.str("plz").single)
+      models.activeUser.plz = plz
+
+      val email: String =
+        SQL("Select email from Users where email = {email} AND password = {password};").on(
+          'email -> user.email, 'password -> user.password).
+          as(SqlParser.str("email").single)
+      models.activeUser.email = email
+
+      val id: Int =
+        SQL("Select id from Users where email = {email} AND password = {password};").on(
+          'email -> user.email, 'password -> user.password).
+          as(SqlParser.int("id").single)
+      models.activeUser.id = id
+
+      val name: String =
+        SQL("Select name from Users where email = {email} AND password = {password};").on(
+          'email -> user.email, 'password -> user.password).
+          as(SqlParser.str("name").single)
+      models.activeUser.name = name
+
+      name
     }
+
   }
 
   /**

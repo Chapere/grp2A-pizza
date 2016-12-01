@@ -43,7 +43,7 @@ object PizzaController extends Controller {
    */
 
   def products : Action[AnyContent] = Action {
-    Ok(views.html.products(PizzaService.availablePizza))
+    Ok(views.html.products(PizzaService.availablePizza, OrderController.orderForm))
   }
 
   /**

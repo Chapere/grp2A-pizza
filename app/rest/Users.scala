@@ -20,7 +20,7 @@ object Users extends Controller {
     val city = routes.Users.user(user.id).absoluteURL()
     val plz = routes.Users.user(user.id).absoluteURL()
     val email = routes.Users.user(user.id).absoluteURL()
-    val password =routes.Users.user(user.id).absoluteURL()
+    val password = routes.Users.user(user.id).absoluteURL()
 
     HateoasUser(user, url, name, lastname, adress, city, plz, email, password)
   }

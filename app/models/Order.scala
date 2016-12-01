@@ -5,5 +5,5 @@ package models
   * @author Kamil Gorszczyk
   */
 
-case class Order(var id: Long, customerID: String, produktID: String, ammount: String, extras: String, price: String, orderTime: String)
+case class Order(var id: Long, customerID: Int, produktID: Int, amount: Int, extras: String, price: Double, orderTime: String)
 

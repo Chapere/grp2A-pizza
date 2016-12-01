@@ -21,7 +21,7 @@
         <button onclick="myFunction()" class="dropbtn">Registrierte Benutzer</button>
         <div id="myDropdown" class="dropdown-content">
             @for(user <- users) {
-                <a href="/logInUser">@user.name</a>
+                <a class="button button2" type="submit">@user.name</a>
             }
         </div>
     </div>

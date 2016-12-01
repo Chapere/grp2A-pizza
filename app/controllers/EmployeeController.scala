@@ -23,7 +23,7 @@ object EmployeeController extends Controller {
 
   val employeeLogInForm = Form(
     mapping(
-      "email" -> text, "passwort" -> text)(CreateEmployeeLogInForm.apply)(CreateEmployeeLogInForm.unapply))
+      "E-Mail" -> text, "Passwort" -> text)(CreateEmployeeLogInForm.apply)(CreateEmployeeLogInForm.unapply))
 
   def addEmployee : Action[AnyContent] = Action { implicit request =>
     employeeForm.bindFromRequest.fold(

@@ -10,18 +10,15 @@ import services.OrderService
  */
 object Orders extends Controller {
 
-  private case class HateoasOrder(order: Order, url: String, customerID: String, produktID: String, ammount: String, extras: String, price: String, orderTime: String)
+  private case class HateoasOrder(order: Order, url: String, amount: String, extras: String, orderTime: String)
 
   private def mkHateoasOrder(order: Order)(implicit request: RequestHeader): HateoasOrder = {
     val url = routes.Orders.order(order.id).absoluteURL()
-    val customerID = routes.Orders.order(order.id).absoluteURL()
-    val produktID = routes.Orders.order(order.id).absoluteURL()
-    val ammount = routes.Orders.order(order.id).absoluteURL()
+    val amount = routes.Orders.order(order.id).absoluteURL()
     val extras = routes.Orders.order(order.id).absoluteURL()
-    val price = routes.Orders.order(order.id).absoluteURL()
     val orderTime = routes.Orders.order(order.id).absoluteURL()
 
-    HateoasOrder(order, url, customerID, produktID, ammount, extras, price, orderTime)
+    HateoasOrder(order, url, amount, extras, orderTime)
   }
 
   private implicit val hateoasOrderWrites = new Writes[HateoasOrder] {
@@ -30,7 +27,7 @@ object Orders extends Controller {
         "id" -> horder.order.id,
         "customerID" -> horder.order.customerID,
         "produktID" -> horder.order.produktID,
-        "ammount" -> horder.order.ammount,
+        "amount" -> horder.order.amount,
         "extras" -> horder.order.extras,
         "price" -> horder.order.price,
         "orderTime" -> horder.order.orderTime
@@ -94,7 +91,7 @@ object Orders extends Controller {
     }.getOrElse(NotFound)
   }
 
-  private case class OrderName(customerID: String, produktID: String, ammount: String, extras: String, price: String, orderTime: String)
+  private case class OrderName(customerID: Int, produktID: Int, amount: Int, extras: String, price: Double, orderTime: String)
   private implicit val OrderReads = Json.reads[OrderName]
 
   /**
@@ -114,7 +111,7 @@ object Orders extends Controller {
       },
       ordername => {
         Ok(Json.obj("status" -> "OK",
-          "order" -> Json.toJson(mkHateoasOrder(OrderService.addOrder(ordername.customerID, ordername.produktID, ordername.ammount, ordername.extras, ordername.price, ordername.orderTime)))))
+          "order" -> Json.toJson(mkHateoasOrder(OrderService.addOrder(ordername.customerID, ordername.produktID, ordername.amount, ordername.extras, ordername.price, ordername.orderTime)))))
       }
     )
   }

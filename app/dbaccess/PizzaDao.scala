@@ -48,7 +48,7 @@ trait PizzaDaoT {
     DB.withConnection { implicit c =>
       val selectPizzas = SQL("Select id, name, price, ingredients, comment, supplements from Pizzas;")
       // Transform the resulting Stream[Row] to a List[(String,String)]
-      val pizzas = selectPizzas().map(row => Pizza(row[Long]("id"), row[String]("name"), row[String]("price"),
+      val pizzas = selectPizzas().map(row => Pizza(row[Long]("id"), row[String]("name"), row[Double]("price"),
         row[String]("ingredients"), row[String]("comment"), row[String]("supplements"))).toList
       pizzas
     }

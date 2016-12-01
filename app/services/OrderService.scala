@@ -17,11 +17,19 @@ trait OrderServiceT {
    * @param name name of the new user.
    * @return the new user.
    */
-  def addOrder(customerID: String, produktID: String, ammount: String, extras: String, price: String, orderTime: String): Order = {
+
+  def addOrder(customerID: Int, produktID: Int, amount: Int, extras: String, price: Double, orderTime: String): Order = {
     // create User
-    val newOrder = Order(-1, customerID, produktID, ammount, extras, price, orderTime)
+    val newOrder = Order(-1, customerID, produktID, amount, extras, price, orderTime)
     // persist and return User
-    OrderDao.addOrder(newOrder)
+    orderDao.addOrder(newOrder)
+  }
+
+  def createOrder(customerID: Int, produktID: Int, amount: Int, extras: String, price: Double, orderTime: String): Double = {
+    // create User
+    val newOrder = Order(-1, customerID, produktID, amount, extras, price, orderTime)
+    // persist and return User
+    orderDao.createOrder(newOrder)
   }
 
   /**

@@ -6,6 +6,13 @@
 
     <p>Zur Zeit sind folgende Benutzer registriert:</p>
 
+    <h3>@models.activeUser.name</h3>
+    <h3>@models.activeUser.lastname</h3>
+    <h3>@models.activeUser.adress</h3>
+    <h3>@models.activeUser.city</h3>
+    <h3>@models.activeUser.plz</h3>
+    <h3>@models.activeUser.email</h3>
+
     <h3>
     @for(user <- users) {
     	<li>@user.name</li>

@@ -28,7 +28,7 @@ trait UserServiceT {
     // create User
     val newUser = User(-1, null, null, null, null, null, email, password)
     // persist and return User
-    return userDao.logInUser(newUser)
+    userDao.logInUser(newUser)
   }
 
   /**
