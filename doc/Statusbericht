@@ -1,1 +1,57 @@
-leer
+Statusbericht:
+
+Aktueller Stand des Projekts (Milestone1).
+
+Bereits vorhandene Funktionalitäten und Features:
+- Auswahl von drei Pizzen mit bestell Button.
+- Registration neuer Kunden
+- Login für Kunden.
+- Registration neuer Mitarbeiter.
+- Login für Mitarbeiter.
+- Anzeige der aktuell angemeldeten Benutzer mit Vor-/Nachnamen und vollständiger Adresse.
+- Bestellung von Pizzen eines Typs in beliebiger Anzahl.
+- Berechnug und Anzeige des ermittelten Preises, für die aktuelle Auswahl.
+- Speicherung der Bestellung in der Datenbank.
+
+
+Zuordnung der Verantwortlichkeiten
+
+Kamil Gorszczyk		Code
+Johanees Krumm		Lastenheft
+Simon Parussel		Statusbericht
+
+
+Projektplan für die Restlaufzeit des Projekts
+
+Erste Woche 01.12.16 bis 06.12.16
+	Erstellung des Pflichtenhefts
+	Planung des Weiteren Vorgehens
+Zweite Woche 07.12.16 bis 13.12.
+	Entwurf einer ersten Version der Präsentation.
+	Ergänzen des Codes um Folgende Funktionalitäten:
+		- Anzeige der bisherigen Bestellungen & Gesamtumsatz für die Kunden 
+Dritte Woche 14.12.16 bis 20.12.16
+	Ergänzen des Codes um Folgende Funktionalitäten:
+		- Produkte von Mitarbeitern verwalten: anlegen, löschen, anzeigen, ändern, ins Sortiment einstellen und herausnehmen.
+		- Kunden verwalten: anlegen, anzeigen, ändern und löschen.
+Vierte Woche 12.12.16 bis 27.12.16
+	Ergänzen des Codes um Folgende Funktionalitäten:
+		- Auswertungen für die Mitarbeiter (Informationen zu allen Bestellungen)
+		- Preisberechnung erweitern (Extras, Größe der Pizza)
+		- Berechnung der Lieferzeit
+Fünfte Woche 28.12.16 bis 03.01.17
+	Erstellung des Statusberichts.
+	Fertigstellung der Präsentation. 
+Sechste Woche 04.12.16 bis 10.01.17
+	Zeitpuffer für unvorhergesehene Fehler.
+
+Aufwandsnachweis
+Kamil Gorszczyk 24.11.16 Erste Version des Prototyps mit Hintergrundbild und einer Menüleiste.
+						  Ergänzen um den zugriff auf die Datenbank und Hinzufügen der ersten Pizzen.
+Kamil Gorszczyk 26.11.16 Fehlerbehebung NullpointerException.
+Kamil Gorszczyk 28.11.16 Hinzufügen fehlender Dateien.
+Kamil Gorszczyk 28.11.16 Hinzufügen der Datenbank Unterstützung für Mitarbeiter und Bestellungen.
+Kamil Gorszczyk 29.11.16 Hinzufügen der Anmeldung der User sowie Anmeldung und Registration für den Mitarbeiter.
+Johanees Krumm 30.11.16 Erstellen des Lastenhefts.
+Johannes Krumm 30.11.16 & 01.12.16 Design arbeiten an den css und html Dateien.
+Simon Parussel 30.11.16 Erstellen des Statusberichts.
