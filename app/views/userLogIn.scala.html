@@ -1,39 +1,38 @@
 @(userForm: Form[forms.CreateUserForm], users: List[models.User], loginForm: Form[forms.CreateUserLogInForm])
-
-
 @import views.html.helper
 
 @main(models.Company.name) {
-    <h1>Registrieren</h1>
-    <h3> @helper.form(action = routes.UserController.addUser()) {
-            @helper.inputText(userForm("Name"))
-            @helper.inputText(userForm("Vorname"))
-            @helper.inputText(userForm("Adresse"))
-            @helper.inputText(userForm("Stadt"))
-            @helper.inputText(userForm("PLZ"))
-            @helper.inputText(userForm("e-Mail"))
-            @helper.inputText(userForm("Passwort"))
-            <input type="submit" value="Registrieren" />
-        }
-    </h3>
-
-    <div class="dropdown">
-        <button onclick="myFunction()" class="dropbtn">Registrierte Benutzer</button>
-        <div id="myDropdown" class="dropdown-content">
-            @for(user <- users) {
-                <a class="button button2" type="submit">@user.name</a>
+    <div id="userLogin">
+        <div class="left">
+            <h1>Einloggen</h1>
+            <h3> @helper.form(action = routes.UserController.logInUser()) {
+                @helper.inputText(loginForm("e-mail"))
+                @helper.inputText(loginForm("passwort"))
+                <input type="submit" value="Einloggen" />
             }
+            </h3>
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn">Registrierte Benutzer</button>
+                <div id="myDropdown" class="dropdown-content">
+                @for(user <- users) {
+                    <a class="button button2" type="submit">@user.name</a>
+                }
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <h1>Registrieren</h1>
+            <h3> @helper.form(action = routes.UserController.addUser()) {
+                @helper.inputText(userForm("Name"))
+                @helper.inputText(userForm("Vorname"))
+                @helper.inputText(userForm("Adresse"))
+                @helper.inputText(userForm("Stadt"))
+                @helper.inputText(userForm("PLZ"))
+                @helper.inputText(userForm("e-Mail"))
+                @helper.inputText(userForm("Passwort"))
+                <input type="submit" value="Registrieren" />
+            }
+            </h3>
         </div>
     </div>
-
-    <h1>Einloggen</h1>
-    <h3> @helper.form(action = routes.UserController.logInUser()) {
-            @helper.inputText(loginForm("e-mail"))
-            @helper.inputText(loginForm("passwort"))
-        <input type="submit" value="Einloggen" />
-    }
-    </h3>
-
-
-
 }

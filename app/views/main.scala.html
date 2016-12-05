@@ -33,6 +33,11 @@
                     }
                 }
         </script>
-        @content
+        <div class="head_img">
+            <img src="@routes.Assets.versioned("images/pizza.jpeg")">
+        </div>
+        <div id="content">
+            @content
+        </div>
     </body>
 </html>

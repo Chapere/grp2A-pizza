@@ -1,14 +1,96 @@
 body {
     color: black;
-    font-family: "Avenir Next";
+    font-family: 'Avenir Next', sans-serif;
     font-size: 14px;
     margin: 0;
     padding: 0;
-    background-size: 100% auto;
-    background-repeat: no-repeat;
-    background-position: left top;
-    background-attachment: fixed;
-    background-image: url(../images/Background_Home.png);
+    background: white;
+}
+
+h1 {
+    color: black;
+    font-size: 80px;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin-bottom: 0px;
+}
+
+h2 {
+    color: black;
+    font-size: 49px;
+    margin-top: 0;
+    font-style: italic;
+    font-weight: 100;
+    margin-top: -30px;
+}
+
+h3 {
+    color: black;
+    font-size: 13px;
+}
+
+#content {
+    margin: 50px 30px;
+    height: 100%;
+    padding: 30px;
+    position: relative;
+    z-index: 0;
+}
+
+.head_img {
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    border-bottom: 2px solid #f1f1f1;
+}
+
+.head_img img { width: 100%; margin-top: -50px; }
+
+#jumbo {
+    width: 85%;
+    padding: 30px;
+    margin: 0 auto;
+    display: block;
+    border-radius: 3px;
+    background: #f8f8f8;
+    margin-bottom: 60px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.20);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+#jumbo:hover {
+    box-shadow: 0 8px 15px rgba(0,0,0,0.19), 0 7px 7px rgba(0,0,0,0.16);
+}
+
+/*
+#content {
+    margin: 0 auto;
+    height: 100%;
+    background: #fff;
+    border-radius: 2px;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    top: 180px;
+    z-index: 0;
+}
+
+#content:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+*/
+
+.left {
+    width: 49%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.right {
+    width: 49%;
+    display: inline-block;
+    vertical-align: top;
 }
 
 ul.topnav {
@@ -19,15 +101,16 @@ ul.topnav {
     list-style-type: none;
     padding: 0;
     overflow: hidden;
-    
-    background-color: rgba(255, 255, 255, 0.70);
+    z-index: 9999;
+    background-color: #fff;
+    border-bottom: 2px solid #f1f1f1;
 }
 
 ul.topnav li {
     float: left;
+    border-right: 1px solid #f1f1f1;
 }
 ul.topnav li a {
-
     display: inline-block;
     color: black;
     text-align: center;
@@ -35,20 +118,11 @@ ul.topnav li a {
     text-decoration: none;
     transition: 0.3s;
     font-size: 17px;
-
 }
 ul.topnav li a:hover {
-    background-color: rgb(255, 255, 255);
+    background-color: #f1f1f1;
+    color: black;
 }
-
-#jumbo {
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    display: block;
-    text-align: center;
-}
-
 
 /* OVERLAY 1 */
 #O1 {
@@ -76,22 +150,6 @@ ul.topnav li a:hover {
     height: 8px;
     width: 100%;
     bottom: -8px
-}
-
-h1 {
-    margin-top: 95px;
-    color: white;
-    font-size: 40px;
-}
-
-h2 {
-    color: white;
-    font-size: 30px;
-
-}
-h3 {
-    color: white;
-    font-size: 13px;
 }
 
 /* Dropdown Button */
@@ -156,3 +214,8 @@ button {
 .button2:hover {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
+
+#userLogin h1 {
+    margin-top: 0px;
+}
+
