@@ -9,7 +9,7 @@ body {
 
 h1 {
     color: black;
-    font-size: 80px;
+    font-size: 60px;
     text-transform: uppercase;
     font-weight: 400;
     margin-bottom: 0px;
@@ -126,7 +126,7 @@ ul.topnav li a:hover {
 
 /* OVERLAY 1 */
 #O1 {
-    padding: 70px 0 50px;
+    padding: 0 0 50px 0;
     position: relative;
 }
 
@@ -134,7 +134,10 @@ ul.topnav li a:hover {
     border: 1px solid lightgrey;
     padding: 0px 30px 30px;
     text-align: justify;
+    max-width: 500px;
+    margin: 10px auto;
 }
+
 
 #O1 .row div:before {
     position: absolute;
@@ -151,6 +154,107 @@ ul.topnav li a:hover {
     width: 100%;
     bottom: -8px
 }
+
+.calltoaction {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 300;
+    font-size: 30px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    color: #54CC14;
+    border: 1px solid #54CC14;
+    border-radius: 5px;
+    line-height: 3em;
+    padding-left: 5em;
+    padding-right: 5em;
+    box-shadow: 0 0 0 0 transparent;
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+    margin: 0 auto;
+    width: 300px;
+    display: block;
+}
+.calltoaction:hover {
+    color: white;
+    box-shadow: 0 0 30px 0 rgba(84, 204, 20, 0.3);
+    background-color: #54CC14;
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+}
+.calltoaction:hover:before {
+    -webkit-animation: shine 0.5s 0s linear;
+    -moz-animation: shine 0.5s 0s linear;
+    animation: shine 0.5s 0s linear;
+}
+.calltoaction:active {
+    box-shadow: 0 0 0 0 transparent;
+    -webkit-transition: box-shadow 0.2s ease-in;
+    -moz-transition: box-shadow 0.2s ease-in;
+    transition: box-shadow 0.2s ease-in;
+}
+.calltoaction:before {
+    content: '';
+    display: block;
+    width: 0px;
+    height: 86%;
+    position: absolute;
+    top: 7%;
+    left: 0%;
+    opacity: 0;
+    background: white;
+    box-shadow: 0 0 15px 3px white;
+    -webkit-transform: skewX(-20deg);
+    -moz-transform: skewX(-20deg);
+    -ms-transform: skewX(-20deg);
+    -o-transform: skewX(-20deg);
+    transform: skewX(-20deg);
+}
+
+@-webkit-keyframes shine {
+    from {
+        opacity: 0;
+        left: 0%;
+    }
+    50% {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        left: 100%;
+    }
+}
+@-moz-keyframes shine {
+    from {
+        opacity: 0;
+        left: 0%;
+    }
+    50% {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        left: 100%;
+    }
+}
+@keyframes shine {
+    from {
+        opacity: 0;
+        left: 0%;
+    }
+    50% {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        left: 100%;
+    }
+}
+
 
 /* Dropdown Button */
 .dropbtn {

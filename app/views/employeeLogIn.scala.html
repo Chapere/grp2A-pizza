@@ -4,36 +4,36 @@
 @import views.html.helper
 
 @main(models.Company.name) {
-    <h1>Registrieren</h1>
-    <h3> @helper.form(action = routes.EmployeeController.addEmployee()) {
-            @helper.inputText(emloyeeForm("Name"))
-            @helper.inputText(emloyeeForm("Vorname"))
-            @helper.inputText(emloyeeForm("Gebiet"))
-            @helper.inputText(emloyeeForm("Zugriff"))
-            @helper.inputText(emloyeeForm("Stundenrate"))
-            @helper.inputText(emloyeeForm("e-Mail"))
-            @helper.inputText(emloyeeForm("Passwort"))
-            <input type="submit" value="Registrieren" />
-        }
-    </h3>
-
-    <div class="dropdown">
-        <button onclick="myFunction()" class="dropbtn">Registrierte Benutzer</button>
-        <div id="myDropdown" class="dropdown-content">
-            @for(emloyee <- emloyees) {
-                <a href="/logInEmployee">@emloyee.name</a>
+    <div id="userLogin">
+        <div class="left">
+            <h1>Einloggen</h1>
+            <h3> @helper.form(action = routes.EmployeeController.logInEmployee()) {
+                @helper.inputText(loginForm("E-Mail"))
+                @helper.inputText(loginForm("Passwort"))
+                <input type="submit" value="Einloggen" />
             }
+            </h3>
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn">Registrierte Benutzer</button>
+                <div id="myDropdown" class="dropdown-content">
+                @for(emloyee <- emloyees) {
+                    <a href="/logInEmployee">@emloyee.name</a>
+                }
+                </div>
+            </div>
         </div>
-    </div>
-
-    <h1>Einloggen</h1>
-    <h3> @helper.form(action = routes.EmployeeController.logInEmployee()) {
-            @helper.inputText(loginForm("E-Mail"))
-            @helper.inputText(loginForm("Passwort"))
-        <input type="submit" value="Einloggen" />
-    }
-    </h3>
-
-
-
+        <div class="right">
+            <h1>Registrieren</h1>
+            <h3> @helper.form(action = routes.EmployeeController.addEmployee()) {
+                    @helper.inputText(emloyeeForm("Name"))
+                    @helper.inputText(emloyeeForm("Vorname"))
+                    @helper.inputText(emloyeeForm("Gebiet"))
+                    @helper.inputText(emloyeeForm("Zugriff"))
+                    @helper.inputText(emloyeeForm("Stundenrate"))
+                    @helper.inputText(emloyeeForm("e-Mail"))
+                    @helper.inputText(emloyeeForm("Passwort"))
+                    <input type="submit" value="Registrieren" />
+                }
+            </h3>
+        </div>
 }
