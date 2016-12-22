@@ -36,6 +36,65 @@ trait UserDaoT {
     user
   }
 
+  def updateUserDao(user: User): User = {
+    DB.withConnection { implicit c =>
+      val id: Option[Long] =
+        SQL("UPDATE Users SET name = {name}, lastname = {lastname}, adress = {adress}, city = {city}, plz = {plz}, email = {email}, password = {password} WHERE id = {id}").on(
+          'name -> user.name, 'lastname -> user.lastname, 'adress -> user.adress, 'city -> user.city, 'plz -> user.plz, 'email -> user.email, 'password -> user.password, 'id -> models.Debug.updateUserId).executeInsert()
+    }
+    user
+  }
+
+  def displayUser(user: User): User = {
+
+    DB.withConnection { implicit c =>
+      val lastname: String =
+        SQL("Select lastname from Users where id = {id};").on(
+          'id -> user.id).
+          as(SqlParser.str("lastname").single)
+
+      val adress: String =
+        SQL("Select adress from Users where id = {id};").on(
+          'id -> user.id).
+          as(SqlParser.str("adress").single)
+
+      val city: String =
+        SQL("Select city from Users where id = {id};").on(
+          'id -> user.id).
+          as(SqlParser.str("city").single)
+
+
+      val email: String =
+        SQL("Select email from Users where id = {id};").on(
+          'id -> user.id).
+          as(SqlParser.str("email").single)
+
+
+      val plz: String =
+        SQL("Select plz from Users where id = {id};").on(
+          'id -> user.id).
+          as(SqlParser.str("plz").single)
+
+      val name: String =
+        SQL("Select name from Users where id = {id};").on(
+          'id -> user.id).
+          as(SqlParser.str("name").single)
+
+      val id: Long =
+        SQL("Select id from Users where id = {id};").on(
+          'id -> user.id).
+          as(SqlParser.long("id").single)
+
+      models.Debug.updateUserId = id
+
+      val chooseUser = User(user.id, name, lastname, adress, city, plz, email, null)
+
+      chooseUser
+
+    }
+
+  }
+
   def logInUser(user: User): String = {
     DB.withConnection { implicit c =>
       val lastname: String =

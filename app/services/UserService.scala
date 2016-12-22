@@ -24,6 +24,20 @@ trait UserServiceT {
     userDao.addUser(newUser)
   }
 
+  def chooseUser(id: Long): User = {
+    // create User
+    val showUser = User(id, null, null, null, null, null, null, null)
+    // persist and return User
+    UserDao.displayUser(showUser)
+  }
+
+  def updateUser(name: String, lastname: String, adress: String, city: String, plz: String, email: String, password: String): User = {
+    // create User
+    val updateUserService = User(-1, name, lastname, adress, city, plz, email, password)
+    // persist and return User
+    UserDao.updateUserDao(updateUserService)
+  }
+
   def logInUser(email: String, password: String): String = {
     // create User
     val newUser = User(-1, null, null, null, null, null, email, password)

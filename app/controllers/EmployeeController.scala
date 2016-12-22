@@ -1,7 +1,7 @@
 package controllers
 
 import play.api.mvc.{Action, AnyContent, Controller}
-import services.EmployeeService
+import services._
 import play.api.data.Form
 import play.api.data.Forms._
 import forms._
@@ -39,7 +39,7 @@ object EmployeeController extends Controller {
   def addEmployee : Action[AnyContent] = Action { implicit request =>
     employeeForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.employeeLoggedIn(models.activeUser.name, formWithErrors, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees))
+        BadRequest(views.html.employeeLoggedIn(models.activeUser.name, formWithErrors, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
       },
       employeeData => {
         val newEmployee = services.EmployeeService.addEmployee(employeeData.name, employeeData.lastname, employeeData.workplace, employeeData.acces, employeeData.accesLevel, employeeData.netRate, employeeData.email, employeeData.password)
@@ -52,7 +52,7 @@ object EmployeeController extends Controller {
   def updateEmployee : Action[AnyContent] = Action { implicit request =>
     updateEmployeeForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.employeeLoggedIn(models.activeUser.name, employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees))
+        BadRequest(views.html.employeeLoggedIn(models.activeUser.name, employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
       },
       updateEmployeeData => {
         val selectEmployee = services.EmployeeService.updateEmployee(updateEmployeeData.name, updateEmployeeData.lastname, updateEmployeeData.workplace, updateEmployeeData.acces, updateEmployeeData.accesLevel, updateEmployeeData.netRate, updateEmployeeData.email, updateEmployeeData.password)
@@ -65,7 +65,7 @@ object EmployeeController extends Controller {
   def chooseEmployee : Action[AnyContent] = Action { implicit request =>
     selectEmployeeForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.employeeLoggedIn(models.activeUser.name, employeeForm, formWithErrors, EmployeeService.registredEmployees))
+        BadRequest(views.html.employeeLoggedIn(models.activeUser.name, employeeForm, formWithErrors, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
       },
       selectEmployeeData => {
         val selectEmployee = services.EmployeeService.chooseEmployee(selectEmployeeData.id)
@@ -95,7 +95,7 @@ object EmployeeController extends Controller {
 
 
   def completeLogInEmployee(name: String) : Action[AnyContent] = Action {
-    Ok(views.html.employeeLoggedIn(name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees))
+    Ok(views.html.employeeLoggedIn(name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
   }
 
   def newEmployeeCreated(name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String) : Action[AnyContent] = Action {

@@ -1,0 +1,14 @@
+
+@(name: String, lastname: String, adress: String, city: String, plz: String, email: String, password: String)
+
+@main(models.Company.name) {
+
+    <h1 align="center">Willkommen @name bei @models.Company.name. Sie wurden Aktualisiert.</h1>
+    <h3>@name</h3>
+    <h3>@lastname</h3>
+    <h3>@adress</h3>
+    <h3>@city</h3>
+    <h3>@plz</h3>
+    <h3>@email</h3>
+
+}

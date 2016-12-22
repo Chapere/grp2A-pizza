@@ -2,9 +2,11 @@ package controllers
 
 import play.api.mvc.{Action, AnyContent, Controller}
 import play.api.data.Form
-import play.api.data.Forms.{mapping, text}
-import services. UserService
-import forms.{CreateUserForm, CreateUserLogInForm}
+import play.api.data.Forms._
+import services._
+import forms._
+import play.api.data.format.Formats._
+
 
 /**
  * Controller for user specific operations.
@@ -25,6 +27,14 @@ object UserController extends Controller {
     mapping(
       "e-mail" -> text, "passwort" -> text)(CreateUserLogInForm.apply)(CreateUserLogInForm.unapply))
 
+  val updateUserForm = Form(
+    mapping(
+      "Name" -> text, "Vorname" -> text, "Adresse" -> text, "Stadt" -> text, "PLZ" -> text, "e-Mail" -> text, "Passwort" -> text)(UpdateUserForm.apply)(UpdateUserForm.unapply))
+
+  val selectUserForm = Form(
+    mapping(
+      "User ID" -> of(longFormat))(SelectUserForm.apply)(SelectUserForm.unapply))
+
   /**
    * Adds a new user with the given data to the system.
    *
@@ -42,6 +52,30 @@ object UserController extends Controller {
       })
   }
 
+  def updateUser : Action[AnyContent] = Action { implicit request =>
+    updateUserForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.userLogIn(userForm, UserService.registeredUsers, userLogInForm))
+      },
+      updateUserData => {
+        val selectUser = services.UserService.updateUser(updateUserData.name, updateUserData.lastname, updateUserData.adress, updateUserData.city, updateUserData.plz, updateUserData.email, updateUserData.password)
+        Redirect(routes.UserController.upgradeUser(selectUser.name, selectUser.lastname, selectUser.adress, selectUser.city, selectUser.plz, selectUser.email, selectUser.password)).
+          flashing("success" -> "Employee saved!")
+      })
+  }
+
+
+  def chooseUser : Action[AnyContent] = Action { implicit request =>
+    selectUserForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.userLogIn(userForm, UserService.registeredUsers, userLogInForm))
+      },
+      selectUserData => {
+        val selectUser = services.UserService.chooseUser(selectUserData.id)
+        Redirect(routes.UserController.changeUser1(selectUser.id, selectUser.name, selectUser.lastname, selectUser.adress, selectUser.city, selectUser.plz, selectUser.email, selectUser.password)).
+          flashing("success" -> "User saved!")
+      })
+  }
 
   def logInUser : Action[AnyContent] = Action { implicit request =>
     userLogInForm.bindFromRequest.fold(
@@ -69,6 +103,14 @@ object UserController extends Controller {
 
   def newUserCreated(username: String, name: String, adress: String, city: String, plz: String, email: String, password: String) : Action[AnyContent] = Action {
     Ok(views.html.newUserCreated(username, name, adress, city, plz, email, password))
+  }
+
+  def changeUser1(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, email: String, password: String) : Action[AnyContent] = Action {
+    Ok(views.html.changeUser(id, name, lastname, adress, city, plz, email, password, controllers.UserController.updateUserForm))
+  }
+
+  def upgradeUser(name: String, lastname: String, adress: String, city: String, plz: String, email: String, password: String) : Action[AnyContent] = Action {
+    Ok(views.html.userUpdated(name, lastname, adress, city, plz, email, password))
   }
 
   /**
