@@ -14,5 +14,13 @@ object activeUser {
   var plz = ""
   var city = ""
   var email = ""
+  var typ = ""
+
+  //Employee Only
+  var workplace = ""
+  var acces = ""
+  var accesLevel: Int = 0
+  var netRate: Double = 0
+
 
 }

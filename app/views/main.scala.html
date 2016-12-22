@@ -11,18 +11,16 @@
     </head>
     <body>
         <ul class="topnav" id="myTopNav">
-        <li class="icon">
-            <a href="javascript:void(0);" onclick="myNavBar()">☰</a>
-        </li>
-        <li><a href="/">Home</a></li>
-        <li><a href="/products">Produkte</a></li>
-        <li><a href="/registerUser">Kundenportal</a></li>
-        <li><a href="/registerEmployee">Mitarbeiter-Login</a></li>
-        <li><a href="/showUsers">Angemeldete Benutzer</a></li>
+            <li class="icon">
+                <a href="javascript:void(0);" onclick="myNavBar()">☰</a>
+            </li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/products">Produkte</a></li>
+            <li><a href="/registerUser">Kundenportal</a></li>
+            <li><a href="/registerEmployee">Mitarbeiter-Login</a></li>
+            <li><a href="/showUsers">Angemeldete Benutzer</a></li>
             <li><a href="/showEmployees">Angemeldete Mitarbeiter</a></li>
-            <li align="right" style="color: black"> Angemeldeter Benutzer: @models.activeUser.name @models.activeUser.lastname</li>
-
-    </ul>
+        </ul>
         <script>
                 function myNavBar() {
                     var x = document.getElementById("myTopnav");
@@ -34,7 +32,7 @@
                 }
         </script>
         <div class="head_img">
-            <img src="@routes.Assets.versioned("images/pizza.jpeg")">
+            <img src="@routes.Assets.versioned("images/pizza.png")">
         </div>
         <div id="content">
             @content

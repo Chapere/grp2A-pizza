@@ -80,6 +80,8 @@ trait UserDaoT {
           as(SqlParser.str("name").single)
       models.activeUser.name = name
 
+      models.activeUser.typ = "User"
+
       name
     }
 

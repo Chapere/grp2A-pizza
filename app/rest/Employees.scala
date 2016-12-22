@@ -10,7 +10,7 @@ import services.EmployeeService
  */
 object Employees extends Controller {
 
-  private case class HateoasEmployee(employee: Employee, url: String, name: String, lastname: String, workplace: String, acces: String, netRate: String, email: String, password: String)
+  private case class HateoasEmployee(employee: Employee, url: String, name: String, lastname: String, workplace: String, acces: String, email: String, password: String)
 
   private def mkHateoasEmployee(employee: Employee)(implicit request: RequestHeader): HateoasEmployee = {
     val url = routes.Employees.employee(employee.id).absoluteURL()
@@ -18,11 +18,10 @@ object Employees extends Controller {
     val lastname = routes.Employees.employee(employee.id).absoluteURL()
     val workplace = routes.Employees.employee(employee.id).absoluteURL()
     val acces = routes.Employees.employee(employee.id).absoluteURL()
-    val netRate = routes.Employees.employee(employee.id).absoluteURL()
     val email = routes.Employees.employee(employee.id).absoluteURL()
     val password = routes.Employees.employee(employee.id).absoluteURL()
 
-    HateoasEmployee(employee, url, name, lastname, workplace, acces, netRate, email, password)
+    HateoasEmployee(employee, url, name, lastname, workplace, acces, email, password)
   }
 
   private implicit val hateoasEmployeeWrites = new Writes[HateoasEmployee] {
@@ -33,6 +32,7 @@ object Employees extends Controller {
         "lastname" -> hemployee.employee.lastname,
         "workplace" -> hemployee.employee.workplace,
         "acces" -> hemployee.employee.acces,
+        "accesLevel" -> hemployee.employee.acces,
         "netRate" -> hemployee.employee.netRate,
         "email" -> hemployee.employee.email,
         "password" -> hemployee.employee.password
@@ -96,7 +96,7 @@ object Employees extends Controller {
     }.getOrElse(NotFound)
   }
 
-  private case class EmployeeName(name: String, lastname: String, workplace: String, acces: String, netRate: String, email: String, password: String)
+  private case class EmployeeName(name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String)
   private implicit val EmployeeReads = Json.reads[EmployeeName]
 
   /**
@@ -116,7 +116,7 @@ object Employees extends Controller {
       },
       employeename => {
         Ok(Json.obj("status" -> "OK",
-          "employee" -> Json.toJson(mkHateoasEmployee(EmployeeService.addEmployee(employeename.name, employeename.lastname, employeename.workplace, employeename.acces, employeename.netRate, employeename.email, employeename.password)))))
+          "employee" -> Json.toJson(mkHateoasEmployee(EmployeeService.addEmployee(employeename.name, employeename.lastname, employeename.workplace, employeename.acces, employeename.accesLevel, employeename.netRate, employeename.email, employeename.password)))))
       }
     )
   }

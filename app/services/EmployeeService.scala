@@ -1,6 +1,6 @@
 package services
 
-import dbaccess.{EmployeeDao, EmployeeDaoT}
+import dbaccess._
 import models.Employee
 
 /**
@@ -17,18 +17,32 @@ trait EmployeeServiceT {
    * @param name name of the new user.
    * @return the new user.
    */
-  def addEmployee(name: String, lastname: String, workplace: String, acces: String, netRate: String, email: String, password: String): Employee = {
+  def addEmployee(name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String): Employee = {
     // create User
-    val newEmployee = Employee(-1, name, lastname, workplace, acces, netRate, email, password)
+    val newEmployee = Employee(-1, name, lastname, workplace, acces, accesLevel, netRate, email, password)
     // persist and return User
     EmployeeDao.addEmployee(newEmployee)
   }
 
+  def chooseEmployee(id: Long): Employee = {
+    // create User
+    val showEmployee = Employee(id, null, null, null, null, 0, 0, null, null)
+    // persist and return User
+    EmployeeDao.displayEmployee(showEmployee)
+  }
+
+  def updateEmployee(name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String): Employee = {
+    // create User
+    val updateEmployeeService = Employee(-1, name, lastname, workplace, acces, accesLevel, netRate, email, password)
+    // persist and return User
+    EmployeeDao.updateEmployeeDao(updateEmployeeService)
+  }
+
   def logInEmployee(email: String, password: String): String = {
     // create User
-    val newEmployee = Employee(-1, null, null, null, null, null, email, password)
+    val logInEmployee = Employee(-1, null, null, null, null, 0, 0, email, password)
     // persist and return User
-    return employeeDao.logInEmployee(newEmployee)
+    return employeeDao.logInEmployee(logInEmployee)
   }
 
   /**

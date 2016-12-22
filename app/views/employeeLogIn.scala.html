@@ -1,4 +1,4 @@
-@(emloyeeForm: Form[forms.CreateEmployeeForm], emloyees: List[models.Employee], loginForm: Form[forms.CreateEmployeeLogInForm])
+@(emloyeeForm: Form[forms.CreateEmployeeForm], employees: List[models.Employee], loginForm: Form[forms.CreateEmployeeLogInForm])
 
 
 @import views.html.helper
@@ -13,27 +13,6 @@
                 <input type="submit" value="Einloggen" />
             }
             </h3>
-            <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">Registrierte Benutzer</button>
-                <div id="myDropdown" class="dropdown-content">
-                @for(emloyee <- emloyees) {
-                    <a href="/logInEmployee">@emloyee.name</a>
-                }
-                </div>
-            </div>
         </div>
-        <div class="right">
-            <h1>Registrieren</h1>
-            <h3> @helper.form(action = routes.EmployeeController.addEmployee()) {
-                    @helper.inputText(emloyeeForm("Name"))
-                    @helper.inputText(emloyeeForm("Vorname"))
-                    @helper.inputText(emloyeeForm("Gebiet"))
-                    @helper.inputText(emloyeeForm("Zugriff"))
-                    @helper.inputText(emloyeeForm("Stundenrate"))
-                    @helper.inputText(emloyeeForm("e-Mail"))
-                    @helper.inputText(emloyeeForm("Passwort"))
-                    <input type="submit" value="Registrieren" />
-                }
-            </h3>
-        </div>
+    </div>
 }

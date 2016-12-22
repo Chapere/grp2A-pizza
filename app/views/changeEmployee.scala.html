@@ -1,0 +1,45 @@
+@(id: Long, name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String, updateEmployeeForm: Form[forms.UpdateEmployeeForm])
+
+@main(models.Company.name) {
+
+    <h1 align="center", style="margin-top: 0px; margin-bottom: 100px">Edit Employee: @lastname, @name</h1>
+
+    <div id="editEmployee">
+        <div class="left">
+            <h1>Name:</h1>
+            <h2>@name</h2>
+            <h1>Vorname:</h1>
+            <h2>@lastname</h2>
+            <h1>Arbeitsplatz:</h1>
+            <h2>@workplace</h2>
+            <h1>Zugangsberechtigung:</h1>
+            <h2>@acces</h2>
+            <h1>Zugangslevel:</h1>
+            <h2>@accesLevel</h2>
+            <h1>Stundensatz:</h1>
+            <h2>@netRate</h2>
+            <h1>E-Mail:</h1>
+            <h2>@email</h2>
+            <h1>Passwort:</h1>
+            <h2>@password</h2>
+        </div>
+        <div class="right">
+            <h1>@helper.form(action = routes.EmployeeController.updateEmployee()) {
+                @helper.inputText(updateEmployeeForm("Name"))
+                @helper.inputText(updateEmployeeForm("Vorname"))
+                @helper.inputText(updateEmployeeForm("Gebiet"))
+                @helper.inputText(updateEmployeeForm("Zugriff"))
+                @helper.inputText(updateEmployeeForm("Zugriffsebene"))
+                @helper.inputText(updateEmployeeForm("Stundenrate"))
+                @helper.inputText(updateEmployeeForm("e-Mail"))
+                @helper.inputPassword(updateEmployeeForm("Passwort"))
+                <input type="submit" value="Registrieren" />
+            }
+            </h1>
+
+
+
+        </div>
+    </div>
+
+}
