@@ -9,6 +9,8 @@ POST        /createOrder         controllers.OrderController.createOrder
 
 POST        /addUser             controllers.UserController.addUser
 POST        /addEmployee         controllers.EmployeeController.addEmployee
+POST        /chooseEmployee      controllers.EmployeeController.chooseEmployee
+POST        /updateEmployee      controllers.EmployeeController.updateEmployee
 POST        /logInUser           controllers.UserController.logInUser
 POST        /logInEmployee       controllers.EmployeeController.logInEmployee
 GET         /registerUser        controllers.UserController.registerUser
@@ -22,10 +24,13 @@ GET         /newUserCreated      controllers.UserController.newUserCreated(usern
 GET         /userLoggedIn        controllers.UserController.completeLogInUser(name)
 
 GET         /showEmployees       controllers.EmployeeController.showEmployees
-GET         /newEmployeeCreated  controllers.EmployeeController.newEmployeeCreated(name, lastname, workplace, acces, netRate, email, password)
+GET         /newEmployeeCreated  controllers.EmployeeController.newEmployeeCreated(name, lastname, workplace, acces, accesLevel: Int, netRate: Double, email, password)
+GET         /changeEmployee      controllers.EmployeeController.changeEmployee(id: Long, name, lastname, workplace, acces, accesLevel: Int, netRate: Double, email, password)
+GET         /upgradeEmployee     controllers.EmployeeController.upgradeEmployee(name, lastname, workplace, acces, accesLevel: Int, netRate: Double, email, password)
 GET         /employeeLoggedIn    controllers.EmployeeController.completeLogInEmployee(name)
 
 GET         /newOrderCreated     controllers.OrderController.newOrderCreated(price: Double)
+
 
 
 # REST API
