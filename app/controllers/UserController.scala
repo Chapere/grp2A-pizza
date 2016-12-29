@@ -1,6 +1,6 @@
 package controllers
 
-import play.api.mvc.{Action, AnyContent, Controller}
+import play.api.mvc._
 import play.api.data.Form
 import play.api.data.Forms._
 import services._
@@ -35,6 +35,10 @@ object UserController extends Controller {
     mapping(
       "User ID" -> of(longFormat))(SelectUserForm.apply)(SelectUserForm.unapply))
 
+  val deleteUserForm = Form(
+    mapping(
+      "User ID" -> of(longFormat))(DeleteUserForm.apply)(DeleteUserForm.unapply))
+
   /**
    * Adds a new user with the given data to the system.
    *
@@ -61,6 +65,18 @@ object UserController extends Controller {
         val selectUser = services.UserService.updateUser(updateUserData.name, updateUserData.lastname, updateUserData.adress, updateUserData.city, updateUserData.plz, updateUserData.email, updateUserData.password)
         Redirect(routes.UserController.upgradeUser(selectUser.name, selectUser.lastname, selectUser.adress, selectUser.city, selectUser.plz, selectUser.email, selectUser.password)).
           flashing("success" -> "Employee saved!")
+      })
+  }
+
+  def rmUser : Action[AnyContent] = Action { implicit request =>
+    deleteUserForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.userLogIn(userForm, UserService.registeredUsers, userLogInForm))
+      },
+      deleteUserData => {
+        val deleteUserVal = services.UserService.rmUser(deleteUserData.id)
+        Redirect(routes.UserController.userDeleted(deleteUserVal)).
+          flashing("success" -> "User saved!")
       })
   }
 
@@ -112,6 +128,11 @@ object UserController extends Controller {
   def upgradeUser(name: String, lastname: String, adress: String, city: String, plz: String, email: String, password: String) : Action[AnyContent] = Action {
     Ok(views.html.userUpdated(name, lastname, adress, city, plz, email, password))
   }
+
+  def userDeleted(deleted: Boolean) : Action[AnyContent] = Action {
+    Ok(views.html.userDeleted(UserService.registeredUsers))
+  }
+
 
   /**
    * List all users currently available in the system.

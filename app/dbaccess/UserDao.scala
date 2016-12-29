@@ -151,6 +151,7 @@ trait UserDaoT {
    * @param id the users id
    * @return a boolean success flag
    */
+
   def rmUser(id: Long): Boolean = {
     DB.withConnection { implicit c =>
       val rowsCount = SQL("delete from Users where id = ({id})").on('id -> id).executeUpdate()

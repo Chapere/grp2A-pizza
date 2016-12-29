@@ -2,7 +2,7 @@
 
 @main(models.Company.name) {
 
-    <h1 align="center", style="margin-top: 0px; margin-bottom: 100px">Edit Employee: @lastname, @name</h1>
+    <h1 align="center" style="margin-top: 0px; margin-bottom: 100px">Edit Employee: @lastname, @name</h1>
 
     <div id="editEmployee">
         <div class="left">
@@ -10,27 +10,32 @@
             <h2>@name</h2>
             <h1>Vorname:</h1>
             <h2>@lastname</h2>
-            <h1>Arbeitsplatz:</h1>
+            <h1>Strasse:</h1>
             <h2>@adress</h2>
-            <h1>Zugangsberechtigung:</h1>
+            <h1>Stadt:</h1>
             <h2>@city</h2>
-            <h1>Zugangslevel:</h1>
+            <h1>Postleitzahl:</h1>
             <h2>@plz</h2>
             <h1>E-Mail:</h1>
             <h2>@email</h2>
             <h1>Passwort:</h1>
             <h2>@password</h2>
+            <h1>@helper.form(action = routes.UserController.rmUser()) {
+                <input type="text" name="User ID" value="@id"><br>
+                <input type="submit" value="Löschen?">
+            }
+            </h1>
         </div>
         <div class="right">
             <h1>@helper.form(action = routes.UserController.updateUser()) {
-                @helper.inputText(updateUserForm("Name"))
-                @helper.inputText(updateUserForm("Vorname"))
-                @helper.inputText(updateUserForm("Adresse"))
-                @helper.inputText(updateUserForm("Stadt"))
-                @helper.inputText(updateUserForm("PLZ"))
-                @helper.inputText(updateUserForm("e-Mail"))
-                @helper.inputPassword(updateUserForm("Passwort"))
-                <input type="submit" value="Registrieren" />
+                    @helper.inputText(updateUserForm("Name"))
+                    @helper.inputText(updateUserForm("Vorname"))
+                    @helper.inputText(updateUserForm("Adresse"))
+                    @helper.inputText(updateUserForm("Stadt"))
+                    @helper.inputText(updateUserForm("PLZ"))
+                    @helper.inputText(updateUserForm("e-Mail"))
+                    @helper.inputPassword(updateUserForm("Passwort"))
+                    <input type="submit" value="Registrieren" />
             }
             </h1>
         </div>

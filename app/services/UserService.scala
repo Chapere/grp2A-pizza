@@ -31,6 +31,13 @@ trait UserServiceT {
     UserDao.displayUser(showUser)
   }
 
+  /**def deleteUser(id: Long): User = {
+    // create User
+    val deleteUserService = User(id, null, null, null, null, null, null, null)
+    // persist and return User
+    UserDao.deleteUser(deleteUserService)
+  }**/
+
   def updateUser(name: String, lastname: String, adress: String, city: String, plz: String, email: String, password: String): User = {
     // create User
     val updateUserService = User(-1, name, lastname, adress, city, plz, email, password)
@@ -50,7 +57,7 @@ trait UserServiceT {
    * @param id users id.
    * @return a boolean success flag.
    */
-  def rmUser(id: Long): Boolean = userDao.rmUser(id)
+  def rmUser(id: Long): Boolean = UserDao.rmUser(id)
 
   /**
    * Gets a list of all registered users.

@@ -11,14 +11,6 @@
                 <input type="submit" value="Einloggen" />
             }
             </h3>
-            <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">Registrierte Benutzer</button>
-                <div id="myDropdown" class="dropdown-content">
-                @for(user <- users) {
-                    <a class="button button2" type="submit">@user.name</a>
-                }
-                </div>
-            </div>
         </div>
         <div class="right">
             <h1>Registrieren</h1>
