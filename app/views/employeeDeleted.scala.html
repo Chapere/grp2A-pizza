@@ -1,0 +1,14 @@
+@(users: List[models.Employee])
+
+@main(models.Company.name) {
+
+    <h1 align="center">Mitarbeiter entlassen!</h1>
+
+    <h3>
+    @for(user <- users) {
+        <li>@user.name</li>
+        <li>@user.lastname</li>
+    }
+    </h3>
+
+}

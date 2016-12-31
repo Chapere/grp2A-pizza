@@ -1,6 +1,6 @@
 package controllers
 
-import play.api.mvc.{Action, AnyContent, Controller}
+import play.api.mvc._
 import services._
 import play.api.data.Form
 import play.api.data.Forms._
@@ -36,6 +36,11 @@ object EmployeeController extends Controller {
     mapping(
       "Mitarbeiter ID" -> of(longFormat))(SelectEmployeeForm.apply)(SelectEmployeeForm.unapply))
 
+  val deleteEmployeeForm = Form(
+    mapping(
+      "User ID" -> of(longFormat))(DeleteEmployeeForm.apply)(DeleteEmployeeForm.unapply))
+
+
   def addEmployee : Action[AnyContent] = Action { implicit request =>
     employeeForm.bindFromRequest.fold(
       formWithErrors => {
@@ -61,6 +66,17 @@ object EmployeeController extends Controller {
       })
   }
 
+  def fireEmployee : Action[AnyContent] = Action { implicit request =>
+    deleteEmployeeForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.employeeLogIn(employeeForm, EmployeeService.registredEmployees, employeeLogInForm))
+      },
+      deleteUserData => {
+        val deleteUserVal = services.UserService.rmUser(deleteUserData.id)
+        Redirect(routes.EmployeeController.employeeFired(deleteUserVal)).
+          flashing("success" -> "User saved!")
+      })
+  }
 
   def chooseEmployee : Action[AnyContent] = Action { implicit request =>
     selectEmployeeForm.bindFromRequest.fold(
@@ -108,6 +124,10 @@ object EmployeeController extends Controller {
 
   def upgradeEmployee(name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String) : Action[AnyContent] = Action {
     Ok(views.html.employeeUpdated(name, lastname, workplace, acces, accesLevel, netRate, email, password))
+  }
+
+  def employeeFired(deleted: Boolean) : Action[AnyContent] = Action {
+    Ok(views.html.employeeDeleted(EmployeeService.registredEmployees))
   }
 
 
