@@ -21,14 +21,18 @@
                         <h3>Preis pro cm: @pizza.price €</h3>
                     </div>
                 }
-                    <h3 style="margin-top: 50px;"> @helper.form(action = routes.OrderController.createOrder()) {
+                    @if(models.activeUser.id != 0) {
+                        <h3 style="margin-top: 50px;"> @helper.form(action = routes.OrderController.createOrder()) {
 
-                        @helper.inputText(orderForm("Bestellnummer"))
-                        @helper.inputText(orderForm("Anzahl"))
-                        @helper.inputText(orderForm("Größe"))
-                        <input type="submit" value="Bestellen" />
+                            @helper.inputText(orderForm("Bestellnummer"))
+                            @helper.inputText(orderForm("Anzahl"))
+                            @helper.inputText(orderForm("Größe"))
+                            <input type="submit" value="Bestellen" />
+                        }
+                        </h3>
+                    } else {
+                        <h3 style="color: red" align="center">Bitte melden Sie sich zuerst im Kundenportal an um eine Bestellung ausführen zu können.</h3>
                     }
-                    </h3>
                 </div>
             </div>
         </div>

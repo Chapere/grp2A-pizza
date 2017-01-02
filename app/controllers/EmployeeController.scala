@@ -20,26 +20,36 @@ object EmployeeController extends Controller {
 
   val employeeForm = Form(
     mapping(
-      "Name" -> nonEmptyText, "Vorname" -> text, "Gebiet" -> text, "Zugriff" -> text, "Zugriffsebene" -> number, "Stundenrate" -> of(doubleFormat), "e-Mail" -> text, "Passwort" -> text)(CreateEmployeeForm.apply)(CreateEmployeeForm.unapply))
+      "Name" -> nonEmptyText,
+      "Vorname" -> nonEmptyText,
+      "Gebiet" -> nonEmptyText,
+      "Zugriff" -> nonEmptyText,
+      "Zugriffsebene" -> number,
+      "Stundenrate" -> of(doubleFormat),
+      "e-Mail" -> nonEmptyText,
+      "Passwort" -> nonEmptyText)(CreateEmployeeForm.apply)(CreateEmployeeForm.unapply))
 
 
   val updateEmployeeForm = Form(
     mapping(
-      "Name" -> text, "Vorname" -> text, "Gebiet" -> text, "Zugriff" -> text, "Zugriffsebene" -> number, "Stundenrate" -> of(doubleFormat), "e-Mail" -> text, "Passwort" -> text)(UpdateEmployeeForm.apply)(UpdateEmployeeForm.unapply))
+      "Name" -> nonEmptyText,
+      "Vorname" -> nonEmptyText,
+      "Gebiet" -> nonEmptyText,
+      "Zugriff" -> nonEmptyText,
+      "Zugriffsebene" -> number,
+      "Stundenrate" -> of(doubleFormat),
+      "e-Mail" -> nonEmptyText,
+      "Passwort" -> nonEmptyText)(UpdateEmployeeForm.apply)(UpdateEmployeeForm.unapply))
 
 
   val employeeLogInForm = Form(
     mapping(
-      "E-Mail" -> text, "Passwort" -> text)(CreateEmployeeLogInForm.apply)(CreateEmployeeLogInForm.unapply))
+      "E-Mail" -> nonEmptyText,
+      "Passwort" -> nonEmptyText)(CreateEmployeeLogInForm.apply)(CreateEmployeeLogInForm.unapply))
 
   val selectEmployeeForm = Form(
     mapping(
       "Mitarbeiter ID" -> of(longFormat))(SelectEmployeeForm.apply)(SelectEmployeeForm.unapply))
-
-  val deleteEmployeeForm = Form(
-    mapping(
-      "User ID" -> of(longFormat))(DeleteEmployeeForm.apply)(DeleteEmployeeForm.unapply))
-
 
   def addEmployee : Action[AnyContent] = Action { implicit request =>
     employeeForm.bindFromRequest.fold(
@@ -66,17 +76,6 @@ object EmployeeController extends Controller {
       })
   }
 
-  def fireEmployee : Action[AnyContent] = Action { implicit request =>
-    deleteEmployeeForm.bindFromRequest.fold(
-      formWithErrors => {
-        BadRequest(views.html.employeeLogIn(employeeForm, EmployeeService.registredEmployees, employeeLogInForm))
-      },
-      deleteUserData => {
-        val deleteUserVal = services.UserService.rmUser(deleteUserData.id)
-        Redirect(routes.EmployeeController.employeeFired(deleteUserVal)).
-          flashing("success" -> "User saved!")
-      })
-  }
 
   def chooseEmployee : Action[AnyContent] = Action { implicit request =>
     selectEmployeeForm.bindFromRequest.fold(
@@ -96,10 +95,15 @@ object EmployeeController extends Controller {
         BadRequest(views.html.employeeLogIn(employeeForm, EmployeeService.registredEmployees, formWithErrors))
       },
       employeeData => {
-        val newEmployee = services.EmployeeService.logInEmployee(employeeData.email, employeeData.password)
-        Redirect(routes.EmployeeController.completeLogInEmployee(newEmployee)).
-          flashing("success" -> "Employee saved!")
-      })
+        try {
+          val newEmployee = services.EmployeeService.logInEmployee(employeeData.email, employeeData.password)
+          Redirect(routes.EmployeeController.completeLogInEmployee(newEmployee)).
+            flashing("success" -> "Employee saved!")
+      } catch {
+          case e: RuntimeException => BadRequest(views.html.loginFailed())
+        }
+      }
+    )
   }
 
   /**
@@ -124,10 +128,6 @@ object EmployeeController extends Controller {
 
   def upgradeEmployee(name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String) : Action[AnyContent] = Action {
     Ok(views.html.employeeUpdated(name, lastname, workplace, acces, accesLevel, netRate, email, password))
-  }
-
-  def employeeFired(deleted: Boolean) : Action[AnyContent] = Action {
-    Ok(views.html.employeeDeleted(EmployeeService.registredEmployees))
   }
 
 

@@ -19,28 +19,28 @@ trait EmployeeServiceT {
    */
   def addEmployee(name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String): Employee = {
     // create User
-    val newEmployee = Employee(-1, name, lastname, workplace, acces, accesLevel, netRate, email, password)
+    val newEmployee = Employee(-1, name, lastname, workplace, acces, accesLevel, netRate, email, password, 1)
     // persist and return User
     EmployeeDao.addEmployee(newEmployee)
   }
 
   def chooseEmployee(id: Long): Employee = {
     // create User
-    val showEmployee = Employee(id, null, null, null, null, 0, 0, null, null)
+    val showEmployee = Employee(id, null, null, null, null, -1, -1, null, null, -1)
     // persist and return User
     EmployeeDao.displayEmployee(showEmployee)
   }
 
   def updateEmployee(name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String): Employee = {
     // create User
-    val updateEmployeeService = Employee(-1, name, lastname, workplace, acces, accesLevel, netRate, email, password)
+    val updateEmployeeService = Employee(-1, name, lastname, workplace, acces, accesLevel, netRate, email, password, -1)
     // persist and return User
     EmployeeDao.updateEmployeeDao(updateEmployeeService)
   }
 
   def logInEmployee(email: String, password: String): String = {
     // create User
-    val logInEmployee = Employee(-1, null, null, null, null, 0, 0, email, password)
+    val logInEmployee = Employee(-1, null, null, null, null, -1, -1, email, password, -1)
     // persist and return User
     return employeeDao.logInEmployee(logInEmployee)
   }

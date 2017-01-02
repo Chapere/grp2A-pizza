@@ -7,7 +7,7 @@
             <h1>Einloggen</h1>
             <h3> @helper.form(action = routes.UserController.logInUser()) {
                 @helper.inputText(loginForm("e-mail"))
-                @helper.inputText(loginForm("passwort"))
+                @helper.inputPassword(loginForm("passwort"))
                 <input type="submit" value="Einloggen" />
             }
             </h3>
@@ -21,7 +21,7 @@
                 @helper.inputText(userForm("Stadt"))
                 @helper.inputText(userForm("PLZ"))
                 @helper.inputText(userForm("e-Mail"))
-                @helper.inputText(userForm("Passwort"))
+                @helper.inputPassword(userForm("Passwort"))
                 <input type="submit" value="Registrieren" />
             }
             </h3>

@@ -22,7 +22,7 @@ trait UserDaoT {
   def addUser(user: User): User = {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
-        SQL("insert into Users(name, lastname, adress, city, plz, email, password) values ({name}, {lastname}, {adress}, {city}, {plz}, {email}, {password})").on(
+        SQL("insert into Users(name, lastname, adress, city, plz, email, password, activeFlag) values ({name}, {lastname}, {adress}, {city}, {plz}, {email}, {password}, 1)").on(
           'name -> user.name, 'lastname -> user.lastname, 'adress -> user.adress, 'city -> user.city, 'plz -> user.plz, 'email -> user.email, 'password -> user.password).executeInsert()
       user.id = id.get
 
@@ -32,6 +32,7 @@ trait UserDaoT {
       models.activeUser.city = user.city
       models.activeUser.plz = user.plz
       models.activeUser.email = user.email
+      models.activeUser.activeFlag = 1
     }
     user
   }
@@ -85,9 +86,14 @@ trait UserDaoT {
           'id -> user.id).
           as(SqlParser.long("id").single)
 
+      val activeFlag: Int =
+        SQL("Select activeFlag from Users where id = {id};").on(
+          'id -> user.id).
+          as(SqlParser.int("activeFlag").single)
+
       models.Debug.updateUserId = id
 
-      val chooseUser = User(user.id, name, lastname, adress, city, plz, email, null)
+      val chooseUser = User(user.id, name, lastname, adress, city, plz, email, null, activeFlag)
 
       chooseUser
 
@@ -139,6 +145,12 @@ trait UserDaoT {
           as(SqlParser.str("name").single)
       models.activeUser.name = name
 
+      val activeFlag: Int =
+        SQL("Select activeFlag from Users where email = {email} AND password = {password};").on(
+          'email -> user.email, 'password -> user.password).
+          as(SqlParser.int("activeFlag").single)
+      models.activeUser.activeFlag = activeFlag
+
       models.activeUser.typ = "User"
 
       name
@@ -151,6 +163,7 @@ trait UserDaoT {
    * @param id the users id
    * @return a boolean success flag
    */
+
   def rmUser(id: Long): Boolean = {
     DB.withConnection { implicit c =>
       val rowsCount = SQL("delete from Users where id = ({id})").on('id -> id).executeUpdate()
@@ -164,9 +177,9 @@ trait UserDaoT {
    */
   def registeredUsers: List[User] = {
       DB.withConnection { implicit c =>
-      val selectUsers = SQL("Select id, name, lastname, adress, city, plz from Users;")
+      val selectUsers = SQL("Select id, name, lastname, adress, city, plz, activeFlag from Users;")
       // Transform the resulting Stream[Row] to a List[(String,String)]
-      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"), null, null)).toList
+      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"), null, null, row[Int]("activeFlag"))).toList
       users
     }
   }

@@ -2,7 +2,7 @@
 
 @main(models.Company.name) {
 
-    <h1 align="center" style="margin-top: 0px; margin-bottom: 100px">Edit Employee: @lastname, @name</h1>
+    <h1 align="center", style="margin-top: 0px; margin-bottom: 100px">Edit Employee: @lastname, @name</h1>
 
     <div id="editEmployee">
         <div class="left">
@@ -22,11 +22,6 @@
             <h2>@email</h2>
             <h1>Passwort:</h1>
             <h2>@password</h2>
-            <h1>@helper.form(action = routes.EmployeeController.fireEmployee()) {
-                <input type="text" name="User ID" value="@id"><br>
-                <input type="submit" value="Löschen?">
-                }
-            </h1>
         </div>
         <div class="right">
             <h1>@helper.form(action = routes.EmployeeController.updateEmployee()) {
@@ -41,6 +36,9 @@
                 <input type="submit" value="Registrieren" />
             }
             </h1>
+
+
+
         </div>
     </div>
 

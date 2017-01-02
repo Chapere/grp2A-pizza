@@ -15,6 +15,7 @@ object activeUser {
   var city = ""
   var email = ""
   var typ = ""
+  var activeFlag: Int = 0
 
   //Employee Only
   var workplace = ""

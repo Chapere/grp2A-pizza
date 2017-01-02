@@ -1,6 +1,6 @@
 package controllers
 
-import play.api.mvc.{Action, AnyContent, Controller, Result}
+import play.api.mvc._
 
 /**
  * Main controller of the Pizza Service application.

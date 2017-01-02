@@ -21,7 +21,7 @@ trait EmployeeDaoT {
   def addEmployee(employee: Employee): Employee = {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
-        SQL("insert into Employees(name, lastname, workplace, acces, accesLevel, netRate, email, password) values ({name}, {lastname}, {workplace}, {acces}, {accesLevel}, {netRate}, {email}, {password})").on(
+        SQL("insert into Employees(name, lastname, workplace, acces, accesLevel, netRate, email, password, activeFlag) values ({name}, {lastname}, {workplace}, {acces}, {accesLevel}, {netRate}, {email}, {password}, 1)").on(
           'name -> employee.name, 'lastname -> employee.lastname, 'workplace -> employee.workplace, 'acces -> employee.acces, 'accesLevel -> employee.accesLevel, 'netRate -> employee.netRate, 'email -> employee.email, 'password -> employee.password).executeInsert()
       employee.id = id.get
     }
@@ -81,9 +81,14 @@ trait EmployeeDaoT {
           'id -> employee.id).
           as(SqlParser.long("id").single)
 
+      val activeFlag: Int =
+        SQL("Select activeFlag from Employees where id = {id};").on(
+          'id -> employee.id).
+          as(SqlParser.int("activeFlag").single)
+
       models.Debug.updateUserId = id
 
-      val chooseEmployee = Employee(employee.id, name, lastname, workplace, acces, accesLevel, netRate, email, null)
+      val chooseEmployee = Employee(employee.id, name, lastname, workplace, acces, accesLevel, netRate, email, null, activeFlag)
 
       chooseEmployee
 
@@ -142,6 +147,12 @@ trait EmployeeDaoT {
           as(SqlParser.str("name").single)
       models.activeUser.name = name
 
+      val activeFlag: Int =
+        SQL("Select activeFlag from Employees where email = {email} AND password = {password};").on(
+          'email -> employee.email, 'password -> employee.password).
+          as(SqlParser.int("activeFlag").single)
+      models.activeUser.activeFlag = activeFlag
+
       models.activeUser.typ = "Employee"
 
       name
@@ -166,10 +177,10 @@ trait EmployeeDaoT {
    */
   def availableEmployees: List[Employee] = {
     DB.withConnection { implicit c =>
-      val selectEmployees = SQL("Select id, name, lastname, workplace, acces, accesLevel, netRate, email, password from Employees;")
+      val selectEmployees = SQL("Select id, name, lastname, workplace, acces, accesLevel, netRate, email, password, activeFlag from Employees;")
       // Transform the resulting Stream[Row] to a List[(String,String)]
       val employees = selectEmployees().map(row => Employee(row[Long]("id"), row[String]("name"), row[String]("lastname"),
-        row[String]("workplace"), row[String]("acces"), row[Int]("accesLevel"), row[Double]("netRate"), null, null)).toList
+        row[String]("workplace"), row[String]("acces"), row[Int]("accesLevel"), row[Double]("netRate"), null, null, row[Int]("activeFlag"))).toList
       employees
     }
   }

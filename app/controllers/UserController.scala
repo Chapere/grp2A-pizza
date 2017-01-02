@@ -21,15 +21,28 @@ object UserController extends Controller {
    */
   val userForm = Form(
     mapping(
-      "Name" -> text, "Vorname" -> text, "Adresse" -> text, "Stadt" -> text, "PLZ" -> text, "e-Mail" -> text, "Passwort" -> text)(CreateUserForm.apply)(CreateUserForm.unapply))
+      "Name" -> nonEmptyText,
+      "Vorname" -> nonEmptyText,
+      "Adresse" -> nonEmptyText,
+      "Stadt" -> nonEmptyText,
+      "PLZ" -> nonEmptyText,
+      "e-Mail" -> nonEmptyText,
+      "Passwort" -> nonEmptyText)(CreateUserForm.apply)(CreateUserForm.unapply))
 
   val userLogInForm = Form(
     mapping(
-      "e-mail" -> text, "passwort" -> text)(CreateUserLogInForm.apply)(CreateUserLogInForm.unapply))
+      "e-mail" -> nonEmptyText,
+      "passwort" -> nonEmptyText)(CreateUserLogInForm.apply)(CreateUserLogInForm.unapply))
 
   val updateUserForm = Form(
     mapping(
-      "Name" -> text, "Vorname" -> text, "Adresse" -> text, "Stadt" -> text, "PLZ" -> text, "e-Mail" -> text, "Passwort" -> text)(UpdateUserForm.apply)(UpdateUserForm.unapply))
+      "Name" -> nonEmptyText,
+      "Vorname" -> nonEmptyText,
+      "Adresse" -> nonEmptyText,
+      "Stadt" -> nonEmptyText,
+      "PLZ" -> nonEmptyText,
+      "e-Mail" -> nonEmptyText,
+      "Passwort" -> nonEmptyText)(UpdateUserForm.apply)(UpdateUserForm.unapply))
 
   val selectUserForm = Form(
     mapping(
@@ -99,10 +112,15 @@ object UserController extends Controller {
         BadRequest(views.html.userLogIn(userForm, UserService.registeredUsers, formWithErrors))
       },
       userData => {
-        val newUser = services.UserService.logInUser(userData.email, userData.password)
-        Redirect(routes.UserController.completeLogInUser(newUser)).
-          flashing("success" -> "User saved!")
-      })
+        try {
+          val newUser = services.UserService.logInUser(userData.email, userData.password)
+          Redirect(routes.UserController.completeLogInUser(newUser)).
+            flashing("success" -> "User saved!")
+        } catch {
+          case e: RuntimeException => BadRequest(views.html.loginFailed())
+        }
+      }
+    )
   }
 
   /**

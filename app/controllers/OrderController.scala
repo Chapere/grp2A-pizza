@@ -20,7 +20,9 @@ object OrderController extends Controller {
    */
   val orderForm = Form(
     mapping(
-      "Bestellnummer" -> number, "Anzahl" -> number, "Größe" -> of(doubleFormat))(CreateOrderForm.apply)(CreateOrderForm.unapply))
+      "Bestellnummer" -> number,
+      "Anzahl" -> number,
+      "Größe" -> of(doubleFormat))(CreateOrderForm.apply)(CreateOrderForm.unapply))
 
   /**
    * Adds a new user with the given data to the system.

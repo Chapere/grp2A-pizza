@@ -1,19 +1,16 @@
 @(name: String, employeeForm: Form[forms.CreateEmployeeForm], selectEmployeeForm: Form[forms.SelectEmployeeForm], employees: List[models.Employee], userForm: Form[forms.CreateUserForm], users: List[models.User])
 
-@import helper._
-
 @main(models.Company.name) {
 
     <h2 align="center">Willkommen @name bei @models.Company.name. Sie wurden Eingeloggt.</h2>
 
-    <h3>Als Mitarbaieter der Stufe: @models.activeUser.accesLevel (@models.activeUser.acces) haben Sie zu folgenden Webparts Zugriff:</h3>
+    <h2 align="center">Als Mitarbeieter der Stufe: @models.activeUser.accesLevel (@models.activeUser.acces) haben Sie Zugriff zu folgenden Webparts:</h2>
 
     <div class="left">
 
-    @if(models.activeUser.accesLevel == 10) {
-        <h3> Mitarbeiter Registrierung:</h3>
-
-        <h1>Registrieren</h1>
+    @if(models.activeUser.accesLevel == 10 && models.activeUser.activeFlag == 1) {
+        <h1>Mitarbeiter</h1>
+        <h1>Registrierung</h1>
         <h3> @helper.form(action = routes.EmployeeController.addEmployee()) {
             @helper.inputText(employeeForm("Name"))
             @helper.inputText(employeeForm("Vorname"))
@@ -25,42 +22,42 @@
             @helper.inputText(employeeForm("Passwort"))
             <input type="submit" value="Registrieren" />
 
-        }
-        </h3>
-    }
-        
+        } </h3>
 
-    @helper.form(action = routes.EmployeeController.chooseEmployee()) {
-        <select name="Mitarbeiter ID"> @for(employee <- employees) {
-            <option value="@employee.id">@employee.id</option>
-        }
-        </select>
-        <input type="submit" value="Auswählen" />
-    }
-
-    </div>
-
-    <div class="right">
-        <h1>Registrieren</h1>
-        <h3> @helper.form(action = routes.UserController.addUser()) {
-            @helper.inputText(userForm("Name"))
-            @helper.inputText(userForm("Vorname"))
-            @helper.inputText(userForm("Adresse"))
-            @helper.inputText(userForm("Stadt"))
-            @helper.inputText(userForm("PLZ"))
-            @helper.inputText(userForm("e-Mail"))
-            @helper.inputText(userForm("Passwort"))
-            <input type="submit" value="Registrieren" />
-        }
-        </h3>
-
-        @helper.form(action = routes.UserController.chooseUser()) {
-            <select name="User ID"> @for(user <- users) {
-                <option value="@user.id">@user.id</option>
+        <h1>Änderung</h1>
+        @helper.form(action = routes.EmployeeController.chooseEmployee()) {
+            <select name="Mitarbeiter ID"> @for(employee <- employees) {
+                <option value="@employee.id">@employee.id</option>
             }
             </select>
             <input type="submit" value="Auswählen" />
         }
+    }
     </div>
+    @if(models.activeUser.accesLevel >= 5 && models.activeUser.activeFlag == 1) {
+        <div class="right">
+            <h1>Kunden</h1>
+            <h1>Registrierung</h1>
+            <h3> @helper.form(action = routes.UserController.addUser()) {
+                @helper.inputText(userForm("Name"))
+                @helper.inputText(userForm("Vorname"))
+                @helper.inputText(userForm("Adresse"))
+                @helper.inputText(userForm("Stadt"))
+                @helper.inputText(userForm("PLZ"))
+                @helper.inputText(userForm("e-Mail"))
+                @helper.inputText(userForm("Passwort"))
+                <input type="submit" value="Registrieren" />
+            }
+            </h3>
+            <h1>Änderung</h1>
+            @helper.form(action = routes.UserController.chooseUser()) {
+                <select name="User ID"> @for(user <- users) {
+                    <option value="@user.id">@user.id</option>
+                }
+                </select>
+                <input type="submit" value="Auswählen" />
+            }
+        </div>
+    }
 
 }
