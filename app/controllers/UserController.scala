@@ -114,7 +114,7 @@ object UserController extends Controller {
       userData => {
         try {
           val newUser = services.UserService.logInUser(userData.email, userData.password)
-          Redirect(routes.UserController.completeLogInUser(newUser)).
+          Redirect(routes.UserController.completeLogInUser(newUser.id, newUser.name)).
             flashing("success" -> "User saved!")
         } catch {
           case e: RuntimeException => BadRequest(views.html.loginFailed())
@@ -131,8 +131,10 @@ object UserController extends Controller {
   }
 
 
-  def completeLogInUser(name: String) : Action[AnyContent] = Action {
-    Ok(views.html.userLoggedIn(name))
+  def completeLogInUser(id: Long, name: String) : Action[AnyContent] = Action {
+    Ok(views.html.userLoggedIn(name)).withSession(
+      "loggedIn" -> id.toString
+    )
   }
 
   def newUserCreated(username: String, name: String, adress: String, city: String, plz: String, email: String, password: String) : Action[AnyContent] = Action {

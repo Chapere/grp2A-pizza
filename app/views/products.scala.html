@@ -1,11 +1,11 @@
-@(pizzas: List[models.Pizza], orderForm: Form[forms.CreateOrderForm])
+@(pizzas: List[models.Pizza], orderForm: Form[forms.CreateOrderForm], userID: Long)
 
 @import views.html.helper
 
 @main(models.Company.name) {
 
     <div id="jumbo">
-        <h1 align="center">Willkommen bei @models.Company.name</h1>
+        <h1 align="center">Willkommen @userID bei @models.Company.name</h1>
         <h2 align="center">@models.Company.subtitle</h2>
     </div>
         <h2 align="left"; style="padding: 0px 30px 0px">Produktauswahl</h2>
@@ -21,7 +21,7 @@
                         <h3>Preis pro cm: @pizza.price €</h3>
                     </div>
                 }
-                    @if(models.activeUser.id != 0) {
+                    @if(userID != 0) {
                         <h3 style="margin-top: 50px;"> @helper.form(action = routes.OrderController.createOrder()) {
 
                             @helper.inputText(orderForm("Bestellnummer"))

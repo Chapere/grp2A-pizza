@@ -38,7 +38,7 @@ trait EmployeeServiceT {
     EmployeeDao.updateEmployeeDao(updateEmployeeService)
   }
 
-  def logInEmployee(email: String, password: String): String = {
+  def logInEmployee(email: String, password: String): Employee = {
     // create User
     val logInEmployee = Employee(-1, null, null, null, null, -1, -1, email, password, -1)
     // persist and return User

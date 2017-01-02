@@ -1,17 +1,14 @@
 package controllers
 
 import play.api.mvc.{Action, AnyContent, Controller}
-import play.api.data.Form
-import play.api.data.Forms._
 import services._
-import forms._
 
 /**
  * Controller for user specific operations.
  *
  * @author ob, scs
  */
-object PizzaController extends Controller {
+object ProductController extends Controller {
 
 
   /**
@@ -26,8 +23,8 @@ object PizzaController extends Controller {
    *
    * @return welcome page for new user
    */
- /** def addPizza : Action[AnyContent] = Action { implicit request =>
-    pizzaForm.bindFromRequest.fold(
+ /** def addProduct : Action[AnyContent] = Action { implicit request =>
+    productForm.bindFromRequest.fold(
       formWithErrors => {
         BadRequest(views.html.produkts(formWithErrors))
       },
@@ -42,12 +39,8 @@ object PizzaController extends Controller {
    * Shows the welcome view for a newly registered user.
    */
 
-  def products = Action { request =>
-    request.session.get("loggedIn").map { userID =>
-      Ok(views.html.products(PizzaService.availablePizza, OrderController.orderForm, userID.toLong))
-    }.getOrElse {
-      Ok(views.html.products(PizzaService.availablePizza, OrderController.orderForm, 0))
-    }
+  def products : Action[AnyContent] = Action {
+    Ok(views.html.products(PizzaService.availablePizza, OrderController.orderForm, 1))
   }
 
   /**

@@ -45,11 +45,11 @@ trait UserServiceT {
     UserDao.updateUserDao(updateUserService)
   }
 
-  def logInUser(email: String, password: String): String = {
+  def logInUser(email: String, password: String): User = {
     // create User
-    val newUser = User(-1, null, null, null, null, null, email, password, -1)
+    val logInUser = User(-1, null, null, null, null, null, email, password, -1)
     // persist and return User
-    userDao.logInUser(newUser)
+    userDao.logInUser(logInUser)
   }
 
   /**

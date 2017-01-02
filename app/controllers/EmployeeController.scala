@@ -32,14 +32,14 @@ object EmployeeController extends Controller {
 
   val updateEmployeeForm = Form(
     mapping(
-      "Name" -> nonEmptyText,
-      "Vorname" -> nonEmptyText,
-      "Gebiet" -> nonEmptyText,
-      "Zugriff" -> nonEmptyText,
+      "Name" -> text,
+      "Vorname" -> text,
+      "Gebiet" -> text,
+      "Zugriff" -> text,
       "Zugriffsebene" -> number,
       "Stundenrate" -> of(doubleFormat),
-      "e-Mail" -> nonEmptyText,
-      "Passwort" -> nonEmptyText)(UpdateEmployeeForm.apply)(UpdateEmployeeForm.unapply))
+      "e-Mail" -> text,
+      "Passwort" -> text)(UpdateEmployeeForm.apply)(UpdateEmployeeForm.unapply))
 
 
   val employeeLogInForm = Form(
@@ -97,7 +97,7 @@ object EmployeeController extends Controller {
       employeeData => {
         try {
           val newEmployee = services.EmployeeService.logInEmployee(employeeData.email, employeeData.password)
-          Redirect(routes.EmployeeController.completeLogInEmployee(newEmployee)).
+          Redirect(routes.EmployeeController.completeLogInEmployee(newEmployee.id, newEmployee.name)).
             flashing("success" -> "Employee saved!")
       } catch {
           case e: RuntimeException => BadRequest(views.html.loginFailed())
@@ -114,8 +114,10 @@ object EmployeeController extends Controller {
   }
 
 
-  def completeLogInEmployee(name: String) : Action[AnyContent] = Action {
-    Ok(views.html.employeeLoggedIn(name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
+  def completeLogInEmployee(id: Long, name: String) : Action[AnyContent] = Action {
+    Ok(views.html.employeeLoggedIn(name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers)).withSession(
+      "loggedIn" -> id.toString
+    )
   }
 
   def newEmployeeCreated(name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String) : Action[AnyContent] = Action {

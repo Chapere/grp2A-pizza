@@ -7,7 +7,7 @@ package models
  */
 object activeUser {
 
-  var id = 0
+  var id: Long = 0
   var name = ""
   var lastname = ""
   var adress = ""

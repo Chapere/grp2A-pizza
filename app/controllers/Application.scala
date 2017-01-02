@@ -18,5 +18,9 @@ object Application extends Controller {
     Ok(views.html.index())
   }
 
+  def logOut = Action { request =>
+    Ok(views.html.index()).withNewSession
+  }
+
 
 }

@@ -18,14 +18,14 @@ trait OrderServiceT {
    * @return the new user.
    */
 
-  def addOrder(customerID: Int, produktID: Int, amount: Int, extras: String, price: Double, orderTime: String, size: Double): Order = {
+  def addOrder(customerID: Long, produktID: Long, amount: Int, extras: String, price: Double, orderTime: String, size: Double): Order = {
     // create User
     val newOrder = Order(-1, customerID, produktID, amount, extras, price, orderTime, size)
     // persist and return User
     orderDao.addOrder(newOrder)
   }
 
-  def createOrder(customerID: Int, produktID: Int, amount: Int, extras: String, price: Double, orderTime: String, size: Double): Double = {
+  def createOrder(customerID: Long, produktID: Long, amount: Int, extras: String, price: Double, orderTime: String, size: Double): Double = {
     // create User
     val newOrder = Order(-1, customerID, produktID, amount, extras, price, orderTime, size)
     // persist and return User

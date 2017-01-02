@@ -97,65 +97,25 @@ trait EmployeeDaoT {
   }
 
 
-  def logInEmployee(employee: Employee): String = {
+  def logInEmployee(employee: Employee): Employee = {
     DB.withConnection { implicit c =>
-      val lastname: String =
-        SQL("Select lastname from Employees where email = {email} AND password = {password};").on(
-          'email -> employee.email, 'password -> employee.password).
-          as(SqlParser.str("lastname").single)
-      models.activeUser.lastname = lastname
+      val selectEmployees = SQL("SELECT * FROM EMPLOYEES WHERE email = {email} AND password = {password};").on(
+        'email -> employee.email, 'password -> employee.password)
+      val employees = selectEmployees().map(row => Employee(row[Long]("id"), row[String]("name"), row[String]("lastname"),
+        row[String]("workplace"), row[String]("acces"), row[Int]("accesLevel"), row[Double]("netRate"), row[String]("email"), null, row[Int]("activeFlag"))).toList
+      models.activeUser.lastname = employees.head.lastname
 
-      val workplace: String =
-        SQL("Select workplace from Employees where email = {email} AND password = {password};").on(
-          'email -> employee.email, 'password -> employee.password).
-          as(SqlParser.str("workplace").single)
-      models.activeUser.workplace = workplace
-
-      val acces: String =
-        SQL("Select acces from Employees where email = {email} AND password = {password};").on(
-          'email -> employee.email, 'password -> employee.password).
-          as(SqlParser.str("acces").single)
-      models.activeUser.acces = acces
-
-      val netRate: Double =
-        SQL("Select netRate from Employees where email = {email} AND password = {password};").on(
-          'email -> employee.email, 'password -> employee.password).
-          as(SqlParser.double("netRate").single)
-      models.activeUser.netRate = netRate
-
-      val email: String =
-        SQL("Select email from Employees where email = {email} AND password = {password};").on(
-          'email -> employee.email, 'password -> employee.password).
-          as(SqlParser.str("email").single)
-      models.activeUser.email = email
-
-      val id: Int =
-        SQL("Select id from Employees where email = {email} AND password = {password};").on(
-          'email -> employee.email, 'password -> employee.password).
-          as(SqlParser.int("id").single)
-      models.activeUser.id = id
-
-      val accesLevel: Int =
-        SQL("Select accesLevel from Employees where email = {email} AND password = {password};").on(
-          'email -> employee.email, 'password -> employee.password).
-          as(SqlParser.int("accesLevel").single)
-      models.activeUser.accesLevel = accesLevel
-
-      val name: String =
-        SQL("Select name from Employees where email = {email} AND password = {password};").on(
-          'email -> employee.email, 'password -> employee.password).
-          as(SqlParser.str("name").single)
-      models.activeUser.name = name
-
-      val activeFlag: Int =
-        SQL("Select activeFlag from Employees where email = {email} AND password = {password};").on(
-          'email -> employee.email, 'password -> employee.password).
-          as(SqlParser.int("activeFlag").single)
-      models.activeUser.activeFlag = activeFlag
-
+      models.activeUser.workplace = employees.head.workplace
+      models.activeUser.acces = employees.head.acces
+      models.activeUser.netRate = employees.head.netRate
+      models.activeUser.email = employees.head.email
+      models.activeUser.id = employees.head.id
+      models.activeUser.accesLevel = employees.head.accesLevel
+      models.activeUser.name = employees.head.name
+      models.activeUser.activeFlag = employees.head.activeFlag
       models.activeUser.typ = "Employee"
 
-      name
+      return employees.head
     }
   }
 
@@ -175,12 +135,13 @@ trait EmployeeDaoT {
    * Returns a list of available user from the database.
    * @return a list of user objects.
    */
+
   def availableEmployees: List[Employee] = {
     DB.withConnection { implicit c =>
       val selectEmployees = SQL("Select id, name, lastname, workplace, acces, accesLevel, netRate, email, password, activeFlag from Employees;")
       // Transform the resulting Stream[Row] to a List[(String,String)]
       val employees = selectEmployees().map(row => Employee(row[Long]("id"), row[String]("name"), row[String]("lastname"),
-        row[String]("workplace"), row[String]("acces"), row[Int]("accesLevel"), row[Double]("netRate"), null, null, row[Int]("activeFlag"))).toList
+        row[String]("workplace"), row[String]("acces"), row[Int]("accesLevel"), row[Double]("netRate"), row[String]("email"), null, row[Int]("activeFlag"))).toList
       employees
     }
   }

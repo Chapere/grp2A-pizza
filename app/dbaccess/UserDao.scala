@@ -101,59 +101,24 @@ trait UserDaoT {
 
   }
 
-  def logInUser(user: User): String = {
+  def logInUser(user: User): User = {
     DB.withConnection { implicit c =>
-      val lastname: String =
-        SQL("Select lastname from Users where email = {email} AND password = {password};").on(
-          'email -> user.email, 'password -> user.password).
-          as(SqlParser.str("lastname").single)
-      models.activeUser.lastname = lastname
 
-      val adress: String =
-        SQL("Select adress from Users where email = {email} AND password = {password};").on(
-          'email -> user.email, 'password -> user.password).
-          as(SqlParser.str("adress").single)
-      models.activeUser.adress = adress
+      val selectUsers = SQL("SELECT * FROM USERS WHERE email = {email} AND password = {password};").on(
+        'email -> user.email, 'password -> user.password)
+      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"), null, null, row[Int]("activeFlag"))).toList
 
-      val city: String =
-        SQL("Select city from Users where email = {email} AND password = {password};").on(
-          'email -> user.email, 'password -> user.password).
-          as(SqlParser.str("city").single)
-      models.activeUser.city = city
-
-      val plz: String =
-        SQL("Select plz from Users where email = {email} AND password = {password};").on(
-          'email -> user.email, 'password -> user.password).
-          as(SqlParser.str("plz").single)
-      models.activeUser.plz = plz
-
-      val email: String =
-        SQL("Select email from Users where email = {email} AND password = {password};").on(
-          'email -> user.email, 'password -> user.password).
-          as(SqlParser.str("email").single)
-      models.activeUser.email = email
-
-      val id: Int =
-        SQL("Select id from Users where email = {email} AND password = {password};").on(
-          'email -> user.email, 'password -> user.password).
-          as(SqlParser.int("id").single)
-      models.activeUser.id = id
-
-      val name: String =
-        SQL("Select name from Users where email = {email} AND password = {password};").on(
-          'email -> user.email, 'password -> user.password).
-          as(SqlParser.str("name").single)
-      models.activeUser.name = name
-
-      val activeFlag: Int =
-        SQL("Select activeFlag from Users where email = {email} AND password = {password};").on(
-          'email -> user.email, 'password -> user.password).
-          as(SqlParser.int("activeFlag").single)
-      models.activeUser.activeFlag = activeFlag
-
+      models.activeUser.lastname = users.head.lastname
+      models.activeUser.adress = users.head.adress
+      models.activeUser.city = users.head.city
+      models.activeUser.plz = users.head.plz
+      models.activeUser.email = users.head.email
+      models.activeUser.id = users.head.id
+      models.activeUser.name = users.head.name
+      models.activeUser.activeFlag = users.head.activeFlag
       models.activeUser.typ = "User"
 
-      name
+      return users.head
     }
 
   }

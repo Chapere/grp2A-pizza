@@ -32,7 +32,7 @@ object OrderController extends Controller {
   def createOrder : Action[AnyContent] = Action { implicit request =>
     orderForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.products(PizzaService.availablePizza, formWithErrors))
+        BadRequest(views.html.products(PizzaService.availablePizza, formWithErrors, 1))
       },
       orderData => {
         val newOrder = services.OrderService.createOrder(models.activeUser.id, orderData.orderNumber, orderData.amount, "N/A", 0, "N/A", orderData.size)

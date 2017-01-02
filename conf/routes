@@ -24,7 +24,7 @@ GET         /orders              controllers.OrderController.orders
 
 GET         /showUsers           controllers.UserController.showUsers
 GET         /newUserCreated      controllers.UserController.newUserCreated(username, lastname, adress, city, plz, email, password)
-GET         /userLoggedIn        controllers.UserController.completeLogInUser(name)
+GET         /userLoggedIn        controllers.UserController.completeLogInUser(id: Long, name)
 GET         /upgradeUser         controllers.UserController.upgradeUser(name, lastname, adress, city, plz, email, password)
 GET         /changeUser          controllers.UserController.changeUser1(id: Long, name, lastname, adress, city, plz, email, password)
 GET         /userDeleted         controllers.UserController.userDeleted(deleted: Boolean)
@@ -34,9 +34,11 @@ GET         /showEmployees       controllers.EmployeeController.showEmployees
 GET         /newEmployeeCreated  controllers.EmployeeController.newEmployeeCreated(name, lastname, workplace, acces, accesLevel: Int, netRate: Double, email, password)
 GET         /changeEmployee      controllers.EmployeeController.changeEmployee(id: Long, name, lastname, workplace, acces, accesLevel: Int, netRate: Double, email, password)
 GET         /upgradeEmployee     controllers.EmployeeController.upgradeEmployee(name, lastname, workplace, acces, accesLevel: Int, netRate: Double, email, password)
-GET         /employeeLoggedIn    controllers.EmployeeController.completeLogInEmployee(name)
+GET         /employeeLoggedIn    controllers.EmployeeController.completeLogInEmployee(id: Long, name)
 
 GET         /newOrderCreated     controllers.OrderController.newOrderCreated(price: Double)
+
+GET         /logout              controllers.Application.logOut
 
 
 
