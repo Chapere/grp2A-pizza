@@ -11,9 +11,10 @@ object Warenkorb {
   var customer = ""
   var price: Double = 0
   var priceEnd: Double = 0
-  var amount = 0
-  var produktID: Long = 0
-  var customerID: Long = 0
+  var amount: Double = 0
+  var produktID: Double = 0
+  var customerID: Double = 0
   var size: Double = 0
+
 
 }

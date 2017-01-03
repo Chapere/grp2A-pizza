@@ -10,6 +10,8 @@ POST        /createOrder         controllers.OrderController.createOrder
 POST        /addUser             controllers.UserController.addUser
 POST        /addEmployee         controllers.EmployeeController.addEmployee
 POST        /chooseEmployee      controllers.EmployeeController.chooseEmployee
+POST        /showSelectedOrder   controllers.OrderController.showSelectedOrder
+POST        /deleteOrder         controllers.OrderController.deleteOrder
 POST        /updateEmployee      controllers.EmployeeController.updateEmployee
 POST        /logInUser           controllers.UserController.logInUser
 POST        /logInEmployee       controllers.EmployeeController.logInEmployee
@@ -23,11 +25,12 @@ GET         /orders              controllers.OrderController.orders
 
 
 GET         /showUsers           controllers.UserController.showUsers
-GET         /newUserCreated      controllers.UserController.newUserCreated(username, lastname, adress, city, plz, email, password)
+GET         /newUserCreated      controllers.UserController.newUserCreated(username, lastname, adress, city, plz, distance: Double, email, password)
 GET         /userLoggedIn        controllers.UserController.completeLogInUser(id: Long, name)
-GET         /upgradeUser         controllers.UserController.upgradeUser(name, lastname, adress, city, plz, email, password)
-GET         /changeUser          controllers.UserController.changeUser1(id: Long, name, lastname, adress, city, plz, email, password)
+GET         /upgradeUser         controllers.UserController.upgradeUser(name, lastname, adress, city, plz, distance: Double, email, password)
+GET         /changeUser          controllers.UserController.changeUser1(id: Long, name, lastname, adress, city, plz, distance: Double, email, password)
 GET         /userDeleted         controllers.UserController.userDeleted(deleted: Boolean)
+
 
 
 GET         /showEmployees       controllers.EmployeeController.showEmployees
@@ -36,9 +39,14 @@ GET         /changeEmployee      controllers.EmployeeController.changeEmployee(i
 GET         /upgradeEmployee     controllers.EmployeeController.upgradeEmployee(name, lastname, workplace, acces, accesLevel: Int, netRate: Double, email, password)
 GET         /employeeLoggedIn    controllers.EmployeeController.completeLogInEmployee(id: Long, name)
 
-GET         /newOrderCreated     controllers.OrderController.newOrderCreated(price: Double)
+GET         /newOrderCreated     controllers.OrderController.newOrderCreated(customerID: Double, pizzaID: Double, productID: Double, pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,  pizzaPrice: Double, productAmount: Double, productPrice: Double, totalPrice: Double, orderTime: String, status: String)
+GET         /showOrder           controllers.OrderController.showOrder(customerID: Double, pizzaID: Double, productID: Double, pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,  pizzaPrice: Double, productAmount: Double, productPrice: Double, totalPrice: Double, orderTime: String, status: String)
+GET         /orderDeleted        controllers.OrderController.orderDeleted
+GET         /allOrderDetails     controllers.EmployeeController.showAllOrderDetails
 
 GET         /logout              controllers.Application.logOut
+
+#GET         /getUserByID        controllers.UserController.getUserByIdentification
 
 
 

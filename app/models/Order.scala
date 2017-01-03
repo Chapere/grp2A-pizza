@@ -5,5 +5,7 @@ package models
   * @author Kamil Gorszczyk
   */
 
-case class Order(var id: Long, customerID: Long, produktID: Long, amount: Int, extras: String, price: Double, orderTime: String, size: Double)
+case class Order(var id: Long, customerID: Double, pizzaID: Double, productID: Double, pizzaName: String,
+                 productName: String, pizzaAmount: Double, pizzaSize: Double, pizzaPrice: Double, productAmount: Double,
+                 productPrice: Double, totalPrice: Double, orderTime: String, status: String)
 

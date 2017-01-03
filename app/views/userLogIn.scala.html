@@ -6,9 +6,9 @@
         <div class="left">
             <h1>Einloggen</h1>
             <h3> @helper.form(action = routes.UserController.logInUser()) {
-                @helper.inputText(loginForm("e-mail"))
-                @helper.inputPassword(loginForm("passwort"))
-                <input type="submit" value="Einloggen" />
+                @helper.inputText(loginForm("E-Mail"))
+                @helper.inputPassword(loginForm("Passwort"))
+                <button type="submit">Einloggen</button>
             }
             </h3>
         </div>
@@ -19,10 +19,11 @@
                 @helper.inputText(userForm("Vorname"))
                 @helper.inputText(userForm("Adresse"))
                 @helper.inputText(userForm("Stadt"))
+                @helper.inputText(userForm("Entfernung"))
                 @helper.inputText(userForm("PLZ"))
-                @helper.inputText(userForm("e-Mail"))
+                @helper.inputText(userForm("E-Mail"))
                 @helper.inputPassword(userForm("Passwort"))
-                <input type="submit" value="Registrieren" />
+                <button type="submit">Registrieren</button>
             }
             </h3>
         </div>

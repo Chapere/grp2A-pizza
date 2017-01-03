@@ -22,8 +22,8 @@ trait UserDaoT {
   def addUser(user: User): User = {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
-        SQL("insert into Users(name, lastname, adress, city, plz, email, password, activeFlag) values ({name}, {lastname}, {adress}, {city}, {plz}, {email}, {password}, 1)").on(
-          'name -> user.name, 'lastname -> user.lastname, 'adress -> user.adress, 'city -> user.city, 'plz -> user.plz, 'email -> user.email, 'password -> user.password).executeInsert()
+        SQL("insert into Users(name, lastname, adress, city, plz, distance, email, password, activeFlag) values ({name}, {lastname}, {adress}, {city}, {plz}, {distance}, {email}, {password}, 1)").on(
+          'name -> user.name, 'lastname -> user.lastname, 'adress -> user.adress, 'city -> user.city, 'plz -> user.plz, 'distance -> user.distance, 'email -> user.email, 'password -> user.password).executeInsert()
       user.id = id.get
 
       models.activeUser.name = user.name
@@ -91,9 +91,14 @@ trait UserDaoT {
           'id -> user.id).
           as(SqlParser.int("activeFlag").single)
 
+      val distance: Double =
+        SQL("Select distance from Users where id = {id};").on(
+          'id -> user.id).
+          as(SqlParser.double("distance").single)
+
       models.Debug.updateUserId = id
 
-      val chooseUser = User(user.id, name, lastname, adress, city, plz, email, null, activeFlag)
+      val chooseUser = User(user.id, name, lastname, adress, city, plz, distance, email, null, activeFlag)
 
       chooseUser
 
@@ -106,7 +111,7 @@ trait UserDaoT {
 
       val selectUsers = SQL("SELECT * FROM USERS WHERE email = {email} AND password = {password};").on(
         'email -> user.email, 'password -> user.password)
-      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"), null, null, row[Int]("activeFlag"))).toList
+      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"), row[Double]("distance"), null, null, row[Int]("activeFlag"))).toList
 
       models.activeUser.lastname = users.head.lastname
       models.activeUser.adress = users.head.adress
@@ -118,6 +123,16 @@ trait UserDaoT {
       models.activeUser.activeFlag = users.head.activeFlag
       models.activeUser.typ = "User"
 
+      return users.head
+    }
+
+  }
+
+  def getUserByIdentification(id: Long): User = {
+    DB.withConnection { implicit c =>
+      val selectUsers = SQL("SELECT * FROM USERS WHERE id = {id};").on(
+        'id -> id)
+      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"), row[Double]("distance"), row[String]("email"), null, row[Int]("activeFlag"))).toList
       return users.head
     }
 
@@ -142,9 +157,9 @@ trait UserDaoT {
    */
   def registeredUsers: List[User] = {
       DB.withConnection { implicit c =>
-      val selectUsers = SQL("Select id, name, lastname, adress, city, plz, activeFlag from Users;")
+      val selectUsers = SQL("Select * from Users;")
       // Transform the resulting Stream[Row] to a List[(String,String)]
-      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"), null, null, row[Int]("activeFlag"))).toList
+      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"), row[Double]("distance"), null, null, row[Int]("activeFlag"))).toList
       users
     }
   }

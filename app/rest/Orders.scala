@@ -10,15 +10,28 @@ import services.OrderService
  */
 object Orders extends Controller {
 
-  private case class HateoasOrder(order: Order, url: String, amount: String, extras: String, orderTime: String)
+  private case class HateoasOrder(order: Order, url: String, customerID: String, pizzaID: String, productID: String,
+                                  pizzaName: String, productName: String, pizzaAmount: String, pizzaSize: String,
+                                  pizzaPrice: String, productAmount: String, productPrice: String, totalPrice: String,
+                                  orderTime: String)
 
   private def mkHateoasOrder(order: Order)(implicit request: RequestHeader): HateoasOrder = {
     val url = routes.Orders.order(order.id).absoluteURL()
-    val amount = routes.Orders.order(order.id).absoluteURL()
-    val extras = routes.Orders.order(order.id).absoluteURL()
+    val customerID = routes.Orders.order(order.id).absoluteURL()
+    val pizzaID = routes.Orders.order(order.id).absoluteURL()
+    val productID = routes.Orders.order(order.id).absoluteURL()
+    val pizzaName = routes.Orders.order(order.id).absoluteURL()
+    val productName = routes.Orders.order(order.id).absoluteURL()
+    val pizzaAmount = routes.Orders.order(order.id).absoluteURL()
+    val pizzaSize = routes.Orders.order(order.id).absoluteURL()
+    val pizzaPrice = routes.Orders.order(order.id).absoluteURL()
+    val productAmount = routes.Orders.order(order.id).absoluteURL()
+    val productPrice = routes.Orders.order(order.id).absoluteURL()
+    val totalPrice = routes.Orders.order(order.id).absoluteURL()
     val orderTime = routes.Orders.order(order.id).absoluteURL()
 
-    HateoasOrder(order, url, amount, extras, orderTime)
+    HateoasOrder(order, url, customerID, pizzaID, productID, pizzaName, productName, pizzaAmount, pizzaSize, pizzaPrice,
+      productAmount, productPrice, totalPrice, orderTime)
   }
 
   private implicit val hateoasOrderWrites = new Writes[HateoasOrder] {
@@ -26,10 +39,16 @@ object Orders extends Controller {
       "order" -> Json.obj(
         "id" -> horder.order.id,
         "customerID" -> horder.order.customerID,
-        "produktID" -> horder.order.produktID,
-        "amount" -> horder.order.amount,
-        "extras" -> horder.order.extras,
-        "price" -> horder.order.price,
+        "pizzaID" -> horder.order.pizzaID,
+        "productID" -> horder.order.productID,
+        "pizzaName" -> horder.order.pizzaName,
+        "productName" -> horder.order.productName,
+        "pizzaAmount" -> horder.order.pizzaAmount,
+        "pizzaSize" -> horder.order.pizzaSize,
+        "pizzaPrice" -> horder.order.pizzaPrice,
+        "productAmount" -> horder.order.productAmount,
+        "productPrice" -> horder.order.productPrice,
+        "totalPrice" -> horder.order.totalPrice,
         "orderTime" -> horder.order.orderTime
       ),
       "links" -> Json.arr(
@@ -91,7 +110,10 @@ object Orders extends Controller {
     }.getOrElse(NotFound)
   }
 
-  private case class OrderName(customerID: Int, produktID: Int, amount: Int, extras: String, price: Double, orderTime: String, size: Double)
+  private case class OrderName(customerID: Double, pizzaID: Double, productID: Double,
+                               pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,
+                               pizzaPrice: Double, productAmount: Double, productPrice: Double, totalPrice: Double,
+                               orderTime: String, status: String)
   private implicit val OrderReads = Json.reads[OrderName]
 
   /**
@@ -111,7 +133,9 @@ object Orders extends Controller {
       },
       ordername => {
         Ok(Json.obj("status" -> "OK",
-          "order" -> Json.toJson(mkHateoasOrder(OrderService.addOrder(ordername.customerID, ordername.produktID, ordername.amount, ordername.extras, ordername.price, ordername.orderTime, ordername.size)))))
+          "order" -> Json.toJson(mkHateoasOrder(OrderService.createOrder(ordername.customerID, ordername.pizzaID, ordername.productID, ordername.pizzaName,
+            ordername.productName, ordername.pizzaAmount, ordername.pizzaSize, ordername.pizzaPrice,
+            ordername.productAmount, ordername.productPrice, ordername.orderTime, ordername.status)))))
       }
     )
   }

@@ -1,0 +1,18 @@
+@(customerID: Double, pizzaID: Double, productID: Double, pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,  pizzaPrice: Double, productAmount: Double, productPrice: Double, totalPrice: Double, orderTime: String, status: String)
+
+@main(models.Company.name) {
+        <h1 align="center">Ihre Bestellübersicht</h1>
+        <h2 align="center">Kunde: @customerID</h2>
+        <h2 align="center">Pizza: @pizzaID, @pizzaName</h2>
+        <h2 align="center">Preis: @pizzaPrice</h2>
+        <h2 align="center">Anzahl: @pizzaAmount</h2>
+        <h2 align="center">Größe @pizzaSize cm</h2>
+        <h2 align="center">Produkt: @productID, @productName</h2>
+        <h2 align="center">Preis: @productPrice</h2>
+        <h2 align="center">Anzahl: @productAmount</h2>
+        <h2 align="center">Zeitpunkt: @orderTime</h2>
+        <h2 align="center">Preis inkl. Steuern: @totalPrice €</h2>
+        <h2 align="center">Status: @status €</h2>
+
+
+}

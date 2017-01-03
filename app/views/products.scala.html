@@ -1,4 +1,4 @@
-@(pizzas: List[models.Pizza], orderForm: Form[forms.CreateOrderForm], userID: Long)
+@(pizzas: List[models.Pizza], products: List[models.Product], orderForm: Form[forms.CreateOrderForm], userID: Long)
 
 @import views.html.helper
 
@@ -11,29 +11,38 @@
         <h2 align="left"; style="padding: 0px 30px 0px">Produktauswahl</h2>
         <div id="O1" class="SK-unten">
             <div class="container">
-                <div class="row">
-                @for(pizza <- pizzas) {
-                    <div class="col-sm-6 col-md-3">
-                        <h2 style="margin-top: 20px; text-align: center;">@pizza.name</h2>
-                        <h3>Bestellnummer: @pizza.id</h3>
-                        <h3>@pizza.comment</h3>
-                        <h3>@pizza.ingredients</h3>
-                        <h3>Preis pro cm: @pizza.price €</h3>
-                    </div>
-                }
-                    @if(userID != 0) {
-                        <h3 style="margin-top: 50px;"> @helper.form(action = routes.OrderController.createOrder()) {
+                <div class="right">
+                        @for(pizza <- pizzas) {
+                            <div class="col-sm-6 col-md-3">
+                                <h2 style="margin-top: 20px;
+                                    text-align: center;">@pizza.name</h2>
+                                <h3>Bestellnummer: @pizza.id</h3>
+                                <h3>@pizza.comment</h3>
+                                <h3>@pizza.ingredients</h3>
+                                <h3>Preis pro cm: @pizza.price €</h3>
 
-                            @helper.inputText(orderForm("Bestellnummer"))
-                            @helper.inputText(orderForm("Anzahl"))
-                            @helper.inputText(orderForm("Größe"))
-                            <input type="submit" value="Bestellen" />
+                            </div>
                         }
-                        </h3>
-                    } else {
-                        <h3 style="color: red" align="center">Bitte melden Sie sich zuerst im Kundenportal an um eine Bestellung ausführen zu können.</h3>
-                    }
                 </div>
+                <div class="left">
+                        @for(product <- products) {
+                            <div class="col-sm-6 col-md-3">
+                                <h2 style="margin-top: 20px;
+                                    text-align: center;">@product.name</h2>
+                                <h3>Bestellnummer: @product.id</h3>
+                                <h3>Preis pro @product.unit: @product.price €</h3>
+                            </div>
+                        }
+                    </div>
+                    <h3 style="margin-top: 50px;"> @helper.form(action = routes.OrderController.createOrder()) {
+                        @helper.inputText(orderForm("pizzaID"),'_label -> "Pizza Nr.:")
+                        @helper.inputText(orderForm("pizzaAmount"),'_label -> "Pizza Anzahl:")
+                        @helper.inputText(orderForm("pizzaSize"),'_label -> "Pizza Größe:")
+                        @helper.inputText(orderForm("productID"),'_label -> "Produkt Nr.:")
+                        @helper.inputText(orderForm("productAmount"),'_label -> "Produkt Anzahl:")
+                        <button type="submit">Bestellung ausführen?</button>
+
+                    } </h3>
             </div>
         </div>
 

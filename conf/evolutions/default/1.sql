@@ -7,13 +7,14 @@ CREATE TABLE Users (
     adress VARCHAR(255) NOT NULL,
     city VARCHAR(255) NOT NULL,
     plz VARCHAR(255) NOT NULL,
+    distance NUMERIC NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR (255) NOT NULL,
     activeFlag INT NOT NULL
 );
 
-INSERT INTO Users (name, lastname, adress, city, plz, email, password, activeFlag)
-VALUES ('Padron', 'Schulz', 'Lerchenauer Str. 12', 'München', 80935, 'user', 'user', 1);
+INSERT INTO Users (name, lastname, adress, city, plz, distance, email, password, activeFlag)
+VALUES ('Padron', 'Schulz', 'Lerchenauer Str. 12', 'München', 80935, 20, 'user', 'user', 1);
 
 CREATE TABLE Employees (
     id serial PRIMARY KEY,
@@ -64,10 +65,16 @@ VALUES (1, 'Coca-Cola', 1.45, 0.5, 'Liter'),
 CREATE TABLE Orders (
     id serial PRIMARY KEY,
     customerID NUMERIC NOT NULL,
-    produktID NUMERIC NOT NULL,
-    amount VARCHAR(255) NOT NULL,
-    extras VARCHAR(255) NOT NULL,
-    price VARCHAR(255) NOT NULL,
+    pizzaID NUMERIC NOT NULL,
+    productID NUMERIC NOT NULL,
+    pizzaName VARCHAR(255) NOT NULL,
+    productName VARCHAR(255) NOT NULL,
+    pizzaAmount NUMERIC NOT NULL,
+    pizzaSize NUMERIC NOT NULL,
+    pizzaPrice NUMERIC NOT NULL,
+    productAmount NUMERIC NOT NULL,
+    productPrice NUMERIC NOT NULL,
+    totalPrice NUMERIC NOT NULL,
     orderTime VARCHAR(255) NOT NULL,
-    size NUMERIC NOT NULL
+    status VARCHAR(255) NOT NULL
 );

@@ -17,16 +17,16 @@ trait UserServiceT {
    * @param name name of the new user.
    * @return the new user.
    */
-  def addUser(name: String, lastname: String, adress: String, city: String, plz: String, email: String, password: String): User = {
+  def addUser(name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String): User = {
     // create User
-    val newUser = User(-1, name, lastname, adress, city, plz, email, password, 1)
+    val newUser = User(-1, name, lastname, adress, city, plz, distance, email, password, 1)
     // persist and return User
     userDao.addUser(newUser)
   }
 
   def chooseUser(id: Long): User = {
     // create User
-    val showUser = User(id, null, null, null, null, null, null, null, -1)
+    val showUser = User(id, null, null, null, null, null, 0, null, null, -1)
     // persist and return User
     UserDao.displayUser(showUser)
   }
@@ -38,18 +38,24 @@ trait UserServiceT {
     UserDao.deleteUser(deleteUserService)
   }**/
 
-  def updateUser(name: String, lastname: String, adress: String, city: String, plz: String, email: String, password: String): User = {
+  def updateUser(name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String): User = {
     // create User
-    val updateUserService = User(-1, name, lastname, adress, city, plz, email, password, 1)
+    val updateUserService = User(-1, name, lastname, adress, city, plz, distance, email, password, 1)
     // persist and return User
     UserDao.updateUserDao(updateUserService)
   }
 
   def logInUser(email: String, password: String): User = {
     // create User
-    val logInUser = User(-1, null, null, null, null, null, email, password, -1)
+    val logInUser = User(-1, null, null, null, null, null, 0, email, password, -1)
     // persist and return User
     userDao.logInUser(logInUser)
+  }
+
+  def getUserByID(id: Long): User = {
+    // create User
+    // persist and return User
+    userDao.getUserByIdentification(id)
   }
 
   /**

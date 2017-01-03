@@ -1,14 +1,50 @@
-@(name: String)
+@(name: String, orders: List[models.Order])
 @main(models.Company.name) {
 
     <h1 align="center">Willkommen @name bei @models.Company.name. Sie wurden Eingeloggt.</h1>
-    <h3>@models.activeUser.name</h3>
-    <h3>@models.activeUser.lastname</h3>
-    <h3>@models.activeUser.adress</h3>
-    <h3>@models.activeUser.city</h3>
-    <h3>@models.activeUser.plz</h3>
-    <h3>@models.activeUser.email</h3>
 
-    <h1><a href="/test"> test</a></h1>
+    <h2>Hier ihre Bestellübersicht:</h2>
+    <table>
+        <tr>
+            <th>Bestellnummer</th>
+            <th>Benutzer ID</th>
+            <th>Pizza ID</th>
+            <th>Produkt ID</th>
+            <th>Pizza Name</th>
+            <th>Produkt Name</th>
+            <th>Pizza - Anzahl</th>
+            <th>Pizza - Größe</th>
+            <th>Pizza - Preis</th>
+            <th>Produkt - Anzahl</th>
+            <th>Produkt - Preis</th>
+            <th>Preis inkl. Steuern</th>
+            <th>Bestellzeit</th>
+            <th>Status</th>
+            <th>Stornieren?</th>
+        </tr>
+    @for(order <- orders) {
+        <tr>
+            <td>@order.id</td>
+            <td>@order.customerID</td>
+            <td>@order.pizzaID</td>
+            <td>@order.productID</td>
+            <td>@order.pizzaName</td>
+            <td>@order.productName</td>
+            <td>@order.pizzaAmount</td>
+            <td>@order.pizzaSize</td>
+            <td>@order.pizzaPrice</td>
+            <td>@order.productAmount</td>
+            <td>@order.productPrice</td>
+            <td>@order.totalPrice</td>
+            <td>@order.orderTime</td>
+            <td>@order.status</td>
+            <td><h1>@helper.form(action = routes.OrderController.deleteOrder()) {
+                <button type="submit" name="orderID" value="@order.id">Ja</button>
+            }</h1></td>
+
+        </tr>
+
+    }
+    </table>
 
 }

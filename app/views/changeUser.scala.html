@@ -1,4 +1,4 @@
-@(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, email: String, password: String, updateUserForm: Form[forms.UpdateUserForm])
+@(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String, updateUserForm: Form[forms.UpdateUserForm])
 
 @main(models.Company.name) {
 
@@ -21,8 +21,7 @@
             <h1>Passwort:</h1>
             <h2>@password</h2>
             <h1>@helper.form(action = routes.UserController.rmUser()) {
-                <input type="text" name="User ID" value="@id"><br>
-                <input type="submit" value="Löschen?">
+                <button type="submit" name="User ID" value="@id">Benuter @id Löschen?</button>
             }
             </h1>
         </div>
@@ -32,10 +31,11 @@
                     @helper.inputText(updateUserForm("Vorname"))
                     @helper.inputText(updateUserForm("Adresse"))
                     @helper.inputText(updateUserForm("Stadt"))
+                    @helper.inputText(updateUserForm("Entfernung"))
                     @helper.inputText(updateUserForm("PLZ"))
                     @helper.inputText(updateUserForm("e-Mail"))
                     @helper.inputPassword(updateUserForm("Passwort"))
-                    <input type="submit" value="Registrieren" />
+                <button type="submit">Registrieren</button>
             }
             </h1>
         </div>

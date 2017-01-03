@@ -1,0 +1,66 @@
+@(ordersWithAdress: List[models.OrderWithAdress])
+
+@main(models.Company.name) {
+    <h2>Bestellübersicht</h2>
+    <table>
+    @for(orderWithAdress <- ordersWithAdress) {
+        <tr>
+            <th>Name</th>
+            <th>Vorname</th>
+            <th>Strasse</th>
+            <th>PLZ</th>
+            <th>Ort</th>
+            <th>E-Mail</th>
+            <th>Entfernung</th>
+        </tr>
+        <tr>
+            <th>@orderWithAdress.name</th>
+            <th>@orderWithAdress.lastname</th>
+            <th>@orderWithAdress.adress</th>
+            <th>@orderWithAdress.plz</th>
+            <th>@orderWithAdress.city</th>
+            <th>@orderWithAdress.email</th>
+            <th>@orderWithAdress.distance</th>
+        </tr>
+        <tr>
+            <th>Bestellnummer</th>
+            <th>Benutzer ID</th>
+            <th>Pizza ID</th>
+            <th>Produkt ID</th>
+            <th>Pizza Name</th>
+            <th>Produkt Name</th>
+            <th>Pizza - Anzahl</th>
+            <th>Pizza - Größe</th>
+            <th>Pizza - Preis</th>
+            <th>Produkt - Anzahl</th>
+            <th>Produkt - Preis</th>
+            <th>Preis inkl. Steuern</th>
+            <th>Bestellzeit</th>
+            <th>Status</th>
+            <th>Stornieren?</th>
+        </tr>
+            <tr>
+                <td>@orderWithAdress.id</td>
+                <td>@orderWithAdress.customerID</td>
+                <td>@orderWithAdress.pizzaID</td>
+                <td>@orderWithAdress.productID</td>
+                <td>@orderWithAdress.pizzaName</td>
+                <td>@orderWithAdress.productName</td>
+                <td>@orderWithAdress.pizzaAmount</td>
+                <td>@orderWithAdress.pizzaSize</td>
+                <td>@orderWithAdress.pizzaPrice</td>
+                <td>@orderWithAdress.productAmount</td>
+                <td>@orderWithAdress.productPrice</td>
+                <td>@orderWithAdress.totalPrice</td>
+                <td>@orderWithAdress.orderTime</td>
+                <td>@orderWithAdress.status</td>
+                <td><h1>@helper.form(action = routes.OrderController.deleteOrder()) {
+                    <button type="submit" name="orderID" value="@orderWithAdress.id">Ja</button>
+                }</h1></td>
+
+            </tr>
+
+        }
+    </table>
+
+}

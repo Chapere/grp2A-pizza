@@ -26,7 +26,7 @@ object EmployeeController extends Controller {
       "Zugriff" -> nonEmptyText,
       "Zugriffsebene" -> number,
       "Stundenrate" -> of(doubleFormat),
-      "e-Mail" -> nonEmptyText,
+      "E-Mail" -> nonEmptyText,
       "Passwort" -> nonEmptyText)(CreateEmployeeForm.apply)(CreateEmployeeForm.unapply))
 
 
@@ -38,7 +38,7 @@ object EmployeeController extends Controller {
       "Zugriff" -> text,
       "Zugriffsebene" -> number,
       "Stundenrate" -> of(doubleFormat),
-      "e-Mail" -> text,
+      "E-Mail" -> text,
       "Passwort" -> text)(UpdateEmployeeForm.apply)(UpdateEmployeeForm.unapply))
 
 
@@ -54,7 +54,7 @@ object EmployeeController extends Controller {
   def addEmployee : Action[AnyContent] = Action { implicit request =>
     employeeForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.employeeLoggedIn(models.activeUser.name, formWithErrors, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
+        BadRequest(views.html.employeeLoggedIn(null, models.activeUser.name, formWithErrors, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
       },
       employeeData => {
         val newEmployee = services.EmployeeService.addEmployee(employeeData.name, employeeData.lastname, employeeData.workplace, employeeData.acces, employeeData.accesLevel, employeeData.netRate, employeeData.email, employeeData.password)
@@ -67,7 +67,7 @@ object EmployeeController extends Controller {
   def updateEmployee : Action[AnyContent] = Action { implicit request =>
     updateEmployeeForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.employeeLoggedIn(models.activeUser.name, employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
+        BadRequest(views.html.employeeLoggedIn(null, models.activeUser.name, employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
       },
       updateEmployeeData => {
         val selectEmployee = services.EmployeeService.updateEmployee(updateEmployeeData.name, updateEmployeeData.lastname, updateEmployeeData.workplace, updateEmployeeData.acces, updateEmployeeData.accesLevel, updateEmployeeData.netRate, updateEmployeeData.email, updateEmployeeData.password)
@@ -80,7 +80,7 @@ object EmployeeController extends Controller {
   def chooseEmployee : Action[AnyContent] = Action { implicit request =>
     selectEmployeeForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.employeeLoggedIn(models.activeUser.name, employeeForm, formWithErrors, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
+        BadRequest(views.html.employeeLoggedIn(null, models.activeUser.name, employeeForm, formWithErrors, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
       },
       selectEmployeeData => {
         val selectEmployee = services.EmployeeService.chooseEmployee(selectEmployeeData.id)
@@ -109,14 +109,18 @@ object EmployeeController extends Controller {
   /**
     * Shows the welcome view for a newly registered employee.
     */
-  def registerEmployee : Action[AnyContent] = Action {
-    Ok(views.html.employeeLogIn(controllers.EmployeeController.employeeForm, EmployeeService.registredEmployees, controllers.EmployeeController.employeeLogInForm))
+
+  def registerEmployee = Action { request =>
+    request.session.get("loggedInEmployee").map { userID =>
+      Ok(views.html.employeeLoggedIn(userID, models.activeUser.name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
+    }.getOrElse {
+      Ok(views.html.employeeLogIn(controllers.EmployeeController.employeeForm, EmployeeService.registredEmployees, controllers.EmployeeController.employeeLogInForm))
+    }
   }
 
-
   def completeLogInEmployee(id: Long, name: String) : Action[AnyContent] = Action {
-    Ok(views.html.employeeLoggedIn(name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers)).withSession(
-      "loggedIn" -> id.toString
+    Ok(views.html.employeeLoggedIn(id.toString, name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers)).withSession(
+      "loggedInEmployee" -> id.toString
     )
   }
 
@@ -139,6 +143,10 @@ object EmployeeController extends Controller {
 
   def showEmployees : Action[AnyContent] = Action {
     Ok(views.html.admin(EmployeeService.registredEmployees))
+  }
+
+  def showAllOrderDetails : Action[AnyContent] = Action {
+    Ok(views.html.allOrders(OrderService.availableOrderWithAdress))
   }
 
 }
