@@ -1,11 +1,10 @@
-@(pizzas: List[models.Pizza], products: List[models.Product], orderForm: Form[forms.CreateOrderForm], userID: Long)
+@(pizzas: List[models.Pizza], products: List[models.Product], orderForm: Form[forms.CreateOrderForm], userID: Double)
 
 @import views.html.helper
 
 @main(models.Company.name) {
         <h1>Produktauswahl</h1>
-        <h2 style="margin: 0px 0 100px 0;">Willkommen @userID bei @models.Company.name</h2>
-
+        <h2 style="margin: 0px 0 100px 0;">Willkommen bei @models.Company.name</h2>
         <div class="container">
             <div class="left">
                 <h1>Pizzen</h1>
@@ -34,7 +33,9 @@
                     </div>
                 }
             </div>
-
+            @if(userID == -1) {
+            <h3 style="color: red; font-size: 20px" align="center">Bitte melden Sie sich zuerst über das Benutzerportal an um eine Bestellung ausführen zu können.</h3>
+            } else {
             <div class="createOrder">
                 <h3>
                     @helper.form(action = routes.OrderController.createOrder()) {
@@ -43,9 +44,10 @@
                         @helper.inputText(orderForm("pizzaSize"),'_label -> "Pizza Größe:")
                         @helper.inputText(orderForm("productID"),'_label -> "Produkt Nr.:")
                         @helper.inputText(orderForm("productAmount"),'_label -> "Produkt Anzahl:")
-                        <button type="submit">Bestellung ausführen?</button>
+                        <button type="submit" name="userID" value="@userID">Bestellung ausführen?</button>
                     }
                 </h3>
+            }
             </div>
         </div>
 }

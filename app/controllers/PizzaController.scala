@@ -43,10 +43,10 @@ object PizzaController extends Controller {
    */
 
   def products = Action { request =>
-    request.session.get("loggedIn").map { userID =>
-      Ok(views.html.products(PizzaService.availablePizza, ProductService.availableProduct, OrderController.orderForm, userID.toLong))
+    request.session.get("loggedInUser").map { userID =>
+      Ok(views.html.products(PizzaService.availablePizza, ProductService.availableProduct, OrderController.orderForm, userID.toDouble))
     }.getOrElse {
-      Ok(views.html.products(PizzaService.availablePizza, ProductService.availableProduct, OrderController.orderForm, 0))
+      Ok(views.html.products(PizzaService.availablePizza, ProductService.availableProduct, OrderController.orderForm, -1))
     }
   }
 

@@ -41,6 +41,7 @@ object UserController extends Controller {
 
   val updateUserForm = Form(
     mapping(
+      "userID" -> of(longFormat),
       "Name" -> nonEmptyText,
       "Vorname" -> nonEmptyText,
       "Adresse" -> nonEmptyText,
@@ -78,11 +79,35 @@ object UserController extends Controller {
   def updateUser: Action[AnyContent] = Action { implicit request =>
     updateUserForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.userLogIn(userForm, UserService.registeredUsers, userLogInForm))
+        BadRequest(views.html.badRequest())
       },
       updateUserData => {
-        val selectUser = services.UserService.updateUser(updateUserData.name, updateUserData.lastname, updateUserData.adress, updateUserData.city, updateUserData.plz, updateUserData.distance, updateUserData.email, updateUserData.password)
-        Redirect(routes.UserController.upgradeUser(selectUser.name, selectUser.lastname, selectUser.adress, selectUser.city, selectUser.plz, selectUser.distance, selectUser.email, selectUser.password)).
+        val selectUser = services.UserService.updateUser(updateUserData.id, updateUserData.name, updateUserData.lastname, updateUserData.adress, updateUserData.city, updateUserData.plz, updateUserData.distance, updateUserData.email, updateUserData.password)
+        Redirect(routes.UserController.upgradeUser(selectUser.id, selectUser.name, selectUser.lastname, selectUser.adress, selectUser.city, selectUser.plz, selectUser.distance, selectUser.email, selectUser.password)).
+          flashing("success" -> "Employee saved!")
+      })
+  }
+
+  def userFlagZero: Action[AnyContent] = Action { implicit request =>
+    selectUserForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.badRequest())
+      },
+      updateUserData => {
+        val selectUser = services.UserService.setUserFlag0(updateUserData.id)
+        Redirect(routes.UserController.setUserFlag(selectUser)).
+          flashing("success" -> "Employee saved!")
+      })
+  }
+
+  def userFlagOne: Action[AnyContent] = Action { implicit request =>
+    selectUserForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.badRequest())
+      },
+      updateUserData => {
+        val selectUser = services.UserService.setUserFlag1(updateUserData.id)
+        Redirect(routes.UserController.setUserFlag(selectUser)).
           flashing("success" -> "Employee saved!")
       })
   }
@@ -90,7 +115,7 @@ object UserController extends Controller {
   def rmUser: Action[AnyContent] = Action { implicit request =>
     deleteUserForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.userLogIn(userForm, UserService.registeredUsers, userLogInForm))
+        BadRequest(views.html.badRequest())
       },
       deleteUserData => {
         val deleteUserVal = services.UserService.rmUser(deleteUserData.id)
@@ -103,11 +128,11 @@ object UserController extends Controller {
   def chooseUser: Action[AnyContent] = Action { implicit request =>
     selectUserForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.userLogIn(userForm, UserService.registeredUsers, userLogInForm))
+        BadRequest(views.html.badRequest())
       },
       selectUserData => {
-        val selectUser = services.UserService.chooseUser(selectUserData.id)
-        Redirect(routes.UserController.changeUser1(selectUser.id, selectUser.name, selectUser.lastname, selectUser.adress, selectUser.city, selectUser.plz, selectUser.distance, selectUser.email, selectUser.password)).
+        val selectUser = services.UserService.selectUser(selectUserData.id)
+        Redirect(routes.UserController.changeUser1(selectUser.id, selectUser.name, selectUser.lastname, selectUser.adress, selectUser.city, selectUser.plz, selectUser.distance, selectUser.email, selectUser.password, selectUser.activeFlag)).
           flashing("success" -> "User saved!")
       })
   }
@@ -119,7 +144,7 @@ object UserController extends Controller {
       },
       userData => {
         try {
-          val newUser = services.UserService.logInUser(userData.email, userData.password)
+          val newUser = services.UserService.accesUserData(userData.email, userData.password)
           Redirect(routes.UserController.completeLogInUser(newUser.id, newUser.name)).
             flashing("success" -> "User saved!")
         } catch {
@@ -140,7 +165,7 @@ object UserController extends Controller {
 
   def registerUser = Action { request =>
     request.session.get("loggedInUser").map { userID =>
-      Ok(views.html.userLoggedIn(models.activeUser.name, OrderService.availableOrderByID(userID.toDouble), UserService.registeredUsers))
+      Ok(views.html.userLoggedIn(UserService.getUserByID(userID.toLong), OrderService.availableOrderByID(userID.toDouble), userID.toLong))
     }.getOrElse {
       Ok(views.html.userLogIn(controllers.UserController.userForm, UserService.registeredUsers, controllers.UserController.userLogInForm))
     }
@@ -148,7 +173,7 @@ object UserController extends Controller {
 
 
   def completeLogInUser(id: Long, name: String): Action[AnyContent] = Action {
-    Ok(views.html.userLoggedIn(name, OrderService.availableOrderByID(id), UserService.registeredUsers)).withSession(
+    Ok(views.html.userLoggedIn(UserService.getUserByID(id), OrderService.availableOrderByID(id), id)).withSession(
       "loggedInUser" -> id.toString
     )
   }
@@ -157,18 +182,20 @@ object UserController extends Controller {
     Ok(views.html.newUserCreated(username, name, adress, city, plz, email, password))
   }
 
-  def changeUser1(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String): Action[AnyContent] = Action {
-    Ok(views.html.changeUser(id, name, lastname, adress, city, plz, distance, email, password, controllers.UserController.updateUserForm))
+  def changeUser1(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String, activeFlag: Int): Action[AnyContent] = Action {
+    Ok(views.html.changeUser(id, name, lastname, adress, city, plz, distance, email, password, activeFlag, controllers.UserController.updateUserForm))
   }
 
-  def upgradeUser(name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String): Action[AnyContent] = Action {
-    Ok(views.html.userUpdated(name, lastname, adress, city, plz, distance, email, password))
+  def upgradeUser(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String): Action[AnyContent] = Action {
+    Ok(views.html.userUpdated(id, name, lastname, adress, city, plz, distance, email, password))
   }
 
   def userDeleted(deleted: Boolean): Action[AnyContent] = Action {
     Ok(views.html.userDeleted(UserService.registeredUsers))
   }
-
+  def setUserFlag(id: Double): Action[AnyContent] = Action {
+    Ok(views.html.userFlagChanged(id))
+  }
 
   /**
     * List all users currently available in the system.

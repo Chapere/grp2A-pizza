@@ -67,7 +67,7 @@ object EmployeeController extends Controller {
   def updateEmployee : Action[AnyContent] = Action { implicit request =>
     updateEmployeeForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.employeeLoggedIn(null, models.activeUser.name, employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
+        BadRequest(views.html.badRequest())
       },
       updateEmployeeData => {
         val selectEmployee = services.EmployeeService.updateEmployee(updateEmployeeData.name, updateEmployeeData.lastname, updateEmployeeData.workplace, updateEmployeeData.acces, updateEmployeeData.accesLevel, updateEmployeeData.netRate, updateEmployeeData.email, updateEmployeeData.password)
@@ -80,7 +80,7 @@ object EmployeeController extends Controller {
   def chooseEmployee : Action[AnyContent] = Action { implicit request =>
     selectEmployeeForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.employeeLoggedIn(null, models.activeUser.name, employeeForm, formWithErrors, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
+        BadRequest(views.html.badRequest())
       },
       selectEmployeeData => {
         val selectEmployee = services.EmployeeService.chooseEmployee(selectEmployeeData.id)
@@ -112,7 +112,7 @@ object EmployeeController extends Controller {
 
   def registerEmployee = Action { request =>
     request.session.get("loggedInEmployee").map { userID =>
-      Ok(views.html.employeeLoggedIn(userID, models.activeUser.name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
+      Ok(views.html.employeeLoggedIn(userID, EmployeeService.chooseEmployee(userID.toLong).name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
     }.getOrElse {
       Ok(views.html.employeeLogIn(controllers.EmployeeController.employeeForm, EmployeeService.registredEmployees, controllers.EmployeeController.employeeLogInForm))
     }

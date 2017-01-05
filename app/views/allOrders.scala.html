@@ -37,7 +37,8 @@
             <th>Preis inkl. Steuern</th>
             <th>Bestellzeit</th>
             <th>Status</th>
-            <th>Stornieren?</th>
+            <th>Stornieren</th>
+            <th>Status</th>
         </tr>
             <tr>
                 <td>@orderWithAdress.id</td>
@@ -47,15 +48,23 @@
                 <td>@orderWithAdress.pizzaName</td>
                 <td>@orderWithAdress.productName</td>
                 <td>@orderWithAdress.pizzaAmount</td>
-                <td>@orderWithAdress.pizzaSize</td>
-                <td>@orderWithAdress.pizzaPrice</td>
+                <td>@orderWithAdress.pizzaSize cm</td>
+                <td>@orderWithAdress.pizzaPrice €</td>
                 <td>@orderWithAdress.productAmount</td>
-                <td>@orderWithAdress.productPrice</td>
-                <td>@orderWithAdress.totalPrice</td>
+                <td>@orderWithAdress.productPrice €</td>
+                <td>@("%.2f".format(orderWithAdress.totalPrice)) €</td>
                 <td>@orderWithAdress.orderTime</td>
                 <td>@orderWithAdress.status</td>
                 <td><h1>@helper.form(action = routes.OrderController.deleteOrder()) {
-                    <button type="submit" name="orderID" value="@orderWithAdress.id">Ja</button>
+                    <button type="submit" name="orderID" value="@orderWithAdress.id">Löschen</button>
+                }</h1></td>
+                <td><h1>@helper.form(action = routes.OrderController.setStatusOrder()) {
+                    <select name="orderStatusKZ">
+                        <option value="Bestellung erhalten">Bestellung erhalten</option>
+                        <option value="Bestellung in Auslieferung">Bestellung in Auslieferung</option>
+                        <option value="Lieferung ausgeführt">Lieferung ausgeführt</option>
+                    </select>
+                    <button type="submit" name="orderID" value="@orderWithAdress.id">Ändern</button>
                 }</h1></td>
 
             </tr>

@@ -36,12 +36,20 @@ trait OrderServiceT {
     orderDao.getOrder(orderID)
   }
 
+  def orderSetStaus(id: Long, orderStatus: String): Order = {
+    // create User
+    // persist and return User
+    orderDao.setOrderStatus(id, orderStatus)
+  }
+
   /**
    * Removes a user by id from the system.
    * @param id users id.
    * @return a boolean success flag.
    */
   def rmOrder(id: Double): Boolean = OrderDao.rmOrder(id)
+
+  def deactivateOrder(id: Double): Boolean = OrderDao.deactivateOrder(id)
 
   /**
    * Gets a list of all registered users.

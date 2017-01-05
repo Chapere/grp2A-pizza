@@ -1,4 +1,4 @@
-@(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String, updateUserForm: Form[forms.UpdateUserForm])
+@(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String, activeFlag: Int, updateUserForm: Form[forms.UpdateUserForm])
 
 @main(models.Company.name) {
 
@@ -15,17 +15,35 @@
             <h1>Stadt</h1>
             <h2>@city</h2>
             <h1>Entfernung</h1>
-            <h2>@distance</h2>
+            <h2>@distance km</h2>
             <h1>PLZ</h1>
             <h2>@plz</h2>
             <h1>E-Mail</h1>
             <h2>@email</h2>
             <h1>Passwort</h1>
             <h2>@password</h2>
+
+            <h1>Status:</h1>
+            @if(activeFlag == 1) {
+                <h1>Benutzer Aktiv</h1>
+            } else {
+                <h1>Benuter Deaktiviert</h1>
+            }
             <h1>@helper.form(action = routes.UserController.rmUser()) {
                 <button style="margin-top: 50px;" type="submit" name="User ID" value="@id">Benuter @id Löschen?</button>
             }
             </h1>
+            @if(activeFlag == 1) {
+                <h1>@helper.form(action = routes.UserController.userFlagZero()) {
+                    <button type="submit" name="User ID" value="@id">Benuter @id Deaktivieren?</button>
+                }
+                </h1>
+            } else {
+                <h1>@helper.form(action = routes.UserController.userFlagOne()) {
+                    <button type="submit" name="User ID" value="@id">Benuter @id Aktivieren?</button>
+                    }
+                }
+        </h1>
         </div>
         <div class="right">
             <h1>@helper.form(action = routes.UserController.updateUser()) {
@@ -35,9 +53,9 @@
                     @helper.inputText(updateUserForm("Stadt"))
                     @helper.inputText(updateUserForm("Entfernung"))
                     @helper.inputText(updateUserForm("PLZ"))
-                    @helper.inputText(updateUserForm("e-Mail"))
+                    @helper.inputText(updateUserForm("E-Mail"))
                     @helper.inputPassword(updateUserForm("Passwort"))
-                <button style="margin-left: 40px" type="submit">Benutzer ändern</button>
+                <button style="margin-left: 40px" type="submit" name="userID" value="@id">Benutzer ändern</button>
             }
             </h1>
         </div>

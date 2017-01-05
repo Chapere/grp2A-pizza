@@ -59,6 +59,25 @@ trait OrderDaoT {
 
   }
 
+  def setOrderStatus(id: Long, orderStatus: String): Order = {
+    DB.withConnection { implicit c =>
+
+      val updateFlag: Option[Long] =
+        SQL("UPDATE Orders SET status = {status} WHERE id = {id}").on(
+          'status -> orderStatus, 'id -> id).executeInsert()
+
+      val selectOrder = SQL("SELECT * FROM Orders WHERE id = {id};").on(
+        'id -> id)
+      val orders = selectOrder().map(row => Order(row[Long]("id"), row[Double]("customerID"), row[Double]("pizzaID"),
+        row[Double]("productID"), row[String]("pizzaName"), row[String]("productName"), row[Double]("pizzaAmount"),
+        row[Double]("pizzaSize"), row[Double]("pizzaPrice"), row[Double]("productAmount"), row[Double]("productPrice"),
+        row[Double]("totalPrice"), row[String]("orderTime"), row[String]("status"))).toList
+
+      return orders.head
+    }
+
+  }
+
   def getOrder(id: Double): Order = {
     DB.withConnection { implicit c =>
       val selectOrder = SQL("SELECT * FROM Orders WHERE id = {id};").on(
@@ -81,6 +100,14 @@ trait OrderDaoT {
     DB.withConnection { implicit c =>
       val rowsCount = SQL("delete from Orders where id = ({id})").on('id -> id).executeUpdate()
       rowsCount > 0
+    }
+  }
+
+  def deactivateOrder(id: Double): Boolean = {
+    DB.withConnection { implicit c =>
+      val rowsCount = SQL("UPDATE Orders SET status = {status} WHERE id = {id}").on(
+      'status -> "Storniert", 'id -> id).executeInsert()
+      true
     }
   }
 
@@ -116,10 +143,10 @@ trait OrderDaoT {
     DB.withConnection { implicit c =>
       val selectOrders = SQL("Select Orders.*, Users.* from Orders LEFT JOIN Users ON Orders.customerID = Users.id;")
       // Transform the resulting Stream[Row] to a List[(String,String)]
-      val orders = selectOrders().map(row => OrderWithAdress(row[Long]("id"), row[Double]("customerID"), row[Double]("pizzaID"),
+      val orders = selectOrders().map(row => OrderWithAdress(row[Long]("Orders.id"), row[Double]("customerID"), row[Double]("pizzaID"),
         row[Double]("productID"), row[String]("pizzaName"), row[String]("productName"), row[Double]("pizzaAmount"),
         row[Double]("pizzaSize"), row[Double]("pizzaPrice"), row[Double]("productAmount"), row[Double]("productPrice"),
-        row[Double]("totalPrice"), row[String]("orderTime"), row[String]("status"), row[Long]("id"), row[String]("name"), row[String]("lastname"),
+        row[Double]("totalPrice"), row[String]("orderTime"), row[String]("status"), row[Long]("Users.id"), row[String]("name"), row[String]("lastname"),
         row[String]("adress"), row[String]("city"), row[String]("plz"), row[Double]("distance"), row[String]("email"), null, row[Int]("activeFlag"))).toList
 
       orders

@@ -1,14 +1,22 @@
 
-@(name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String)
+@(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String)
 
 @main(models.Company.name) {
 
-    <h1 align="center">Willkommen @name bei @models.Company.name. Sie wurden Aktualisiert.</h1>
-    <h3>@name</h3>
-    <h3>@lastname</h3>
-    <h3>@adress</h3>
-    <h3>@city</h3>
-    <h3>@plz</h3>
-    <h3>@email</h3>
+    <h1 align="center">Das Benutzerprofil wurde bearbeitet.</h1>
+    <h1>Name</h1>
+    <h2>@name</h2>
+    <h1>Vorname</h1>
+    <h2>@lastname</h2>
+    <h1>Adresse</h1>
+    <h2>@adress </h2>
+    <h1>Stadt</h1>
+    <h2>@city</h2>
+    <h1>PLZ</h1>
+    <h2>@plz</h2>
+    <h1>Entfernung:</h1>
+    <h2>@distance km</h2>
+    <h1>Email</h1>
+    <h2>@email</h2>
 
 }

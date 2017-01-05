@@ -1,12 +1,14 @@
-name := """PizzaFlitza""" // please change me
+name := """PizzaPower""" // please change me
 
-version := "Milestone0" // please change me later
+version := "Milestone2" // please change me later
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.11.8"
 
 resolvers += "Scalaz Bintray Repo" at "https://dl.bintray.com/scalaz/releases"
+
+libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "2.16.0"
 
 libraryDependencies ++= Seq(
   jdbc,

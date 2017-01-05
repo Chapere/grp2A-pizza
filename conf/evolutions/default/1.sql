@@ -13,8 +13,8 @@ CREATE TABLE Users (
     activeFlag INT NOT NULL
 );
 
-INSERT INTO Users (name, lastname, adress, city, plz, distance, email, password, activeFlag)
-VALUES ('Padron', 'Schulz', 'Lerchenauer Str. 12', 'München', 80935, 20, 'user', 'user', 1);
+INSERT INTO Users (id, name, lastname, adress, city, plz, distance, email, password, activeFlag)
+VALUES (1, 'Padron', 'Schulz', 'Lerchenauer Str. 12', 'München', 80935, 20, 'user', 'user', 1);
 
 CREATE TABLE Employees (
     id serial PRIMARY KEY,
@@ -29,8 +29,8 @@ CREATE TABLE Employees (
     activeFlag INT NOT NULL
 );
 
-INSERT INTO Employees (name, lastname, workplace, acces,accesLevel , netRate, email, password, activeFlag)
-VALUES ('Emil', 'Hubert', 'IT', 'root', 10, 15.84, 'root', 'root', 1);
+INSERT INTO Employees (id, name, lastname, workplace, acces,accesLevel , netRate, email, password, activeFlag)
+VALUES (1, 'Emil', 'Hubert', 'IT', 'root', 10, 15.84, 'root', 'root', 1);
 
 CREATE TABLE Pizzas (
     id serial PRIMARY KEY,

@@ -1,8 +1,8 @@
-@(name: String, orders: List[models.Order], users: List[models.User])
+@(users: List[models.User], ordersByID: List[models.Order], id: Long)
 
 @main(models.Company.name) {
 
-    <h2 align="center">Willkommen @name bei @models.Company.name. Sie wurden Eingeloggt.</h2>
+    <h2 align="center">Willkommen bei @models.Company.name. Sie wurden Eingeloggt.</h2>
 
     <h1 style="margin-bottom: 20px;">Bestellübersicht</h1>
     <table>
@@ -21,28 +21,32 @@
             <th>Preis inkl. Steuern</th>
             <th>Bestellzeit</th>
             <th>Status</th>
-            <th>Stornieren?</th>
+            <th>Stornieren</th>
         </tr>
-    @for(order <- orders) {
+    @for(order <- ordersByID) {
         <tr>
             <td>@order.id</td>
-            <td>@order.customerID</td>
-            <td>@order.pizzaID</td>
-            <td>@order.productID</td>
+            <td>@order.customerID.toInt</td>
+            <td>@order.pizzaID.toInt</td>
+            <td>@order.productID.toInt</td>
             <td>@order.pizzaName</td>
             <td>@order.productName</td>
-            <td>@order.pizzaAmount</td>
-            <td>@order.pizzaSize</td>
-            <td>@order.pizzaPrice</td>
-            <td>@order.productAmount</td>
-            <td>@order.productPrice</td>
-            <td>@order.totalPrice</td>
+            <td>@order.pizzaAmount.toInt</td>
+            <td>@order.pizzaSize cm</td>
+            <td>@("%.2f".format(order.pizzaPrice)) €</td>
+            <td>@order.productAmount.toInt</td>
+            <td>@("%.2f".format(order.productPrice)) €</td>
+            <td>@("%.2f".format(order.totalPrice)) €</td>
             <td>@order.orderTime</td>
             <td>@order.status</td>
-            <td><h1>@helper.form(action = routes.OrderController.deleteOrder()) {
-                <button type="submit" name="orderID" value="@order.id">Ja</button>
-            }</h1></td>
-
+            @if(order.status.toString != "Storniert") {
+                <td><h1>@helper.form(action = routes.OrderController.deactivateOrder()) {
+                    <button type="submit" name="orderID" value="@order.id">Bestellung Strornieren</button>
+                }</h1>
+                </td>
+            } else {
+                <td></td>
+            }
         </tr>
 
     }
@@ -50,15 +54,9 @@
 
     <h1>Änderung</h1>
 
-    @helper.form(action = routes.UserController.updateUser()) {
-            <button type="submit" name="User ID" value="id">Benutzer ändern</button>
-    }
+    <h1 align="center">@helper.form(action = routes.UserController.chooseUser()) {
+            <button type="submit" name="User ID" value="@id">Benutzer ändern</button>
+    }</h1>
 
-    @helper.form(action = routes.UserController.chooseUser()) {
-        <select name="User ID"> @for(user <- users) {
-            <option value="@user.id">@user.id</option>
-        }
-        </select>
-        <input type="submit" value="Auswählen" />
-    }
+
 }

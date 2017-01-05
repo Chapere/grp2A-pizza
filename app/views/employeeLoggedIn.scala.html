@@ -10,7 +10,7 @@
         Als Mitarbeieter der Stufe: @models.activeUser.accesLevel (@models.activeUser.acces) haben Sie Zugriff zu folgenden Webparts:
     </h2>
 
-    <button><a href="/allOrderDetails">Alle Bestellungen anzeigen</a></button>
+
 
     <div style="height: 50px; display: block; width: 100%; float: none; clear: both;"></div>
 
@@ -38,7 +38,7 @@
                 <option value="@employee.id">@employee.id</option>
             }
             </select>
-            <input type="submit" value="Auswählen" />
+            <button type="submit" value="Auswählen">Auswählen</button>
         }
     }
     </div>
@@ -63,10 +63,12 @@
                     <option value="@user.id">@user.id</option>
                 }
                 </select>
-                <input type="submit" value="Auswählen" />
+                <button type="submit" value="Auswählen">Auswählen</button>
             }
         </div>
 
     }
+
+    <button><a href="/allOrderDetails">Alle Bestellungen anzeigen</a></button>
 
 }

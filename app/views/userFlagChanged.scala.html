@@ -1,0 +1,10 @@
+@(id: Double)
+@main(models.Company.name) {
+    <h2 style="font-size: 80px;" align="center">Zustand des Benutzers wurde geändert.</h2>
+    @if(id == 1) {
+        <h3 style="font-size: 20px" align="center">Der Benutzer wurde reaktiviert!</h3>
+    } else {
+        <h3 style="font-size: 20px" align="center">Der Benutzer wurde deaktiviert!</h3>
+    }
+
+}

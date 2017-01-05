@@ -24,35 +24,45 @@ trait UserServiceT {
     userDao.addUser(newUser)
   }
 
-  def chooseUser(id: Long): User = {
+  def chooseUser(id: Long): List[User] = {
     // create User
-    val showUser = User(id, null, null, null, null, null, 0, null, null, -1)
     // persist and return User
-    UserDao.displayUser(showUser)
+    UserDao.getUserByIdentification(id)
   }
 
-  /**def deleteUser(id: Long): User = {
+  def selectUser(id: Long): User = {
     // create User
-    val deleteUserService = User(id, null, null, null, null, null, null, null)
     // persist and return User
-    UserDao.deleteUser(deleteUserService)
-  }**/
+    UserDao.selectUserByIdentification(id)
+  }
 
-  def updateUser(name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String): User = {
+  def setUserFlag0(id: Long): Long = {
     // create User
-    val updateUserService = User(-1, name, lastname, adress, city, plz, distance, email, password, 1)
+    // persist and return User
+    UserDao.deactivateUser(id)
+  }
+
+  def setUserFlag1(id: Long): Long = {
+    // create User
+    // persist and return User
+    UserDao.activateUser(id)
+  }
+
+  def updateUser(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String): User = {
+    // create User
+    val updateUserService = User(id, name, lastname, adress, city, plz, distance, email, password, 1)
     // persist and return User
     UserDao.updateUserDao(updateUserService)
   }
 
-  def logInUser(email: String, password: String): User = {
+  def accesUserData(email: String, password: String): User = {
     // create User
     val logInUser = User(-1, null, null, null, null, null, 0, email, password, -1)
     // persist and return User
-    userDao.logInUser(logInUser)
+    userDao.getUser(logInUser)
   }
 
-  def getUserByID(id: Long): User = {
+  def getUserByID(id: Long): List[User] = {
     // create User
     // persist and return User
     userDao.getUserByIdentification(id)

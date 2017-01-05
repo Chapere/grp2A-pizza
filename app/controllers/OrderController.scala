@@ -3,12 +3,10 @@ package controllers
 import play.api.mvc.{Action, AnyContent, Controller}
 import services._
 import forms._
-import models._
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formats._
-import java.util.Calendar
-import java.text.SimpleDateFormat
+import com.github.nscala_time.time.Imports._
 
 /**
  * Controller for user specific operations.
@@ -17,16 +15,13 @@ import java.text.SimpleDateFormat
  */
 object OrderController extends Controller {
 
-  val today = Calendar.getInstance.getTime
-  val curTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
-  val today1 = Calendar.getInstance().getTime()
-
 
   /**
    * Form object for user data.
    */
   val orderForm = Form(
     mapping(
+      "userID" -> of(doubleFormat),
       "pizzaID" -> of(doubleFormat),
       "productID" -> of(doubleFormat),
       "pizzaAmount" -> of(doubleFormat),
@@ -36,6 +31,11 @@ object OrderController extends Controller {
   val modifyOrderForm = Form(
     mapping(
       "orderID" -> of(doubleFormat))(ModifyOrderForm.apply)(ModifyOrderForm.unapply))
+
+  val orderStatusForm = Form(
+    mapping(
+      "orderID" -> of(longFormat),
+      "orderStatusKZ" -> text)(OrderStatusForm.apply)(OrderStatusForm.unapply))
 
   /**
    * Adds a new user with the given data to the system.
@@ -50,11 +50,30 @@ object OrderController extends Controller {
       },
       orderData => {
         try {
-          val newOrder = services.OrderService.createOrder(models.activeUser.id,
+          val selectUser = services.UserService.getUserByID(orderData.userID.toLong)
+          var time: Int = (2.toInt * selectUser.head.distance.toInt) + (10.toInt * orderData.pizzaAmount.toInt)
+          var deliveryTime = DateTime.now() + time.minutes
+          val orderNew = services.OrderService.createOrder(orderData.userID,
             orderData.pizzaID, orderData.productID, "N/A", "N/A", orderData.pizzaAmount, orderData.pizzaSize, -1,
-            orderData.productAmount, -1, curTimeFormat.format(today), "N/A")
-          Redirect(routes.OrderController.newOrderCreated(newOrder.customerID, newOrder.pizzaID, newOrder.productID, newOrder.pizzaName, newOrder.productName, newOrder.pizzaAmount, newOrder.pizzaSize, newOrder.pizzaPrice,
-            newOrder.productAmount, newOrder.productPrice, newOrder.totalPrice, newOrder.orderTime, newOrder.status)).
+            orderData.productAmount, -1, DateTime.now.toString, "N/A")
+          Redirect(routes.OrderController.newOrderCreated(orderNew.id, orderNew.customerID, orderNew.pizzaID, orderNew.productID, orderNew.pizzaName, orderNew.productName,
+            orderNew.pizzaAmount, orderNew.pizzaSize, orderNew.pizzaPrice, orderNew.productAmount, orderNew.productPrice, orderNew.totalPrice, orderNew.orderTime, orderNew.status, deliveryTime.toString)).
+            flashing("success" -> "Order saved!")
+        } catch {
+          case e: RuntimeException => BadRequest(views.html.orderFailed())
+        }
+      })
+  }
+
+  def setStatusOrder : Action[AnyContent] = Action { implicit request =>
+    orderStatusForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.orderFailed())
+      },
+      orderData => {
+        try {
+          val newOrder = services.OrderService.orderSetStaus(orderData.orderID, orderData.orderStatusKZ)
+          Redirect(routes.EmployeeController.showAllOrderDetails()).
             flashing("success" -> "Order saved!")
         } catch {
           case e: RuntimeException => BadRequest(views.html.orderFailed())
@@ -87,12 +106,24 @@ object OrderController extends Controller {
       })
   }
 
-  def newOrderCreated(customerID: Double, pizzaID: Double, productID: Double,
+  def deactivateOrder : Action[AnyContent] = Action { implicit request =>
+    modifyOrderForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.products(PizzaService.availablePizza, ProductService.availableProduct, orderForm, 1))
+      },
+      modifyOrderData => {
+        val newOrder = services.OrderService.deactivateOrder(modifyOrderData.orderID)
+        Redirect(routes.OrderController.orderDeleted()).
+          flashing("success" -> "Order saved!")
+      })
+  }
+
+  def newOrderCreated(id: Long, customerID: Double, pizzaID: Double, productID: Double,
                       pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,
                       pizzaPrice: Double, productAmount: Double, productPrice: Double, totalPrice: Double,
-                      orderTime: String, status: String) : Action[AnyContent] = Action {
-    Ok(views.html.newOrderCreated(customerID, pizzaID, productID, pizzaName, productName, pizzaAmount, pizzaSize, pizzaPrice,
-      productAmount, productPrice, totalPrice, orderTime, status))
+                      orderTime: String, status: String, deliveryTime: String) : Action[AnyContent] = Action {
+    Ok(views.html.newOrder(id.toInt, customerID.toInt, pizzaID.toInt, productID.toInt, pizzaName, productName,
+      pizzaAmount, pizzaSize, pizzaPrice, productAmount, productPrice, totalPrice, orderTime, status, deliveryTime))
   }
 
   def showOrder(customerID: Double, pizzaID: Double, productID: Double,

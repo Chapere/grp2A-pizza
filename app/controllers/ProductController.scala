@@ -39,8 +39,12 @@ object ProductController extends Controller {
    * Shows the welcome view for a newly registered user.
    */
 
-  def products : Action[AnyContent] = Action {
-    Ok(views.html.products(PizzaService.availablePizza, ProductService.availableProduct, OrderController.orderForm, 1))
+  def produkts = Action { request =>
+    request.session.get("loggedInUser").map { userID =>
+      Ok(views.html.products(PizzaService.availablePizza, ProductService.availableProduct, OrderController.orderForm, userID.toInt))
+    }.getOrElse {
+      Ok(views.html.userLogIn(controllers.UserController.userForm, UserService.registeredUsers, controllers.UserController.userLogInForm))
+    }
   }
 
   /**
