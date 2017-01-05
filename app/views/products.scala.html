@@ -3,48 +3,49 @@
 @import views.html.helper
 
 @main(models.Company.name) {
+        <h1>Produktauswahl</h1>
+        <h2 style="margin: 0px 0 100px 0;">Willkommen @userID bei @models.Company.name</h2>
 
-    <div id="jumbo">
-        <h1 align="center">Willkommen @userID bei @models.Company.name</h1>
-        <h2 align="center">@models.Company.subtitle</h2>
-    </div>
-        <h2 align="left"; style="padding: 0px 30px 0px">Produktauswahl</h2>
-        <div id="O1" class="SK-unten">
-            <div class="container">
-                <div class="right">
-                        @for(pizza <- pizzas) {
-                            <div class="col-sm-6 col-md-3">
-                                <h2 style="margin-top: 20px;
-                                    text-align: center;">@pizza.name</h2>
-                                <h3>Bestellnummer: @pizza.id</h3>
-                                <h3>@pizza.comment</h3>
-                                <h3>@pizza.ingredients</h3>
-                                <h3>Preis pro cm: @pizza.price €</h3>
-
-                            </div>
-                        }
-                </div>
-                <div class="left">
-                        @for(product <- products) {
-                            <div class="col-sm-6 col-md-3">
-                                <h2 style="margin-top: 20px;
-                                    text-align: center;">@product.name</h2>
-                                <h3>Bestellnummer: @product.id</h3>
-                                <h3>Preis pro @product.unit: @product.price €</h3>
-                            </div>
-                        }
+        <div class="container">
+            <div class="left">
+                <h1>Pizzen</h1>
+                <section>
+                @for(pizza <- pizzas) {
+                    <div class="product">
+                        <h2 style="margin-top: 20px;
+                            text-align: center;">@pizza.name</h2>
+                        <h3>Bestellnummer: @pizza.id</h3>
+                        <h3>@pizza.comment</h3>
+                        <h3>@pizza.ingredients</h3>
+                        <h3>Preis pro cm: @pizza.price €</h3>
                     </div>
-                    <h3 style="margin-top: 50px;"> @helper.form(action = routes.OrderController.createOrder()) {
+                }
+                </section>
+            </div>
+
+            <div class="right">
+                <h1>Beilagen</h1>
+                @for(product <- products) {
+                    <div class="product">
+                        <h2 style="margin-top: 20px;
+                            text-align: center;">@product.name</h2>
+                        <h3>Bestellnummer: @product.id</h3>
+                        <h3>Preis pro @product.unit: @product.price €</h3>
+                    </div>
+                }
+            </div>
+
+            <div class="createOrder">
+                <h3>
+                    @helper.form(action = routes.OrderController.createOrder()) {
                         @helper.inputText(orderForm("pizzaID"),'_label -> "Pizza Nr.:")
                         @helper.inputText(orderForm("pizzaAmount"),'_label -> "Pizza Anzahl:")
                         @helper.inputText(orderForm("pizzaSize"),'_label -> "Pizza Größe:")
                         @helper.inputText(orderForm("productID"),'_label -> "Produkt Nr.:")
                         @helper.inputText(orderForm("productAmount"),'_label -> "Produkt Anzahl:")
                         <button type="submit">Bestellung ausführen?</button>
-
-                    } </h3>
+                    }
+                </h3>
             </div>
         </div>
-
-
 }

@@ -1,9 +1,10 @@
-@(name: String, orders: List[models.Order])
+@(name: String, orders: List[models.Order], users: List[models.User])
+
 @main(models.Company.name) {
 
-    <h1 align="center">Willkommen @name bei @models.Company.name. Sie wurden Eingeloggt.</h1>
+    <h2 align="center">Willkommen @name bei @models.Company.name. Sie wurden Eingeloggt.</h2>
 
-    <h2>Hier ihre Bestellübersicht:</h2>
+    <h1 style="margin-bottom: 20px;">Bestellübersicht</h1>
     <table>
         <tr>
             <th>Bestellnummer</th>
@@ -47,4 +48,17 @@
     }
     </table>
 
+    <h1>Änderung</h1>
+
+    @helper.form(action = routes.UserController.updateUser()) {
+            <button type="submit" name="User ID" value="id">Benutzer ändern</button>
+    }
+
+    @helper.form(action = routes.UserController.chooseUser()) {
+        <select name="User ID"> @for(user <- users) {
+            <option value="@user.id">@user.id</option>
+        }
+        </select>
+        <input type="submit" value="Auswählen" />
+    }
 }

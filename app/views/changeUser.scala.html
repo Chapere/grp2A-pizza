@@ -2,26 +2,28 @@
 
 @main(models.Company.name) {
 
-    <h1 align="center" style="margin-top: 0px; margin-bottom: 100px">Edit Employee: @lastname, @name</h1>
+    <h1 align="center" style="margin-top: 0px; margin-bottom: 100px">Kunden ändern: @lastname, @name</h1>
 
     <div id="editEmployee">
         <div class="left">
-            <h1>Name:</h1>
+            <h1>Name</h1>
             <h2>@name</h2>
-            <h1>Vorname:</h1>
+            <h1>Vorname</h1>
             <h2>@lastname</h2>
-            <h1>Strasse:</h1>
+            <h1>Adresse</h1>
             <h2>@adress</h2>
-            <h1>Stadt:</h1>
+            <h1>Stadt</h1>
             <h2>@city</h2>
-            <h1>Postleitzahl:</h1>
+            <h1>Entfernung</h1>
+            <h2>@distance</h2>
+            <h1>PLZ</h1>
             <h2>@plz</h2>
-            <h1>E-Mail:</h1>
+            <h1>E-Mail</h1>
             <h2>@email</h2>
-            <h1>Passwort:</h1>
+            <h1>Passwort</h1>
             <h2>@password</h2>
             <h1>@helper.form(action = routes.UserController.rmUser()) {
-                <button type="submit" name="User ID" value="@id">Benuter @id Löschen?</button>
+                <button style="margin-top: 50px;" type="submit" name="User ID" value="@id">Benuter @id Löschen?</button>
             }
             </h1>
         </div>
@@ -35,7 +37,7 @@
                     @helper.inputText(updateUserForm("PLZ"))
                     @helper.inputText(updateUserForm("e-Mail"))
                     @helper.inputPassword(updateUserForm("Passwort"))
-                <button type="submit">Registrieren</button>
+                <button style="margin-left: 40px" type="submit">Benutzer ändern</button>
             }
             </h1>
         </div>

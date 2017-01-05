@@ -9,24 +9,42 @@ body {
 
 h1 {
     color: black;
-    font-size: 60px;
+    font-size: 50px;
     text-transform: uppercase;
     font-weight: 400;
     margin-bottom: 0px;
+    text-align: center;
+    text-shadow: 0px 4px 3px rgba(0,0,0,0.4),
+                0px 8px 13px rgba(0,0,0,0.1),
+                0px 18px 23px rgba(0,0,0,0.1);
 }
 
 h2 {
     color: black;
-    font-size: 49px;
-    margin-top: 0;
+    font-size: 40px;
     font-style: italic;
     font-weight: 100;
-    margin-top: -30px;
+    text-align: center;
 }
 
 h3 {
     color: black;
     font-size: 13px;
+    font-weight: normal;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: none;
+    color: black;
+}
+
+label {
+    font-weight: bold;
 }
 
 #content {
@@ -51,33 +69,17 @@ h3 {
     padding: 30px;
     margin: 0 auto;
     display: block;
-    border-radius: 3px;
+    margin-bottom: 110px;
+    margin-top: -65px;
+    /*border-radius: 3px;
     background: #f8f8f8;
-    margin-bottom: 60px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.20);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-}
-
-#jumbo:hover {
-    box-shadow: 0 8px 15px rgba(0,0,0,0.19), 0 7px 7px rgba(0,0,0,0.16);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1); */
 }
 
 /*
-#content {
-    margin: 0 auto;
-    height: 100%;
-    background: #fff;
-    border-radius: 2px;
-    padding: 30px;
-    position: relative;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-    top: 180px;
-    z-index: 0;
-}
-
-#content:hover {
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+#jumbo:hover {
+    box-shadow: 0 8px 15px rgba(0,0,0,0.19), 0 7px 7px rgba(0,0,0,0.16);
 }
 */
 
@@ -124,36 +126,7 @@ ul.topnav li a:hover {
     color: black;
 }
 
-/* OVERLAY 1 */
-#O1 {
-    padding: 0 0 50px 0;
-    position: relative;
-}
 
-#O1 .row div {
-    border: 1px solid lightgrey;
-    padding: 0px 30px 30px;
-    text-align: justify;
-    max-width: 500px;
-    margin: 10px auto;
-}
-
-
-#O1 .row div:before {
-    position: absolute;
-    top: -35px;
-    left: 50%;
-    margin-left: -47.5px;
-    width: 95px;
-}
-
-.SK-unten::after {
-    content: '';
-    position: absolute;
-    height: 8px;
-    width: 100%;
-    bottom: -8px
-}
 
 .calltoaction {
     text-decoration: none;
@@ -301,22 +274,75 @@ ul.topnav li a:hover {
 .show {display:block;}
 
 button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
+    color: #54CC14;
+    border: 1px solid #54CC14;
+    border-radius: 3px;
+    background: white;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 4px 2px;
+    margin: 10px 2px;
     cursor: pointer;
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
 }
 
-.button2:hover {
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+button:hover {
+    background: #54CC14;
+    color: white;
+}
+
+section {
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    min-height: 100%;
+    margin-bottom: 3rem;
+}
+
+.product {
+    width: 60%;
+    padding: 0 40px 20px 40px;
+    margin: 60px auto;
+    background: transparent;
+    transition: all .5s ease;
+    color: #41403E;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    outline: none;
+    box-shadow: 20px 38px 34px -26px hsla(0, 0%, 0%, .2);
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    border:dashed 2px #41403E;
+}
+
+.product h2 {
+    font-weight: bold;
+    font-size: 35px;
+}
+
+.product h3 {
+    font-weight: normal;
+}
+
+.product:hover{
+    box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
+}
+
+.createOrder {
+    text-align: center;
+    margin-top: 60px;
+}
+
+.createOrder label {
+    margin-left: 40px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.createOrder button {
+    margin-left: 43px;
 }
 
 #userLogin h1 {
@@ -331,11 +357,32 @@ button {
 #editEmployee h2 {
     font-size: 30px;
     margin-top: 0px;
+    margin-bottom: 50px;
 }
 
 #editEmployee h3 {
     font-size: 25px;
     margin-top: 0px;
+}
+
+#editEmployee label {
+    font-weight: normal;
+    margin-left: 40px;
+}
+
+#editEmployee .info {
+    font-size: 13px;
+    font-weight: normal;
+    text-shadow: none;
+    text-transform: none;
+}
+
+#editEmployee dl {
+    margin: 0 0 25px 0;
+}
+
+#editEmployee #Passwort_field {
+    margin-top: 42px;
 }
 
 table {

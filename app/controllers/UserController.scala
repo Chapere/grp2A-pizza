@@ -140,7 +140,7 @@ object UserController extends Controller {
 
   def registerUser = Action { request =>
     request.session.get("loggedInUser").map { userID =>
-      Ok(views.html.userLoggedIn(models.activeUser.name, OrderService.availableOrderByID(userID.toDouble)))
+      Ok(views.html.userLoggedIn(models.activeUser.name, OrderService.availableOrderByID(userID.toDouble), UserService.registeredUsers))
     }.getOrElse {
       Ok(views.html.userLogIn(controllers.UserController.userForm, UserService.registeredUsers, controllers.UserController.userLogInForm))
     }
@@ -148,7 +148,7 @@ object UserController extends Controller {
 
 
   def completeLogInUser(id: Long, name: String): Action[AnyContent] = Action {
-    Ok(views.html.userLoggedIn(name, OrderService.availableOrderByID(id))).withSession(
+    Ok(views.html.userLoggedIn(name, OrderService.availableOrderByID(id), UserService.registeredUsers)).withSession(
       "loggedInUser" -> id.toString
     )
   }
