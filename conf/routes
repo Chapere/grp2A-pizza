@@ -9,6 +9,7 @@ POST        /createOrder         controllers.OrderController.createOrder
 
 POST        /addUser             controllers.UserController.addUser
 POST        /addEmployee         controllers.EmployeeController.addEmployee
+POST        /addPizza            controllers.PizzaController.addPizza
 POST        /chooseEmployee      controllers.EmployeeController.chooseEmployee
 POST        /showSelectedOrder   controllers.OrderController.showSelectedOrder
 POST        /deleteOrder         controllers.OrderController.deleteOrder
@@ -52,6 +53,8 @@ GET         /orderDeleted        controllers.OrderController.orderDeleted
 GET         /allOrderDetails     controllers.EmployeeController.showAllOrderDetails
 
 GET         /logout              controllers.Application.logOut
+
+GET         /newPizzaCreated      controllers.PizzaController.newPizzaCreated(name, price: Double, ingredients, comment, supplements)
 
 #GET         /getUserByID        controllers.UserController.getUserByIdentification
 

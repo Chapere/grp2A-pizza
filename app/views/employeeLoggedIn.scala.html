@@ -1,6 +1,7 @@
+@import forms.CreatePizzaForm
 @(userID: String, name: String, employeeForm: Form[forms.CreateEmployeeForm],
         selectEmployeeForm: Form[forms.SelectEmployeeForm], employees: List[models.Employee],
-        userForm: Form[forms.CreateUserForm], users: List[models.User])
+        userForm: Form[forms.CreateUserForm], users: List[models.User], pizzaForm: Form[forms.CreatePizzaForm])
 
 @main(models.Company.name) {
 
@@ -10,7 +11,17 @@
         Als Mitarbeieter der Stufe: @models.activeUser.accesLevel (@models.activeUser.acces) haben Sie Zugriff zu folgenden Webparts:
     </h2>
 
-
+    @if(models.activeUser.accesLevel == 10 && userID != null) {
+        <h1>Pizza Hinzufügen</h1>
+        <h3> @helper.form(action = routes.PizzaController.addPizza()) {
+            @helper.inputText(pizzaForm("Pizza"))
+            @helper.inputText(pizzaForm("Preis pro cm"))
+            @helper.inputText(pizzaForm("Zutaten"))
+            @helper.inputText(pizzaForm("Kommentar"))
+            @helper.inputText(pizzaForm("Zusätze"))
+            <input type="submit" value="Hinzufügen" />
+        } </h3>
+    }
 
     <div style="height: 50px; display: block; width: 100%; float: none; clear: both;"></div>
 

@@ -54,7 +54,7 @@ object EmployeeController extends Controller {
   def addEmployee : Action[AnyContent] = Action { implicit request =>
     employeeForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.employeeLoggedIn(null, models.activeUser.name, formWithErrors, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
+        BadRequest(views.html.employeeLoggedIn(null, models.activeUser.name, formWithErrors, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers, controllers.PizzaController.pizzaForm))
       },
       employeeData => {
         val newEmployee = services.EmployeeService.addEmployee(employeeData.name, employeeData.lastname, employeeData.workplace, employeeData.acces, employeeData.accesLevel, employeeData.netRate, employeeData.email, employeeData.password)
@@ -112,14 +112,14 @@ object EmployeeController extends Controller {
 
   def registerEmployee = Action { request =>
     request.session.get("loggedInEmployee").map { userID =>
-      Ok(views.html.employeeLoggedIn(userID, EmployeeService.chooseEmployee(userID.toLong).name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers))
+      Ok(views.html.employeeLoggedIn(userID, EmployeeService.chooseEmployee(userID.toLong).name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers, controllers.PizzaController.pizzaForm))
     }.getOrElse {
       Ok(views.html.employeeLogIn(controllers.EmployeeController.employeeForm, EmployeeService.registredEmployees, controllers.EmployeeController.employeeLogInForm))
     }
   }
 
   def completeLogInEmployee(id: Long, name: String) : Action[AnyContent] = Action {
-    Ok(views.html.employeeLoggedIn(id.toString, name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers)).withSession(
+    Ok(views.html.employeeLoggedIn(id.toString, name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers, controllers.PizzaController.pizzaForm)).withSession(
       "loggedInEmployee" -> id.toString
     )
   }

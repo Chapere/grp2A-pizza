@@ -5,6 +5,7 @@ import play.api.data.Form
 import play.api.data.Forms._
 import services._
 import forms._
+import play.api.data.format.Formats._
 
 /**
  * Controller for user specific operations.
@@ -17,26 +18,31 @@ object PizzaController extends Controller {
   /**
    * Form object for user data.
    */
-  /**val userForm = Form(
+  val pizzaForm = Form(
     mapping(
-      "Name" -> text, "Preis" -> text, "Zutaten" -> text, "Kommentar" -> text, "Zusatzstoffe" -> text)(CreateUserForm.apply)(CreateUserForm.unapply))
-**/
+      "Name" -> nonEmptyText,
+      "Preis" -> of(doubleFormat),
+      "Zutaten" -> nonEmptyText,
+      "Kommentar" -> nonEmptyText,
+      "Zusatzstoffe" -> nonEmptyText)(CreatePizzaForm.apply)(CreatePizzaForm.unapply))
+
   /**
    * Adds a new user with the given data to the system.
    *
    * @return welcome page for new user
    */
- /** def addPizza : Action[AnyContent] = Action { implicit request =>
+  def addPizza : Action[AnyContent] = Action { implicit request =>
     pizzaForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.produkts(formWithErrors))
+        BadRequest(views.html.products(formWithErrors, pizzas: List[models.Pizza], products: List[models.Product]))
+
       },
-      userData => {
-        val newUser = services.UserService.addUser(userData.name, userData.lastname, userData.adress, userData.city, userData.plz)
-        Redirect(routes.UserController.newUserCreated(newUser.name, newUser.lastname, newUser.adress, newUser.city, newUser.plz)).
-          flashing("success" -> "User saved!")
+      pizzaData => {
+        val newPizza = services.PizzaService.addPizza(pizzaData.name, pizzaData.price, pizzaData.ingredients, pizzaData.comment, pizzaData.supplements)
+        Redirect(routes.PizzaController.newPizzaCreated(newPizza.name, newPizza.price, newPizza.ingredients, newPizza.comment, newPizza.supplements)).
+          flashing("success" -> "Pizza saved!")
       })
-  }**/
+  }
 
   /**
    * Shows the welcome view for a newly registered user.
@@ -53,5 +59,9 @@ object PizzaController extends Controller {
   /**
    * List all users currently available in the system.
    */
+
+  def newPizzaCreated(name: String, price: Double, ingredients: String, comment: String, supplements: String): Action[AnyContent] = Action {
+    Ok(views.html.newPizzaCreated(name, price, ingredients, comment, supplements))
+  }
 
 }
