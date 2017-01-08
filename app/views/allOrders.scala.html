@@ -20,13 +20,10 @@
             <th>@orderWithAdress.plz</th>
             <th>@orderWithAdress.city</th>
             <th>@orderWithAdress.email</th>
-            <th>@orderWithAdress.distance</th>
+            <th>@orderWithAdress.distance km</th>
         </tr>
         <tr>
             <th>Bestellnummer</th>
-            <th>Benutzer ID</th>
-            <th>Pizza ID</th>
-            <th>Produkt ID</th>
             <th>Pizza Name</th>
             <th>Produkt Name</th>
             <th>Pizza - Anzahl</th>
@@ -36,24 +33,27 @@
             <th>Produkt - Preis</th>
             <th>Preis inkl. Steuern</th>
             <th>Bestellzeit</th>
+            <th>Lieferzeit</th>
             <th>Status</th>
-            <th>Stornieren</th>
+            <th>Löschen</th>
             <th>Status</th>
         </tr>
             <tr>
                 <td>@orderWithAdress.id</td>
-                <td>@orderWithAdress.customerID</td>
-                <td>@orderWithAdress.pizzaID</td>
-                <td>@orderWithAdress.productID</td>
-                <td>@orderWithAdress.pizzaName</td>
+                <td>@orderWithAdress.pizzaName @if(orderWithAdress.extraTotalPrice != 0) {
+                    mit zusätzlich @orderWithAdress.extrasString
+                }</td>
                 <td>@orderWithAdress.productName</td>
-                <td>@orderWithAdress.pizzaAmount</td>
-                <td>@orderWithAdress.pizzaSize cm</td>
-                <td>@orderWithAdress.pizzaPrice €</td>
-                <td>@orderWithAdress.productAmount</td>
-                <td>@orderWithAdress.productPrice €</td>
+                <td>@orderWithAdress.pizzaAmount.toInt</td>
+                <td>@orderWithAdress.pizzaSize.toInt cm</td>
+                <td>@("%.2f".format(orderWithAdress.pizzaPrice)) € / cm @if(orderWithAdress.extraTotalPrice != 0) {
+                    + @("%.2f".format(orderWithAdress.extraTotalPrice)) €
+                }</td>
+                <td>@orderWithAdress.productAmount.toInt</td>
+                <td>@("%.2f".format(orderWithAdress.productPrice)) €</td>
                 <td>@("%.2f".format(orderWithAdress.totalPrice)) €</td>
                 <td>@orderWithAdress.orderTime</td>
+                <td>@orderWithAdress.deliveryTime</td>
                 <td>@orderWithAdress.status</td>
                 <td><h1>@helper.form(action = routes.OrderController.deleteOrder()) {
                     <button type="submit" name="orderID" value="@orderWithAdress.id">Löschen</button>

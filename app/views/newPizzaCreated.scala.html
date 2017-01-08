@@ -1,5 +1,13 @@
-@(username: String, name: String, price: Double, ingredients: String, comment: String, supplements: String)
+@(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String)
 
 @main(models.Company.name) {
-    <h1 align="center">Willkommen @username bei @models.Company.name</h1>
+
+    <h1 align="center">Eine neuee Pizza wurde erfolgreich angelegt</h1>
+    <h2 align="center">Name: @name</h2>
+    <h2 align="center">Preis: @price</h2>
+    <h2 align="center">Zutaten: @ingredients</h2>
+    <h2 align="center">Kommentar: @comment</h2>
+    <h2 align="center">Zusatzstoffe: @supplements</h2>
+
+
 }

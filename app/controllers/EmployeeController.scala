@@ -32,6 +32,7 @@ object EmployeeController extends Controller {
 
   val updateEmployeeForm = Form(
     mapping(
+      "id" -> of(longFormat),
       "Name" -> text,
       "Vorname" -> text,
       "Gebiet" -> text,
@@ -54,7 +55,7 @@ object EmployeeController extends Controller {
   def addEmployee : Action[AnyContent] = Action { implicit request =>
     employeeForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.employeeLoggedIn(null, models.activeUser.name, formWithErrors, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers, controllers.PizzaController.pizzaForm))
+        BadRequest(views.html.badRequest())
       },
       employeeData => {
         val newEmployee = services.EmployeeService.addEmployee(employeeData.name, employeeData.lastname, employeeData.workplace, employeeData.acces, employeeData.accesLevel, employeeData.netRate, employeeData.email, employeeData.password)
@@ -70,8 +71,8 @@ object EmployeeController extends Controller {
         BadRequest(views.html.badRequest())
       },
       updateEmployeeData => {
-        val selectEmployee = services.EmployeeService.updateEmployee(updateEmployeeData.name, updateEmployeeData.lastname, updateEmployeeData.workplace, updateEmployeeData.acces, updateEmployeeData.accesLevel, updateEmployeeData.netRate, updateEmployeeData.email, updateEmployeeData.password)
-        Redirect(routes.EmployeeController.upgradeEmployee(selectEmployee.name, selectEmployee.lastname, selectEmployee.workplace, selectEmployee.acces, selectEmployee.accesLevel, selectEmployee.netRate, selectEmployee.email, selectEmployee.password)).
+        val selectEmployee = services.EmployeeService.updateEmployee(updateEmployeeData.id, updateEmployeeData.name, updateEmployeeData.lastname, updateEmployeeData.workplace, updateEmployeeData.acces, updateEmployeeData.accesLevel, updateEmployeeData.netRate, updateEmployeeData.email, updateEmployeeData.password)
+        Redirect(routes.EmployeeController.upgradeEmployee(selectEmployee.id, selectEmployee.name, selectEmployee.lastname, selectEmployee.workplace, selectEmployee.acces, selectEmployee.accesLevel, selectEmployee.netRate, selectEmployee.email, selectEmployee.password)).
           flashing("success" -> "Employee saved!")
       })
   }
@@ -83,8 +84,8 @@ object EmployeeController extends Controller {
         BadRequest(views.html.badRequest())
       },
       selectEmployeeData => {
-        val selectEmployee = services.EmployeeService.chooseEmployee(selectEmployeeData.id)
-        Redirect(routes.EmployeeController.changeEmployee(selectEmployee.id, selectEmployee.name, selectEmployee.lastname, selectEmployee.workplace, selectEmployee.acces, selectEmployee.accesLevel, selectEmployee.netRate, selectEmployee.email, selectEmployee.password)).
+        val selectEmployee = services.EmployeeService.getEmployeeByID(selectEmployeeData.id)
+        Redirect(routes.EmployeeController.changeEmployee(selectEmployee.id, selectEmployee.name, selectEmployee.lastname, selectEmployee.workplace, selectEmployee.acces, selectEmployee.accesLevel, selectEmployee.netRate, selectEmployee.email, selectEmployee.password, selectEmployee.activeFlag)).
           flashing("success" -> "Employee saved!")
       })
   }
@@ -106,20 +107,56 @@ object EmployeeController extends Controller {
     )
   }
 
+  def employeeFlagZero: Action[AnyContent] = Action { implicit request =>
+    selectEmployeeForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.badRequest())
+      },
+      updateEmployeeData => {
+        val selectEmployee = services.EmployeeService.setEmployeeFlag0(updateEmployeeData.id)
+        Redirect(routes.EmployeeController.setEmployeeFlag(selectEmployee)).
+          flashing("success" -> "Employee saved!")
+      })
+  }
+
+  def employeeFlagOne: Action[AnyContent] = Action { implicit request =>
+    selectEmployeeForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.badRequest())
+      },
+      updateEmployeeData => {
+        val selectEmployee = services.EmployeeService.setEmployeeFlag1(updateEmployeeData.id)
+        Redirect(routes.EmployeeController.setEmployeeFlag(selectEmployee)).
+          flashing("success" -> "Employee saved!")
+      })
+  }
+
+  def rmEmployee: Action[AnyContent] = Action { implicit request =>
+    selectEmployeeForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.badRequest())
+      },
+      deleteEmployeeData => {
+        val deleteEmployeeVal = services.EmployeeService.rmEmployee(deleteEmployeeData.id)
+        Redirect(routes.EmployeeController.employeeDeleted(deleteEmployeeVal)).
+          flashing("success" -> "Extra saved!")
+      })
+  }
+
   /**
     * Shows the welcome view for a newly registered employee.
     */
 
   def registerEmployee = Action { request =>
     request.session.get("loggedInEmployee").map { userID =>
-      Ok(views.html.employeeLoggedIn(userID, EmployeeService.chooseEmployee(userID.toLong).name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers, controllers.PizzaController.pizzaForm))
+      Ok(views.html.employeeLoggedIn(userID, EmployeeService.getEmployeeByID(userID.toLong).name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers, EmployeeService.getEmployeeByID(userID.toLong).accesLevel, EmployeeService.getEmployeeByID(userID.toLong).activeFlag, EmployeeService.getEmployeeByID(userID.toLong).acces, PizzaController.pizzaForm))
     }.getOrElse {
       Ok(views.html.employeeLogIn(controllers.EmployeeController.employeeForm, EmployeeService.registredEmployees, controllers.EmployeeController.employeeLogInForm))
     }
   }
 
   def completeLogInEmployee(id: Long, name: String) : Action[AnyContent] = Action {
-    Ok(views.html.employeeLoggedIn(id.toString, name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers, controllers.PizzaController.pizzaForm)).withSession(
+    Ok(views.html.employeeLoggedIn(id.toString, name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers, EmployeeService.getEmployeeByID(id).accesLevel, EmployeeService.getEmployeeByID(id).activeFlag, EmployeeService.getEmployeeByID(id.toLong).acces, PizzaController.pizzaForm)).withSession(
       "loggedInEmployee" -> id.toString
     )
   }
@@ -128,12 +165,20 @@ object EmployeeController extends Controller {
     Ok(views.html.newEmployeeCreated(name, lastname, workplace, acces, accesLevel, netRate, email, password))
   }
 
-  def changeEmployee(id: Long, name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String) : Action[AnyContent] = Action {
-    Ok(views.html.changeEmployee(id, name, lastname, workplace, acces, accesLevel, netRate, email, password, controllers.EmployeeController.updateEmployeeForm))
+  def changeEmployee(id: Long, name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String, activeFlag: Int) : Action[AnyContent] = Action {
+    Ok(views.html.changeEmployee(id, name, lastname, workplace, acces, accesLevel, netRate, email, password, activeFlag, controllers.EmployeeController.updateEmployeeForm))
   }
 
-  def upgradeEmployee(name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String) : Action[AnyContent] = Action {
-    Ok(views.html.employeeUpdated(name, lastname, workplace, acces, accesLevel, netRate, email, password))
+  def upgradeEmployee(id: Long, name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String) : Action[AnyContent] = Action {
+    Ok(views.html.employeeUpdated(id, name, lastname, workplace, acces, accesLevel, netRate, email, password))
+  }
+
+  def employeeDeleted(deleted: Boolean): Action[AnyContent] = Action {
+    Ok(views.html.employeeDeleted())
+  }
+
+  def setEmployeeFlag(id: Double): Action[AnyContent] = Action {
+    Ok(views.html.employeeFlagChanged(id))
   }
 
 
@@ -142,7 +187,7 @@ object EmployeeController extends Controller {
    */
 
   def showEmployees : Action[AnyContent] = Action {
-    Ok(views.html.admin(EmployeeService.registredEmployees))
+    Ok(views.html.allEmployees(EmployeeService.registredEmployees))
   }
 
   def showAllOrderDetails : Action[AnyContent] = Action {

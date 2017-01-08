@@ -24,15 +24,7 @@ trait UserDaoT {
       val id: Option[Long] =
         SQL("insert into Users(name, lastname, adress, city, plz, distance, email, password, activeFlag) values ({name}, {lastname}, {adress}, {city}, {plz}, {distance}, {email}, {password}, 1)").on(
           'name -> user.name, 'lastname -> user.lastname, 'adress -> user.adress, 'city -> user.city, 'plz -> user.plz, 'distance -> user.distance, 'email -> user.email, 'password -> user.password).executeInsert()
-      user.id = id.get
-      models.activeUser.id = user.id
-      models.activeUser.name = user.name
-      models.activeUser.lastname = user.lastname
-      models.activeUser.adress = user.adress
-      models.activeUser.city = user.city
-      models.activeUser.plz = user.plz
-      models.activeUser.email = user.email
-      models.activeUser.activeFlag = 1
+
     }
     user
   }
@@ -70,16 +62,6 @@ trait UserDaoT {
       val selectUsers = SQL("SELECT * FROM USERS WHERE email = {email} AND password = {password};").on(
         'email -> user.email, 'password -> user.password)
       val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"), row[Double]("distance"), null, null, row[Int]("activeFlag"))).toList
-
-      models.activeUser.lastname = users.head.lastname
-      models.activeUser.adress = users.head.adress
-      models.activeUser.city = users.head.city
-      models.activeUser.plz = users.head.plz
-      models.activeUser.email = users.head.email
-      models.activeUser.id = users.head.id
-      models.activeUser.name = users.head.name
-      models.activeUser.activeFlag = users.head.activeFlag
-      models.activeUser.typ = "User"
 
       return users.head
     }
@@ -129,7 +111,7 @@ trait UserDaoT {
       DB.withConnection { implicit c =>
       val selectUsers = SQL("Select * from Users;")
       // Transform the resulting Stream[Row] to a List[(String,String)]
-      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"), row[Double]("distance"), null, null, row[Int]("activeFlag"))).toList
+      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"), row[Double]("distance"), row[String]("email"), null, row[Int]("activeFlag"))).toList
       users
     }
   }

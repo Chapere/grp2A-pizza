@@ -24,6 +24,20 @@ trait PizzaServiceT {
     PizzaDao.addPizza(newPizza)
   }
 
+  def selectPizza(id: Long): Pizza = {
+    // create Pizza
+    // persist and return Pizza
+    PizzaDao.selectPizzaByIdentification(id)
+  }
+
+
+  def updatePizza(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String): Pizza = {
+    // create Pizza
+    val updatePizzaService = Pizza(id, name, price, ingredients, comment, supplements)
+    // persist and return Pizza
+    PizzaDao.updatePizzaDao(updatePizzaService)
+  }
+
   /**
    * Removes a user by id from the system.
    * @param id users id.

@@ -1,10 +1,17 @@
-@(customerID: Double, pizzaID: Double, productID: Double, pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,  pizzaPrice: Double, productAmount: Double, productPrice: Double, totalPrice: Double, orderTime: String, status: String)
+@(customerID: Double, pizzaID: Double, productID: Double, pizzaName: String, productName: String,
+        pizzaAmount: Double, pizzaSize: Double,  pizzaPrice: Double, productAmount: Double,
+        productPrice: Double, totalPrice: Double, orderTime: String, status: String,
+        extrasName: String, extrasTotalPrice: Double)
 
 @main(models.Company.name) {
         <h1 align="center">Ihre Bestellübersicht</h1>
         <h2 align="center">Kunde: @customerID</h2>
-        <h2 align="center">Pizza: @pizzaID, @pizzaName</h2>
-        <h2 align="center">Preis: @pizzaPrice</h2>
+        <h2 align="center">Pizza: @pizzaID, @pizzaName @if(extrasName != null){
+            mit zusätzlich @extrasName
+        }</h2>
+        <h2 align="center">Preis: @pizzaPrice @if(extrasName != null){
+            + @("%.2f".format(extrasTotalPrice)) €
+        }</h2>
         <h2 align="center">Anzahl: @pizzaAmount</h2>
         <h2 align="center">Größe @pizzaSize cm</h2>
         <h2 align="center">Produkt: @productID, @productName</h2>

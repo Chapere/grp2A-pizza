@@ -1,14 +1,7 @@
-@(name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String)
+@(id: Long, name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String)
 
 @main(models.Company.name) {
 
-    <h1 align="center">Willkommen @name bei @models.Company.name. Sie wurden Aktualisiert.</h1>
-    <h3>@name</h3>
-    <h3>@lastname</h3>
-    <h3>@workplace</h3>
-    <h3>@acces</h3>
-    <h3>@accesLevel</h3>
-    <h3>@netRate</h3>
-    <h3>@email</h3>
+    <h1 align="center">Mitarbeiter Aktualisiert.</h1>
 
 }

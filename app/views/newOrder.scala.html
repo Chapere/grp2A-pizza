@@ -1,21 +1,24 @@
 @(id: Long, customerID: Double, pizzaID: Double, productID: Double,
         pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,
-        pizzaPrice: Double, productAmount: Double, productPrice: Double, totalPrice: Double,
-        orderTime: String, status: String, deliveryTime: String)
+        pizzaPrice: Double, productAmount: Double, productPrice: Double,
+        extrasName: Any, extraTotalPrice: Double, totalPrice: Double, orderTime: String, status: String, deliveryTime: String)
 
 @main(models.Company.name) {
 
     <h1 align="center">Vielen Dank für Ihre Bestellung bei @models.Company.name</h1>
     <h1 align="center">Ihre Bestellübersicht</h1>
     <h2 align="center">Bestellnummer: @id.toInt</h2>
-    <h2 align="center">Kunde: @customerID</h2>
-    <h2 align="center">Pizza: @pizzaName</h2>
-    <h2 align="center">Preis: @pizzaPrice €</h2>
+    <h2 align="center">Pizza: @pizzaName @if(extraTotalPrice != 0){
+        mit zusätzlich @extrasName
+    }</h2>
+    <h2 align="center">Preis: @("%.2f".format(pizzaPrice)) € / cm @if(extraTotalPrice != 0){
+        + @("%.2f".format(extraTotalPrice)) €
+    }</h2>
     <h2 align="center">Anzahl: @pizzaAmount.toInt Stück</h2>
     <h2 align="center">Größe @pizzaSize cm</h2>
     <h2 align="center">Produkt: @productName</h2>
-    <h2 align="center">Preis: @productPrice €</h2>
-    <h2 align="center">Anzahl: @productAmount Stück</h2>
+    <h2 align="center">Preis: @("%.2f".format(productPrice)) €</h2>
+    <h2 align="center">Anzahl: @productAmount.toInt Stück</h2>
     <h2 align="center">Bestellzeitpunkt: @orderTime</h2>
     <h2 align="center">Voraussichtliche Lieferzeit: @deliveryTime</h2>
     <h2 align="center">Preis inkl. Steuern: @("%.2f".format(totalPrice)) €</h2>

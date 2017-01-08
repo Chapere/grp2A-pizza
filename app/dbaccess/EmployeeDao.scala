@@ -32,68 +32,21 @@ trait EmployeeDaoT {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
         SQL("UPDATE Employees SET name = {name}, lastname = {lastname}, workplace = {workplace}, acces = {acces}, netRate = {netRate}, email = {email}, password = {password} WHERE id = {id}").on(
-          'name -> employee.name, 'lastname -> employee.lastname, 'workplace -> employee.workplace, 'acces -> employee.acces, 'accesLevel -> employee.accesLevel, 'netRate -> employee.netRate, 'email -> employee.email, 'password -> employee.password, 'id -> models.Debug.updateUserId).executeInsert()
+          'name -> employee.name, 'lastname -> employee.lastname, 'workplace -> employee.workplace, 'acces -> employee.acces, 'accesLevel -> employee.accesLevel, 'netRate -> employee.netRate, 'email -> employee.email, 'password -> employee.password, 'id -> employee.id).executeInsert()
     }
     employee
   }
 
-  def displayEmployee(employee: Employee): Employee = {
 
+  def getEmployee(id: Double): Employee = {
     DB.withConnection { implicit c =>
-      val lastname: String =
-        SQL("Select lastname from Employees where id = {id};").on(
-          'id -> employee.id).
-          as(SqlParser.str("lastname").single)
+      val selectEmployees = SQL("SELECT * FROM Employees WHERE id = {id};").on(
+        'id -> id)
+      val employees = selectEmployees().map(row => Employee(row[Long]("id"), row[String]("name"), row[String]("lastname"),
+        row[String]("workplace"), row[String]("acces"), row[Int]("accesLevel"), row[Double]("netRate"), row[String]("email"), null, row[Int]("activeFlag"))).toList
 
-      val workplace: String =
-        SQL("Select workplace from Employees where id = {id};").on(
-          'id -> employee.id).
-          as(SqlParser.str("workplace").single)
-
-      val acces: String =
-        SQL("Select acces from Employees where id = {id};").on(
-          'id -> employee.id).
-          as(SqlParser.str("acces").single)
-
-      val netRate: Double =
-        SQL("Select netRate from Employees where id = {id};").on(
-          'id -> employee.id).
-          as(SqlParser.double("netRate").single)
-
-      val email: String =
-        SQL("Select email from Employees where id = {id};").on(
-          'id -> employee.id).
-          as(SqlParser.str("email").single)
-
-
-      val accesLevel: Int =
-        SQL("Select accesLevel from Employees where id = {id};").on(
-          'id -> employee.id).
-          as(SqlParser.int("accesLevel").single)
-
-      val name: String =
-        SQL("Select name from Employees where id = {id};").on(
-          'id -> employee.id).
-          as(SqlParser.str("name").single)
-
-      val id: Long =
-        SQL("Select id from Employees where id = {id};").on(
-          'id -> employee.id).
-          as(SqlParser.long("id").single)
-
-      val activeFlag: Int =
-        SQL("Select activeFlag from Employees where id = {id};").on(
-          'id -> employee.id).
-          as(SqlParser.int("activeFlag").single)
-
-      models.Debug.updateUserId = id
-
-      val chooseEmployee = Employee(employee.id, name, lastname, workplace, acces, accesLevel, netRate, email, null, activeFlag)
-
-      chooseEmployee
-
+      employees.head
     }
-
   }
 
 
@@ -103,20 +56,27 @@ trait EmployeeDaoT {
         'email -> employee.email, 'password -> employee.password)
       val employees = selectEmployees().map(row => Employee(row[Long]("id"), row[String]("name"), row[String]("lastname"),
         row[String]("workplace"), row[String]("acces"), row[Int]("accesLevel"), row[Double]("netRate"), row[String]("email"), null, row[Int]("activeFlag"))).toList
-      models.activeUser.lastname = employees.head.lastname
-
-      models.activeUser.workplace = employees.head.workplace
-      models.activeUser.acces = employees.head.acces
-      models.activeUser.netRate = employees.head.netRate
-      models.activeUser.email = employees.head.email
-      models.activeUser.id = employees.head.id
-      models.activeUser.accesLevel = employees.head.accesLevel
-      models.activeUser.name = employees.head.name
-      models.activeUser.activeFlag = employees.head.activeFlag
-      models.activeUser.typ = "Employee"
 
       return employees.head
     }
+  }
+
+  def deactivateEmployee(id: Long): Long = {
+    DB.withConnection { implicit c =>
+      val updateFlag: Option[Long] =
+        SQL("UPDATE Employees SET activeFlag = 0 WHERE id = {id}").on(
+          'id -> id).executeInsert()
+    }
+    0
+  }
+
+  def activateEmployee(id: Long): Long = {
+    DB.withConnection { implicit c =>
+      val updateFlag: Option[Long] =
+        SQL("UPDATE Employees SET activeFlag = 1 WHERE id = {id}").on(
+          'id -> id).executeInsert()
+    }
+    1
   }
 
   /**

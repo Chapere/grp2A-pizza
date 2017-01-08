@@ -1,0 +1,47 @@
+@(employees: List[models.Employee])
+
+@main(models.Company.name) {
+
+    <h1 align="center">Mitarbeiterübersicht</h1>
+
+    <h3>
+        <table>
+        @for(employee <- employees) {
+            <tr>
+                <th>Name</th>
+                <th>Vorname</th>
+                <th>Stundenrate</th>
+                <th>Gebiet</th>
+                <th>Zugangsberechtigung - Level</th>
+                <th>Zugangsberechtigung</th>
+                <th>E-Mail</th>
+                <th>Aktiv/Inaktiv</th>
+                <th>Bearbeiten</th>
+                <th>Löschen</th>
+            </tr>
+            <tr>
+                <th>@employee.name</th>
+                <th>@employee.lastname</th>
+                <th>@employee.netRate</th>
+                <th>@employee.workplace</th>
+                <th>@employee.accesLevel</th>
+                <th>@employee.acces</th>
+                <th>@employee.email</th>
+                @if(employee.activeFlag == 1) {
+                    <th>Aktiv</th>
+                } else {
+                    <th>Inaktiv</th>
+                }
+                <th><h1>@helper.form(action = routes.EmployeeController.chooseEmployee()) {
+                    <button type="submit" name="Mitarbeiter ID" value="@employee.id">Bearbeiten</button>
+                }</h1></th>
+                <th><h1>@helper.form(action = routes.EmployeeController.rmEmployee()) {
+                    <button type="submit" name="Mitarbeiter ID" value="@employee.id">Löschen</button>
+                }</h1></th>
+
+            </tr>
+        </table>
+    }
+    </h3>
+
+}

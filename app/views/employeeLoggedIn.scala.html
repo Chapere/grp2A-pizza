@@ -1,33 +1,24 @@
-@import forms.CreatePizzaForm
 @(userID: String, name: String, employeeForm: Form[forms.CreateEmployeeForm],
         selectEmployeeForm: Form[forms.SelectEmployeeForm], employees: List[models.Employee],
-        userForm: Form[forms.CreateUserForm], users: List[models.User], pizzaForm: Form[forms.CreatePizzaForm])
+        userForm: Form[forms.CreateUserForm], users: List[models.User], accesLevel: Double, activeFlag: Double, acces: String,
+        pizzaForm: Form[forms.CreatePizzaForm])
 
 @main(models.Company.name) {
 
     <h2 align="center">Willkommen @name bei @models.Company.name. Sie wurden Eingeloggt.</h2>
 
     <h2 style="font-size: 25px; margin-top: -25px; margin-bottom: 60px; font-style: normal;" align="center">
-        Als Mitarbeieter der Stufe: @models.activeUser.accesLevel (@models.activeUser.acces) haben Sie Zugriff zu folgenden Webparts:
+        Als Mitarbeieter der Stufe: @accesLevel (@acces) haben Sie Zugriff zu folgenden Webparts:
     </h2>
 
-    @if(models.activeUser.accesLevel == 10 && userID != null) {
-        <h1>Pizza Hinzufügen</h1>
-        <h3> @helper.form(action = routes.PizzaController.addPizza()) {
-            @helper.inputText(pizzaForm("Pizza"))
-            @helper.inputText(pizzaForm("Preis pro cm"))
-            @helper.inputText(pizzaForm("Zutaten"))
-            @helper.inputText(pizzaForm("Kommentar"))
-            @helper.inputText(pizzaForm("Zusätze"))
-            <input type="submit" value="Hinzufügen" />
-        } </h3>
-    }
+
 
     <div style="height: 50px; display: block; width: 100%; float: none; clear: both;"></div>
 
-    <div class="left">
+    <button><a href="/allOrderDetails">Alle Bestellungen anzeigen</a></button><button><a href="/showUsers">Alle Kunden anzeigen</a></button><button><a href="/showEmployees">Alle Mitarbeiter anzeigen</a></button><button><a href="/showPizzas">Alle Pizzen anzeigen</a></button><button><a href="/showProducts">Alle Produkte anzeigen</a></button><button><a href="/showExtras">Alle Extras anzeigen</a></button>
 
-    @if(models.activeUser.accesLevel == 10 && userID != null) {
+    @if(accesLevel == 10 && userID != null) {
+    <div class="left">
         <h1>Mitarbeiter</h1>
         <h1 style="font-size: 30px">Registrierung</h1>
         <h3> @helper.form(action = routes.EmployeeController.addEmployee()) {
@@ -39,21 +30,13 @@
             @helper.inputText(employeeForm("Stundenrate"))
             @helper.inputText(employeeForm("E-Mail"))
             @helper.inputText(employeeForm("Passwort"))
-            <input type="submit" value="Registrieren" />
+            <button type="submit" >Registrieren</button>
 
         } </h3>
 
-        <h1 style="font-size: 30px">Änderung</h1>
-        @helper.form(action = routes.EmployeeController.chooseEmployee()) {
-            <select name="Mitarbeiter ID"> @for(employee <- employees) {
-                <option value="@employee.id">@employee.id</option>
-            }
-            </select>
-            <button type="submit" value="Auswählen">Auswählen</button>
-        }
     }
     </div>
-    @if(models.activeUser.accesLevel >= 5 && models.activeUser.activeFlag == 1) {
+    @if(accesLevel >= 5 && activeFlag == 1) {
         <div class="right">
             <h1>Kunden</h1>
             <h1 style="font-size: 30px">Registrierung</h1>
@@ -63,23 +46,47 @@
                 @helper.inputText(userForm("Adresse"))
                 @helper.inputText(userForm("Stadt"))
                 @helper.inputText(userForm("PLZ"))
+                @helper.inputText(userForm("Entfernung"))
                 @helper.inputText(userForm("E-Mail"))
                 @helper.inputText(userForm("Passwort"))
-                <input type="submit" value="Registrieren" />
+                <button type="submit" >Registrieren</button>
             }
             </h3>
-            <h1 style="font-size: 30px; margin-top: 91px;">Änderung</h1>
-            @helper.form(action = routes.UserController.chooseUser()) {
-                <select name="User ID"> @for(user <- users) {
-                    <option value="@user.id">@user.id</option>
-                }
-                </select>
-                <button type="submit" value="Auswählen">Auswählen</button>
+        </div>
+
+        <div class="left">
+            <h1>Pizza</h1>
+            <h1 style="font-size: 30px">Registrierung</h1>
+            <h3> @helper.form(action = routes.PizzaController.addPizza()) {
+                @helper.inputText(pizzaForm("Name"))
+                @helper.inputText(pizzaForm("Preis pro cm"))
+                @helper.inputText(pizzaForm("Zutaten"))
+                @helper.inputText(pizzaForm("Kommentar"))
+                @helper.inputText(pizzaForm("Zusatzstoffe"))
+                <input type="submit" value="Hinzufügen" />
+            } </h3>
+        </div>
+        <div class="right">
+            <h1>Extra</h1>
+            <h1 style="font-size: 30px">Registrierung</h1>
+        @helper.form(action = routes.ExtraController.addExtra()) {
+            @helper.inputText(userForm("Name"))
+            @helper.inputText(userForm("Preis"))
+            <button type="submit" name="id" value="-1">Registrieren</button>
+        }
+
+            <h1>Produkt</h1>
+            <h1 style="font-size: 30px">Registrierung</h1>
+            @helper.form(action = routes.ProductController.addProduct()) {
+                @helper.inputText(userForm("Name"))
+                @helper.inputText(userForm("Preis"))
+                @helper.inputText(userForm("Größe"))
+                @helper.inputText(userForm("Einheit"))
+                <button type="submit" name="id" value="-1">Registrieren</button>
             }
         </div>
 
     }
 
-    <button><a href="/allOrderDetails">Alle Bestellungen anzeigen</a></button>
 
 }

@@ -1,0 +1,40 @@
+@(products: List[models.Product])
+
+@main(models.Company.name) {
+
+    <h1 align="center">Extrasübersicht</h1>
+
+    <h3>
+        <table>
+        @for(product <- products) {
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Preis</th>
+                <th>Größe</th>
+                <th>Einheit</th>
+                <th>Löschen</th>
+
+            </tr>
+            <tr>
+                <th>@product.id</th>
+                <th>@product.name</th>
+                <th>@product.price</th>
+                <th>@product.size</th>
+                <th>@product.unit</th>
+                <th><h1>@if(product.id != 0) {
+                    @helper.form(action = routes.ProductController.getProduct()) {
+                    <button type="submit" name="id" value="@product.id">Bearbeiten</button>
+                    }
+                }</h1></th>
+                <th><h1>@if(product.id != 0) {
+                    @helper.form(action = routes.ProductController.rmProduct()) {
+                    <button type="submit" name="id" value="@product.id">Löschen</button>
+                    }
+                }</h1>
+                }
+            </tr>
+        </table>
+    </h3>
+
+}

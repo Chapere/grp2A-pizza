@@ -24,9 +24,12 @@ object OrderController extends Controller {
       "userID" -> of(doubleFormat),
       "pizzaID" -> of(doubleFormat),
       "productID" -> of(doubleFormat),
-      "pizzaAmount" -> of(doubleFormat),
+      "pizzaAmount" -> default(number, 0),
       "pizzaSize" -> of(doubleFormat),
-      "productAmount" -> of(doubleFormat))(CreateOrderForm.apply)(CreateOrderForm.unapply))
+      "productAmount" -> default(number, 0),
+      "extraOneID" -> of(doubleFormat),
+      "extraTwoID" -> of(doubleFormat),
+      "extraThreeID" -> of(doubleFormat))(CreateOrderForm.apply)(CreateOrderForm.unapply))
 
   val modifyOrderForm = Form(
     mapping(
@@ -46,18 +49,37 @@ object OrderController extends Controller {
   def createOrder : Action[AnyContent] = Action { implicit request =>
     orderForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.products(PizzaService.availablePizza, ProductService.availableProduct, formWithErrors, 1))
+        BadRequest(views.html.badRequest())
       },
       orderData => {
         try {
           val selectUser = services.UserService.getUserByID(orderData.userID.toLong)
-          var time: Int = (2.toInt * selectUser.head.distance.toInt) + (10.toInt * orderData.pizzaAmount.toInt)
-          var deliveryTime = DateTime.now() + time.minutes
+          var time: Int = (2 * selectUser.head.distance.toInt) + (10 * orderData.pizzaAmount.toInt)
+          var deliveryTime = DateTimeFormat.forPattern("kk:mm - DD.MM.YYYY").print(DateTime.now() + time.minutes)
+
+
+
           val orderNew = services.OrderService.createOrder(orderData.userID,
-            orderData.pizzaID, orderData.productID, "N/A", "N/A", orderData.pizzaAmount, orderData.pizzaSize, -1,
-            orderData.productAmount, -1, DateTime.now.toString, "N/A")
+            orderData.pizzaID, orderData.productID, "N/A", "N/A", orderData.pizzaAmount.toDouble, orderData.pizzaSize, -1,
+            orderData.productAmount.toDouble, -1,
+            orderData.extraOneID, "N/A", 0,
+            orderData.extraTwoID, "N/A", 0,
+            orderData.extraThreeID, "N/A", 0,
+            DateTimeFormat.forPattern("kk:mm - DD.MM.YYYY").print(DateTime.now()), "N/A", deliveryTime)
+
+
+          val extraTotalPrice = orderNew.extraOnePrice + orderNew.extraTwoPrice + orderNew.extraThreePrice
+          val extrasName =
+            if(orderNew.extraOneID != 0 && orderNew.extraTwoID == 0 && orderNew.extraThreeID == 0){
+              orderNew.extraOneName
+            } else if(orderNew.extraOneID != 0 && orderNew.extraTwoID != 0  && orderNew.extraThreeID == 0){
+              orderNew.extraOneName + ", " + orderNew.extraTwoName
+            } else if (orderNew.extraOneID != 0 && orderNew.extraTwoID != 0 && orderNew.extraThreeID != 0){
+              orderNew.extraOneName + ", " + orderNew.extraTwoName + ", " + orderNew.extraThreeName
+            }
           Redirect(routes.OrderController.newOrderCreated(orderNew.id, orderNew.customerID, orderNew.pizzaID, orderNew.productID, orderNew.pizzaName, orderNew.productName,
-            orderNew.pizzaAmount, orderNew.pizzaSize, orderNew.pizzaPrice, orderNew.productAmount, orderNew.productPrice, orderNew.totalPrice, orderNew.orderTime, orderNew.status, deliveryTime.toString)).
+            orderNew.pizzaAmount, orderNew.pizzaSize, orderNew.pizzaPrice, orderNew.productAmount, orderNew.productPrice,
+            extrasName.toString, extraTotalPrice, orderNew.totalPrice, orderNew.orderTime, orderNew.status, deliveryTime)).
             flashing("success" -> "Order saved!")
         } catch {
           case e: RuntimeException => BadRequest(views.html.orderFailed())
@@ -84,12 +106,24 @@ object OrderController extends Controller {
   def showSelectedOrder : Action[AnyContent] = Action { implicit request =>
     modifyOrderForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.products(PizzaService.availablePizza, ProductService.availableProduct, orderForm, 1))
+        BadRequest(views.html.badRequest())
       },
       modifyOrderData => {
         val newOrder = services.OrderService.getOrderbyID(modifyOrderData.orderID)
+        val extraTotalPrice = newOrder.extraOnePrice + newOrder.extraTwoPrice + newOrder.extraThreePrice
+        val extrasName =
+
+          if(newOrder.extraOneID == 0 && newOrder.extraTwoID == 0 && newOrder.extraThreeID == 0){
+            "empty"
+          } else if(newOrder.extraOneID != 0 && newOrder.extraTwoID == 0 && newOrder.extraThreeID == 0){
+            newOrder.extraOneName
+          } else if(newOrder.extraOneID != 0 && newOrder.extraTwoID != 0  && newOrder.extraThreeID == 0){
+            newOrder.extraOneName + ", " + newOrder.extraTwoName
+          } else if (newOrder.extraOneID != 0 && newOrder.extraTwoID != 0 && newOrder.extraThreeID != 0){
+            newOrder.extraOneName + ", " + newOrder.extraTwoName + ", " + newOrder.extraThreeName
+          }
         Redirect(routes.OrderController.showOrder(newOrder.customerID, newOrder.pizzaID, newOrder.productID, newOrder.pizzaName, newOrder.productName, newOrder.pizzaAmount, newOrder.pizzaSize, newOrder.pizzaPrice,
-          newOrder.productAmount, newOrder.productPrice, newOrder.totalPrice, newOrder.orderTime, newOrder.status)).
+          newOrder.productAmount, newOrder.productPrice, newOrder.totalPrice, newOrder.orderTime, newOrder.status, extrasName.toString, extraTotalPrice)).
           flashing("success" -> "Order saved!")
       })
   }
@@ -97,7 +131,7 @@ object OrderController extends Controller {
   def deleteOrder : Action[AnyContent] = Action { implicit request =>
     modifyOrderForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.products(PizzaService.availablePizza, ProductService.availableProduct, orderForm, 1))
+        BadRequest(views.html.badRequest())
       },
       modifyOrderData => {
         val newOrder = services.OrderService.rmOrder(modifyOrderData.orderID)
@@ -109,7 +143,7 @@ object OrderController extends Controller {
   def deactivateOrder : Action[AnyContent] = Action { implicit request =>
     modifyOrderForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.products(PizzaService.availablePizza, ProductService.availableProduct, orderForm, 1))
+        BadRequest(views.html.badRequest())
       },
       modifyOrderData => {
         val newOrder = services.OrderService.deactivateOrder(modifyOrderData.orderID)
@@ -120,18 +154,22 @@ object OrderController extends Controller {
 
   def newOrderCreated(id: Long, customerID: Double, pizzaID: Double, productID: Double,
                       pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,
-                      pizzaPrice: Double, productAmount: Double, productPrice: Double, totalPrice: Double,
+                      pizzaPrice: Double, productAmount: Double, productPrice: Double,
+                      extrasName: Any, extraTotalPrice: Double, totalPrice: Double,
                       orderTime: String, status: String, deliveryTime: String) : Action[AnyContent] = Action {
     Ok(views.html.newOrder(id.toInt, customerID.toInt, pizzaID.toInt, productID.toInt, pizzaName, productName,
-      pizzaAmount, pizzaSize, pizzaPrice, productAmount, productPrice, totalPrice, orderTime, status, deliveryTime))
+      pizzaAmount, pizzaSize, pizzaPrice, productAmount, productPrice, extrasName.toString,
+      extraTotalPrice, totalPrice, orderTime, status, deliveryTime))
   }
 
   def showOrder(customerID: Double, pizzaID: Double, productID: Double,
                       pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,
                       pizzaPrice: Double, productAmount: Double, productPrice: Double, totalPrice: Double,
-                      orderTime: String, status: String) : Action[AnyContent] = Action {
+                      orderTime: String, status: String, extrasName: String,
+                      extrasTotalPrice: Double) : Action[AnyContent] = Action {
+
     Ok(views.html.showOrder(customerID, pizzaID, productID, pizzaName, productName, pizzaAmount, pizzaSize, pizzaPrice,
-      productAmount, productPrice, totalPrice, orderTime, status))
+      productAmount, productPrice, totalPrice, orderTime, status, extrasName, extrasTotalPrice))
   }
 
   /**

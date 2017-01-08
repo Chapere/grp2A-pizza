@@ -28,6 +28,31 @@ trait PizzaDaoT {
     pizza
   }
 
+
+  def updatePizzaDao(pizza: Pizza): Pizza = {
+    DB.withConnection { implicit c =>
+      val id: Option[Long] =
+        SQL("UPDATE Pizzas SET name = {name}, price = {price}, ingredients = {ingredients}, comment = {comment}, supplements = {supplements} WHERE id = {id}").on(
+          'name -> pizza.name, 'price -> pizza.price, 'ingredients -> pizza.ingredients, 'comment -> pizza.comment, 'supplements -> pizza.supplements, 'id -> pizza.id).executeInsert()
+    }
+    pizza
+  }
+
+
+
+  def selectPizzaByIdentification(id: Long): Pizza = {
+
+    DB.withConnection { implicit c =>
+      val selectPizza = SQL("SELECT * FROM Pizzas WHERE id = {id};").on(
+        'id -> id)
+      val pizzas = selectPizza().map(row => Pizza(row[Long]("id"), row[String]("name"), row[Double]("price"),
+        row[String]("ingredients"), row[String]("comment"), row[String]("supplements"))).toList
+
+      pizzas.head
+    }
+
+  }
+
   /**
    * Removes a user by id from the database.
    * @param id the users id

@@ -1,4 +1,4 @@
-@(id: Long, name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String, updateEmployeeForm: Form[forms.UpdateEmployeeForm])
+@(id: Long, name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String, activeFlag: Int, updateEmployeeForm: Form[forms.UpdateEmployeeForm])
 
 @main(models.Company.name) {
 
@@ -28,12 +28,24 @@
                 <h1>@helper.inputText(updateEmployeeForm("Stundenrate"))</h1>
                 <h2>Alter Wert: @netRate</h2>
 
-                <h1>@helper.inputText(updateEmployeeForm("e-Mail"))</h1>
+                <h1>@helper.inputText(updateEmployeeForm("E-Mail"))</h1>
                 <h2>Alter Wert: @email</h2>
 
                 <h1>@helper.inputPassword(updateEmployeeForm("Passwort"))</h1>
             </div>
-            <input type="submit" value="Mitarbeiter ändern" />
+            <button type="submit" name="id" value="@id">Eingaben speichern</button>
+
+            @if(activeFlag == 1) {
+                <h1>@helper.form(action = routes.EmployeeController.employeeFlagZero()) {
+                    <button type="submit" name="Mitarbeiter ID" value="@id">Benuter @id Deaktivieren?</button>
+                }
+                </h1>
+            } else {
+                <h1>@helper.form(action = routes.EmployeeController.employeeFlagOne()) {
+                    <button type="submit" name="Mitarbeiter ID" value="@id">Benuter @id Aktivieren?</button>
+                }
+                }
+        </h1>
 
         }
     </div>

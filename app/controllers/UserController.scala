@@ -191,7 +191,7 @@ object UserController extends Controller {
   }
 
   def userDeleted(deleted: Boolean): Action[AnyContent] = Action {
-    Ok(views.html.userDeleted(UserService.registeredUsers))
+    Ok(views.html.userDeleted())
   }
   def setUserFlag(id: Double): Action[AnyContent] = Action {
     Ok(views.html.userFlagChanged(id))
@@ -201,19 +201,9 @@ object UserController extends Controller {
     * List all users currently available in the system.
     */
   def showUsers: Action[AnyContent] = Action {
-    Ok(views.html.benutzer(UserService.registeredUsers))
+    Ok(views.html.allUsers(UserService.registeredUsers))
   }
 
-
-  /**def getUserByIdentification: Action[AnyContent] = Action { implicit request =>
-        try {
-          val selectedUser = services.UserService.getUserByID(models.activeUser.id)
-          Redirect(routes.UserController.getDistance1(selectedUser.adress, selectedUser.plz, selectedUser.city)).
-            flashing("success" -> "User saved!")
-        } catch {
-          case e: RuntimeException => BadRequest(views.html.loginFailed())
-        }
-  }*/
 
 }
 

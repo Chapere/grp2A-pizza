@@ -8,10 +8,7 @@
     <table>
         <tr>
             <th>Bestellnummer</th>
-            <th>Benutzer ID</th>
-            <th>Pizza ID</th>
-            <th>Produkt ID</th>
-            <th>Pizza Name</th>
+            <th>Pizza Name </th>
             <th>Produkt Name</th>
             <th>Pizza - Anzahl</th>
             <th>Pizza - Größe</th>
@@ -19,25 +16,35 @@
             <th>Produkt - Anzahl</th>
             <th>Produkt - Preis</th>
             <th>Preis inkl. Steuern</th>
-            <th>Bestellzeit</th>
+            <th>Bestellzeitpunkt</th>
+            <th>Lieferzeitpunkt</th>
             <th>Status</th>
             <th>Stornieren</th>
         </tr>
     @for(order <- ordersByID) {
         <tr>
             <td>@order.id</td>
-            <td>@order.customerID.toInt</td>
-            <td>@order.pizzaID.toInt</td>
-            <td>@order.productID.toInt</td>
-            <td>@order.pizzaName</td>
+            <td>@order.pizzaName @if(order.extraOnePrice != 0 && order.extraTwoPrice == 0 && order.extraThreePrice == 0) {
+                mit zusätzlich @order.extraOneName
+                }
+                @if(order.extraOnePrice != 0 && order.extraTwoPrice != 0 && order.extraThreePrice == 0) {
+                    mit zusätzlich @order.extraOneName, @order.extraTwoName
+                }
+                @if(order.extraOnePrice != 0 && order.extraTwoPrice != 0 && order.extraThreePrice != 0) {
+                    mit zusätzlich @order.extraOneName, @order.extraTwoName, @order.extraThreeName
+                }
+                </td>
             <td>@order.productName</td>
             <td>@order.pizzaAmount.toInt</td>
             <td>@order.pizzaSize cm</td>
-            <td>@("%.2f".format(order.pizzaPrice)) €</td>
+            <td>@("%.2f".format(order.pizzaPrice)) € / cm @if(order.extraOnePrice != 0 || order.extraTwoPrice == 0 || order.extraThreePrice == 0) {
+                + @{"%.2f".format(order.extraOnePrice + order.extraTwoPrice + order.extraThreePrice)} €
+            }</td>
             <td>@order.productAmount.toInt</td>
             <td>@("%.2f".format(order.productPrice)) €</td>
             <td>@("%.2f".format(order.totalPrice)) €</td>
             <td>@order.orderTime</td>
+            <td>@order.deliveryTime</td>
             <td>@order.status</td>
             @if(order.status.toString != "Storniert") {
                 <td><h1>@helper.form(action = routes.OrderController.deactivateOrder()) {

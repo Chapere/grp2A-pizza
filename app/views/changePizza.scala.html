@@ -1,0 +1,33 @@
+@(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String, pizzaForm: Form[forms.CreatePizzaForm])
+
+@main(models.Company.name) {
+
+    <h1 align="center" style="margin-top: 0px; margin-bottom: 100px">Extra ändern: @name</h1>
+
+    <div id="editEmployee">
+        <div class="left">
+            <h1>Name</h1>
+            <h2>@name</h2>
+            <h1>Preis</h1>
+            <h2>@price</h2>
+            <h1>Zutaten</h1>
+            <h2>@ingredients</h2>
+            <h1>Kommentar</h1>
+            <h2>@comment</h2>
+            <h1>Zusätze</h1>
+            <h2>@supplements</h2>
+        </div>
+        <div class="right">
+            <h1>@helper.form(action = routes.PizzaController.updatePizza()) {
+                @helper.inputText(pizzaForm("Name"))
+                @helper.inputText(pizzaForm("Preis pro cm"))
+                @helper.inputText(pizzaForm("Zutaten"))
+                @helper.inputText(pizzaForm("Kommentar"))
+                @helper.inputText(pizzaForm("Zusatzstoffe"))
+                <button style="margin-left: 40px" type="submit" name="id" value="@id">Pizza ändern</button>
+            }
+            </h1>
+        </div>
+    </div>
+
+}

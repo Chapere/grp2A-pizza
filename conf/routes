@@ -8,11 +8,23 @@ GET         /                    controllers.Application.index
 POST        /createOrder         controllers.OrderController.createOrder
 
 POST        /addUser             controllers.UserController.addUser
-POST        /addEmployee         controllers.EmployeeController.addEmployee
+POST        /addExtra            controllers.ExtraController.addExtra
+POST        /addProduct          controllers.ProductController.addProduct
 POST        /addPizza            controllers.PizzaController.addPizza
+POST        /addEmployee         controllers.EmployeeController.addEmployee
 POST        /chooseEmployee      controllers.EmployeeController.chooseEmployee
+POST        /rmEmployee          controllers.EmployeeController.rmEmployee
 POST        /showSelectedOrder   controllers.OrderController.showSelectedOrder
 POST        /deleteOrder         controllers.OrderController.deleteOrder
+POST        /rmExtra             controllers.ExtraController.rmExtra
+POST        /selectExtra         controllers.ExtraController.getExtra
+POST        /updateExtra         controllers.ExtraController.updateExtra
+POST        /rmPizza             controllers.PizzaController.rmPizza
+POST        /selectPizza         controllers.PizzaController.getPizza
+POST        /updatePizza         controllers.PizzaController.updatePizza
+POST        /rmProduct           controllers.ProductController.rmProduct
+POST        /selectProduct       controllers.ProductController.getProduct
+POST        /updateProduct       controllers.ProductController.updateProduct
 POST        /deactivateOrder     controllers.OrderController.deactivateOrder
 POST        /setOrderStatus      controllers.OrderController.setStatusOrder
 POST        /updateEmployee      controllers.EmployeeController.updateEmployee
@@ -23,12 +35,15 @@ POST        /updateUser          controllers.UserController.updateUser
 POST        /rmUser              controllers.UserController.rmUser
 POST        /changeUserFlag0     controllers.UserController.userFlagZero
 POST        /changeUserFlag1     controllers.UserController.userFlagOne
+POST        /changeEmployeeFlag0     controllers.EmployeeController.employeeFlagZero
+POST        /changeEmployeeFlag1     controllers.EmployeeController.employeeFlagOne
 
 
 GET         /registerUser        controllers.UserController.registerUser
 GET         /registerEmployee    controllers.EmployeeController.registerEmployee
 GET         /products            controllers.PizzaController.products
 GET         /orders              controllers.OrderController.orders
+GET         /employeeFlagSet     controllers.EmployeeController.setEmployeeFlag(id: Double)
 
 
 GET         /showUsers           controllers.UserController.showUsers
@@ -39,24 +54,40 @@ GET         /changeUser          controllers.UserController.changeUser1(id: Long
 GET         /userDeleted         controllers.UserController.userDeleted(deleted: Boolean)
 GET         /userFlagSet         controllers.UserController.setUserFlag(id: Double)
 
+GET         /upgradeExtra        controllers.ExtraController.upgradeExtra(id: Long, name, price: Double)
+GET         /newExtraCreated     controllers.ExtraController.newExtraCreated(id: Long, name, price: Double)
+GET         /extraDeleted        controllers.ExtraController.extraDeleted(deleted: Boolean)
+GET         /changeExtra         controllers.ExtraController.changeExtra1(id: Long, name, price: Double)
+GET         /showExtras          controllers.ExtraController.showExtras
 
 
 GET         /showEmployees       controllers.EmployeeController.showEmployees
 GET         /newEmployeeCreated  controllers.EmployeeController.newEmployeeCreated(name, lastname, workplace, acces, accesLevel: Int, netRate: Double, email, password)
-GET         /changeEmployee      controllers.EmployeeController.changeEmployee(id: Long, name, lastname, workplace, acces, accesLevel: Int, netRate: Double, email, password)
-GET         /upgradeEmployee     controllers.EmployeeController.upgradeEmployee(name, lastname, workplace, acces, accesLevel: Int, netRate: Double, email, password)
+GET         /changeEmployee      controllers.EmployeeController.changeEmployee(id: Long, name, lastname, workplace, acces, accesLevel: Int, netRate: Double, email, password, activeFlag: Int)
+GET         /upgradeEmployee     controllers.EmployeeController.upgradeEmployee(id: Long, name, lastname, workplace, acces, accesLevel: Int, netRate: Double, email, password)
 GET         /employeeLoggedIn    controllers.EmployeeController.completeLogInEmployee(id: Long, name)
+GET         /employeeDeleted     controllers.EmployeeController.employeeDeleted(deleted: Boolean)
 
-GET         /newOrderCreated     controllers.OrderController.newOrderCreated(id: Long, customerID: Double, pizzaID: Double, productID: Double, pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,  pizzaPrice: Double, productAmount: Double, productPrice: Double, totalPrice: Double, orderTime: String, status: String, deliveryTime: String)
-GET         /showOrder           controllers.OrderController.showOrder(customerID: Double, pizzaID: Double, productID: Double, pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,  pizzaPrice: Double, productAmount: Double, productPrice: Double, totalPrice: Double, orderTime: String, status: String)
+GET         /newOrderCreated     controllers.OrderController.newOrderCreated(id: Long, customerID: Double, pizzaID: Double, productID: Double, pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,  pizzaPrice: Double, productAmount: Double, productPrice: Double, extrasName: String, extraTotalPrice: Double, totalPrice: Double, orderTime: String, status: String, deliveryTime: String)
+GET         /showOrder           controllers.OrderController.showOrder(customerID: Double, pizzaID: Double, productID: Double, pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,  pizzaPrice: Double, productAmount: Double, productPrice: Double, totalPrice: Double, orderTime: String, status: String, extrasName, extraTotalPrice: Double)
 GET         /orderDeleted        controllers.OrderController.orderDeleted
 GET         /allOrderDetails     controllers.EmployeeController.showAllOrderDetails
 
+GET         /newProductCreated   controllers.ProductController.newProductCreated(id: Long, name: String, price: Double, size: Double, unit: String)
+GET         /upgradeProduct      controllers.ProductController.upgradeProduct(id: Long, name: String, price: Double, size: Double, unit: String)
+GET         /productDeleted      controllers.ProductController.productDeleted(deleted: Boolean)
+GET         /changeProduct       controllers.ProductController.changeProduct1(id: Long, name, price: Double, size: Double, unit: String)
+GET         /showProducts        controllers.ProductController.showProducts
+
+GET         /newPizzaCreated     controllers.PizzaController.newPizzaCreated(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String)
+GET         /upgradePizza        controllers.PizzaController.upgradePizza(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String)
+GET         /pizzaDeleted        controllers.PizzaController.pizzaDeleted(deleted: Boolean)
+GET         /changePizza         controllers.PizzaController.changePizza1(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String)
+GET         /showPizzas           controllers.PizzaController.showPizzas
+
+
 GET         /logout              controllers.Application.logOut
 
-GET         /newPizzaCreated      controllers.PizzaController.newPizzaCreated(name, price: Double, ingredients, comment, supplements)
-
-#GET         /getUserByID        controllers.UserController.getUserByIdentification
 
 
 
@@ -71,7 +102,6 @@ GET         /api/order/:id       rest.Orders.order(id: Long)
 GET         /api/employees       rest.Employees.employees
 GET         /api/employee/:id    rest.Employees.employee(id: Long)
 POST        /api/employee        rest.Employees.addEmployee
-POST        /api/order           rest.Orders.addOrder
 POST        /api/pizza           rest.Pizzas.addPizza
 POST        /api/user            rest.Users.addUser
 DELETE      /api/user/:id        rest.Users.rmUser(id: Long)

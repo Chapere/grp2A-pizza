@@ -24,16 +24,14 @@ trait EmployeeServiceT {
     EmployeeDao.addEmployee(newEmployee)
   }
 
-  def chooseEmployee(id: Long): Employee = {
-    // create User
-    val showEmployee = Employee(id, null, null, null, null, -1, -1, null, null, -1)
+  def getEmployeeByID(id: Long): Employee = {
     // persist and return User
-    EmployeeDao.displayEmployee(showEmployee)
+    EmployeeDao.getEmployee(id)
   }
 
-  def updateEmployee(name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String): Employee = {
+  def updateEmployee(id: Long, name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String): Employee = {
     // create User
-    val updateEmployeeService = Employee(-1, name, lastname, workplace, acces, accesLevel, netRate, email, password, -1)
+    val updateEmployeeService = Employee(id, name, lastname, workplace, acces, accesLevel, netRate, email, password, -1)
     // persist and return User
     EmployeeDao.updateEmployeeDao(updateEmployeeService)
   }
@@ -44,6 +42,19 @@ trait EmployeeServiceT {
     // persist and return User
     return employeeDao.logInEmployee(logInEmployee)
   }
+
+  def setEmployeeFlag0(id: Long): Long = {
+    // create User
+    // persist and return User
+    EmployeeDao.deactivateEmployee(id)
+  }
+
+  def setEmployeeFlag1(id: Long): Long = {
+    // create User
+    // persist and return User
+    EmployeeDao.activateEmployee(id)
+  }
+
 
   /**
    * Removes a user by id from the system.

@@ -42,9 +42,10 @@ CREATE TABLE Pizzas (
 );
 
 INSERT INTO Pizzas (id, name, price, ingredients, comment, supplements)
-VALUES (1, 'Margherita', 0.60, 'Pizzateig, Tomaten, Käse', 'Der Klassiker', '1,2,5'),
-    (2, 'Funghi', 0.70, 'Pizzateig, Tomaten, Champignions, Schinken, Käse', 'Für Entwickler', '1,2,3,5,8'),
-    (3, 'Hawaii', 0.90, 'Pizzateig, Tomaten, Ananas, Käse', 'Des Deutschen liebste', '1,2,3,5,6,7,8');
+VALUES (0, '', 0, '', '', ''),
+       (1, 'Margherita', 0.60, 'Pizzateig, Tomaten, Käse', 'Der Klassiker', '1,2,5'),
+       (2, 'Funghi', 0.70, 'Pizzateig, Tomaten, Champignions, Schinken, Käse', 'Für Entwickler', '1,2,3,5,8'),
+       (3, 'Hawaii', 0.90, 'Pizzateig, Tomaten, Ananas, Käse', 'Des Deutschen liebste', '1,2,3,5,6,7,8');
 
 
 CREATE TABLE Products (
@@ -56,11 +57,25 @@ CREATE TABLE Products (
 );
 
 INSERT INTO Products (id, name, price, size, unit)
-VALUES (1, 'Coca-Cola', 1.45, 0.5, 'Liter'),
-      (2, 'Fanta', 1.20, 0.30, 'Liter'),
-      (3, 'Sprite', 2.00, 1, 'Liter'),
-      (4, 'Pommes Frites', 1.99, 500, 'Gramm'),
-      (5, 'Chicken-Wings', 2.99, 14, 'Stück');
+VALUES (0, '', 0, 0, ''),
+       (1, 'Coca-Cola', 1.45, 0.5, 'Liter'),
+       (2, 'Fanta', 1.20, 0.30, 'Liter'),
+       (3, 'Sprite', 2.00, 1, 'Liter'),
+       (4, 'Pommes Frites', 1.99, 500, 'Gramm'),
+       (5, 'Chicken-Wings', 2.99, 14, 'Stück');
+
+CREATE TABLE Extras (
+    id serial PRIMARY KEY,
+    name VARCHAR(255),
+    price NUMERIC NOT NULL
+);
+
+INSERT INTO Extras (id, name, price)
+VALUES (0, '', 0),
+       (1, 'Champignions', 0.80),
+       (2, 'Paprika', 0.60),
+       (3, 'Käse', 0.50),
+       (4, 'Schinken', 0.90);
 
 CREATE TABLE Orders (
     id serial PRIMARY KEY,
@@ -74,7 +89,19 @@ CREATE TABLE Orders (
     pizzaPrice NUMERIC NOT NULL,
     productAmount NUMERIC NOT NULL,
     productPrice NUMERIC NOT NULL,
+    extraOneID NUMERIC NOT NULL,
+    extraOneName VARCHAR(255) NOT NULL,
+    extraOnePrice NUMERIC NOT NULL,
+    extraTwoID NUMERIC NOT NULL,
+    extraTwoName VARCHAR(255) NOT NULL,
+    extraTwoPrice NUMERIC NOT NULL,
+    extraThreeID NUMERIC NOT NULL,
+    extraThreeName VARCHAR(255) NOT NULL,
+    extraThreePrice NUMERIC NOT NULL,
+    extrasString VARCHAR(255) NOT NULL,
+    extrasTotalPrice NUMERIC NOT NULL,
     totalPrice NUMERIC NOT NULL,
     orderTime VARCHAR(255) NOT NULL,
-    status VARCHAR(255) NOT NULL
+    status VARCHAR(255) NOT NULL,
+    deliveryTime VARCHAR(255) NOT NULL
 );

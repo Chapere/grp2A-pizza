@@ -1,7 +1,7 @@
 package services
 
 import dbaccess.{OrderDao, OrderDaoT}
-import models.{Order, OrderWithAdress}
+import models.{Extra, Order, OrderWithAdress, OrdersWithExtras}
 
 /**
  * Service class for user related operations.
@@ -22,10 +22,13 @@ trait OrderServiceT {
   def createOrder(customerID: Double, pizzaID: Double, productID: Double,
                   pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,
                   pizzaPrice: Double, productAmount: Double, productPrice: Double,
-                  orderTime: String, status: String): Order = {
+                  extraOneID: Double, extraOneName: String, extraOnePrice: Double,
+                  extraTwoID: Double, extraTwoName: String, extraTwoPrice: Double,
+                  extraThreeID: Double, extraThreeName: String, extraThreePrice: Double,
+                  orderTime: String, status: String, deliveryTime: String): OrdersWithExtras = {
     // create User
     val newOrder = Order(-1, customerID, pizzaID, productID, pizzaName, productName, pizzaAmount, pizzaSize, pizzaPrice,
-      productAmount, productPrice, 0, orderTime, "Bestellung empfangen")
+      productAmount, productPrice, extraOneID, "N/A", 0, extraTwoID, "N/A", 0, extraThreeID, "N/A", 0, 0, orderTime, "Bestellung empfangen", deliveryTime)
     // persist and return User
     orderDao.createOrder(newOrder)
   }
@@ -35,6 +38,7 @@ trait OrderServiceT {
     // persist and return User
     orderDao.getOrder(orderID)
   }
+
 
   def orderSetStaus(id: Long, orderStatus: String): Order = {
     // create User
@@ -66,6 +70,7 @@ trait OrderServiceT {
   def availableOrderWithAdress: List[OrderWithAdress] = {
     OrderDao.availableOrdersWithAdress
   }
+
 
 }
 

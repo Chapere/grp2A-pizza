@@ -1,0 +1,47 @@
+@(users: List[models.User])
+
+@main(models.Company.name) {
+
+    <h1 align="center">Kundenübersicht übersicht</h1>
+
+    <h3>
+        <table>
+        @for(user <- users) {
+            <tr>
+                <th>Name</th>
+                <th>Vorname</th>
+                <th>Strasse</th>
+                <th>PLZ</th>
+                <th>Ort</th>
+                <th>E-Mail</th>
+                <th>Entfernung</th>
+                <th>Aktiv/Inaktiv</th>
+                <th>Bearbeiten</th>
+                <th>Löschen</th>
+            </tr>
+            <tr>
+                <th>@user.name</th>
+                <th>@user.lastname</th>
+                <th>@user.adress</th>
+                <th>@user.plz</th>
+                <th>@user.city</th>
+                <th>@user.email</th>
+                <th>@user.distance km</th>
+                @if(user.activeFlag == 1) {
+                    <th>Aktiv</th>
+                } else {
+                    <th>Inaktiv</th>
+                }
+
+            <th><h1>@helper.form(action = routes.UserController.chooseUser()) {
+                <button type="submit" name="User ID" value="@user.id">Bearbeiten</button>
+            }</h1></th>
+            <th><h1>@helper.form(action = routes.UserController.rmUser()) {
+                <button type="submit" name="User ID" value="@user.id">Löschen</button>
+            }</h1>
+            </tr>
+        </table>
+    }
+    </h3>
+
+}

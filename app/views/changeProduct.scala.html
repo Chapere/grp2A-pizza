@@ -1,0 +1,30 @@
+@(id: Long, name: String, price: Double, size: Double, unit: String, updateProductForm: Form[forms.CreateProductForm])
+
+@main(models.Company.name) {
+
+    <h1 align="center" style="margin-top: 0px; margin-bottom: 100px">Extra ändern: @name</h1>
+
+    <div id="editEmployee">
+        <div class="left">
+            <h1>Name</h1>
+            <h2>@name</h2>
+            <h1>Preis</h1>
+            <h2>@price</h2>
+            <h1>Größe</h1>
+            <h2>@size</h2>
+            <h1>Einheit</h1>
+            <h2>@unit</h2>
+        </div>
+        <div class="right">
+            <h1>@helper.form(action = routes.ProductController.updateProduct()) {
+                    @helper.inputText(updateProductForm("Name"))
+                @helper.inputText(updateProductForm("Preis"))
+                @helper.inputText(updateProductForm("Größe"))
+                @helper.inputText(updateProductForm("Einheit"))
+                <button style="margin-left: 40px" type="submit" name="id" value="@id">Extra ändern</button>
+            }
+            </h1>
+        </div>
+    </div>
+
+}

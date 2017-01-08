@@ -1,0 +1,43 @@
+@(pizzas: List[models.Pizza])
+
+@main(models.Company.name) {
+
+    <h1 align="center">Pizzasübersicht</h1>
+
+    <h3>
+        <table>
+        @for(pizza <- pizzas) {
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Preis</th>
+                <th>Zutaten</th>
+                <th>Kommentar</th>
+                <th>Zusätze</th>
+                <th>Bearbeiten</th>
+                <th>Löschen</th>
+
+            </tr>
+            <tr>
+                <th>@pizza.id</th>
+                <th>@pizza.name</th>
+                <th>@pizza.price</th>
+                <th>@pizza.ingredients</th>
+                <th>@pizza.comment</th>
+                <th>@pizza.supplements</th>
+                <th><h1>@if(pizza.id!= 0) {
+                    @helper.form(action = routes.PizzaController.getPizza()) {
+                        <button type="submit" name="id" value="@pizza.id">Bearbeiten</button>
+                    }
+                }</h1></th>
+                <th><h1>@if(pizza.id!= 0) {
+                    @helper.form(action = routes.PizzaController.rmPizza()) {
+                    <button type="submit" name="id" value="@pizza.id">Löschen</button>
+                }</h1></th>
+                }
+                }
+            </tr>
+        </table>
+    </h3>
+
+}

@@ -1,4 +1,4 @@
-@(pizzas: List[models.Pizza], products: List[models.Product], orderForm: Form[forms.CreateOrderForm], userID: Double)
+@(pizzas: List[models.Pizza], products: List[models.Product], orderForm: Form[forms.CreateOrderForm], userID: Double, extras: List[models.Extra])
 
 @import views.html.helper
 
@@ -39,10 +39,42 @@
             <div class="createOrder">
                 <h3>
                     @helper.form(action = routes.OrderController.createOrder()) {
-                        @helper.inputText(orderForm("pizzaID"),'_label -> "Pizza Nr.:")
+                        <h2>Pizza:</h2>
+                        <select name="pizzaID"> @for(pizza <- pizzas) {
+                            <option value="@pizza.id">@pizza.name - @pizza.price €</option>
+                        }
+                        </select>
                         @helper.inputText(orderForm("pizzaAmount"),'_label -> "Pizza Anzahl:")
-                        @helper.inputText(orderForm("pizzaSize"),'_label -> "Pizza Größe:")
-                        @helper.inputText(orderForm("productID"),'_label -> "Produkt Nr.:")
+                        <br>
+                        <select name="pizzaSize">
+                            <option value="14">M - 14 cm</option>
+                            <option value="18">L - 18 cm</option>
+                            <option value="22">XL - 22 cm</option>
+                            <option value="30">XXL - 30 cm</option>
+                        </select>
+                        <br>
+                        Extra 1:
+                        <select name="extraOneID"> @for(extra <- extras) {
+                            <option value="@extra.id">@extra.name - @extra.price €</option>
+                        }
+                        </select>
+                        Extra 2:
+                        <select name="extraTwoID"> @for(extra <- extras) {
+                            <option value="@extra.id">@extra.name - @extra.price €</option>
+                        }
+                        </select>
+                        Extra 3:
+                        <select name="extraThreeID"> @for(extra <- extras) {
+                            <option value="@extra.id">@extra.name - @extra.price €</option>
+                        }
+                        </select>
+                        <br>
+                        Produkt:
+                        <select name="productID"> @for(product <- products) {
+                            <option value="@product.id">@product.name - @product.price €</option>
+                        }
+                        </select>
+                        <br>
                         @helper.inputText(orderForm("productAmount"),'_label -> "Produkt Anzahl:")
                         <button type="submit" name="userID" value="@userID">Bestellung ausführen?</button>
                     }

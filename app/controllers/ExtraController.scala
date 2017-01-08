@@ -1,0 +1,121 @@
+package controllers
+
+import play.api.mvc._
+import play.api.data.Form
+import play.api.data.Forms._
+import services._
+import forms._
+import play.api.data.format.Formats._
+
+
+/**
+ * Controller for extra specific operations.
+  *
+  * GoogleMaps API KEY = AIzaSyC6VCdDfHl2b9yRYnJnMq2PgSjPoXlEXow
+ *
+ * @author ob, scs
+ */
+object ExtraController extends Controller {
+
+
+  /**
+    * Form object for extra data.
+    */
+  val extraForm = Form(
+    mapping(
+      "id" -> of(longFormat),
+      "Name" -> nonEmptyText,
+      "Preis" -> of(doubleFormat))(CreateExtraForm.apply)(CreateExtraForm.unapply))
+
+
+  val selectExtraForm = Form(
+    mapping(
+      "id" -> of(longFormat))(IDForm.apply)(IDForm.unapply))
+
+
+  /**
+    * Adds a new extra with the given data to the system.
+    *
+    * @return welcome page for new extra
+    */
+  def addExtra: Action[AnyContent] = Action { implicit request =>
+    extraForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.badRequest())
+      },
+      extraData => {
+        val newExtra = services.ExtraService.addExtra(extraData.name, extraData.price)
+        Redirect(routes.ExtraController.newExtraCreated(newExtra.id, newExtra.name, newExtra.price)).
+          flashing("success" -> "Extra saved!")
+      })
+  }
+
+  def updateExtra: Action[AnyContent] = Action { implicit request =>
+    extraForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.badRequest())
+      },
+      extraData => {
+        val selectExtra = services.ExtraService.updateExtra(extraData.id, extraData.name, extraData.price)
+        Redirect(routes.ExtraController.upgradeExtra(selectExtra.id, selectExtra.name, selectExtra.price)).
+          flashing("success" -> "Employee saved!")
+      })
+  }
+
+
+  def rmExtra: Action[AnyContent] = Action { implicit request =>
+    selectExtraForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.badRequest())
+      },
+      deleteExtraData => {
+        val deleteExtraVal = services.ExtraService.rmExtra(deleteExtraData.id)
+        Redirect(routes.ExtraController.extraDeleted(deleteExtraVal)).
+          flashing("success" -> "Extra saved!")
+      })
+  }
+
+
+  def getExtra: Action[AnyContent] = Action { implicit request =>
+    selectExtraForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.badRequest())
+      },
+      selectExtraData => {
+        val selectExtra = services.ExtraService.selectExtra(selectExtraData.id)
+        Redirect(routes.ExtraController.changeExtra1(selectExtra.id, selectExtra.name, selectExtra.price)).
+          flashing("success" -> "Extra saved!")
+      })
+  }
+
+
+  /**
+    * Shows the welcome view for a newly registered extra.
+    */
+
+  def newExtraCreated(id: Long, name: String, price: Double): Action[AnyContent] = Action {
+    Ok(views.html.newExtraCreated(id, name, price))
+  }
+
+  def changeExtra1(id: Long, name: String, price: Double): Action[AnyContent] = Action {
+    Ok(views.html.changeExtra(id, name, price, extraForm))
+  }
+
+  def upgradeExtra(id: Long, name: String, price: Double): Action[AnyContent] = Action {
+    Ok(views.html.extraUpdated(id, name, price))
+  }
+
+  def extraDeleted(deleted: Boolean): Action[AnyContent] = Action {
+    Ok(views.html.extraDeleted())
+  }
+
+  /**
+    * List all extras currently available in the system.
+    */
+  def showExtras: Action[AnyContent] = Action {
+    Ok(views.html.allExtras(ExtraService.availableExtras))
+  }
+
+
+}
+

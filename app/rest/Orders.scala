@@ -82,11 +82,6 @@ object Orders extends Controller {
           "rel" -> "self",
           "href" -> routes.Orders.orders.absoluteURL(),
           "method" -> "GET"
-        ),
-        Json.obj(
-          "rel" -> "create",
-          "href" -> routes.Orders.addOrder.absoluteURL(),
-          "method" -> "POST"
         )
       )
     )
@@ -112,8 +107,8 @@ object Orders extends Controller {
 
   private case class OrderName(customerID: Double, pizzaID: Double, productID: Double,
                                pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,
-                               pizzaPrice: Double, productAmount: Double, productPrice: Double, totalPrice: Double,
-                               orderTime: String, status: String)
+                               pizzaPrice: Double, productAmount: Double, productPrice: Double,
+                               totalPrice: Double, orderTime: String, status: String, deliveryTime: String)
   private implicit val OrderReads = Json.reads[OrderName]
 
   /**
@@ -125,20 +120,6 @@ object Orders extends Controller {
    * }}}
    * @return info about the new user in a JSON representation
    */
-  def addOrder: Action[JsValue] = Action(BodyParsers.parse.json) { implicit request =>
-    val ordername = request.body.validate[OrderName]
-    ordername.fold(
-      errors => {
-        BadRequest(Json.obj("status" -> "OK", "message" -> JsError.toFlatJson(errors)))
-      },
-      ordername => {
-        Ok(Json.obj("status" -> "OK",
-          "order" -> Json.toJson(mkHateoasOrder(OrderService.createOrder(ordername.customerID, ordername.pizzaID, ordername.productID, ordername.pizzaName,
-            ordername.productName, ordername.pizzaAmount, ordername.pizzaSize, ordername.pizzaPrice,
-            ordername.productAmount, ordername.productPrice, ordername.orderTime, ordername.status)))))
-      }
-    )
-  }
 
   /**
    * Delete a user by id using a DELETE request.
