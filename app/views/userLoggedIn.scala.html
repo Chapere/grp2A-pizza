@@ -4,10 +4,12 @@
 
     <h2 align="center">Willkommen bei @models.Company.name. Sie wurden Eingeloggt.</h2>
 
+    <div style="height: 50px; display: block;"></div>
+
     <h1 style="margin-bottom: 20px;">Bestellübersicht</h1>
     <table>
         <tr>
-            <th>Bestellnummer</th>
+            <th style="max-width: 70px">Bestell - nummer</th>
             <th>Pizza Name </th>
             <th>Produkt Name</th>
             <th>Pizza - Anzahl</th>
@@ -47,9 +49,10 @@
             <td>@order.deliveryTime</td>
             <td>@order.status</td>
             @if(order.status.toString != "Storniert") {
-                <td><h1>@helper.form(action = routes.OrderController.deactivateOrder()) {
-                    <button type="submit" name="orderID" value="@order.id">Bestellung Strornieren</button>
-                }</h1>
+                <td>@helper.form(action = routes.OrderController.deactivateOrder()) {
+                    <button style="padding: 5px 10px;
+                    margin: 0;" type="submit" name="orderID" value="@order.id">Bestellung Strornieren</button>
+                }
                 </td>
             } else {
                 <td></td>
@@ -59,11 +62,12 @@
     }
     </table>
 
-    <h1>Änderung</h1>
+    <div style="height: 50px; display: block;"></div>
 
-    <h1 align="center">@helper.form(action = routes.UserController.chooseUser()) {
-            <button type="submit" name="User ID" value="@id">Benutzer ändern</button>
-    }</h1>
+    <h1>Änderung</h1>
+    <center>@helper.form(action = routes.UserController.chooseUser()) {
+            <button class="nop" type="submit" name="User ID" value="@id">Benutzer ändern</button>
+    }</center>
 
 
 }

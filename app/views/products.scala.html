@@ -37,39 +37,40 @@
             <h3 style="color: red; font-size: 20px" align="center">Bitte melden Sie sich zuerst über das Benutzerportal an um eine Bestellung ausführen zu können.</h3>
             } else {
             <div class="createOrder">
+                <h1>Bestellen</h1>
                 <h3>
                     @helper.form(action = routes.OrderController.createOrder()) {
-                        <h2>Pizza:</h2>
+                        <h4>Pizza Sorte:</h4>
                         <select name="pizzaID"> @for(pizza <- pizzas) {
                             <option value="@pizza.id">@pizza.name - @pizza.price €</option>
                         }
                         </select>
                         @helper.inputText(orderForm("pizzaAmount"),'_label -> "Pizza Anzahl:")
-                        <br>
+                        <h4>Pizza Durchmesser:</h4>
                         <select name="pizzaSize">
                             <option value="14">M - 14 cm</option>
                             <option value="18">L - 18 cm</option>
                             <option value="22">XL - 22 cm</option>
                             <option value="30">XXL - 30 cm</option>
                         </select>
-                        <br>
+                            <h4>Pizza Extras:</h4>
                         Extra 1:
-                        <select name="extraOneID"> @for(extra <- extras) {
+                        <select style="margin: 0 10px" name="extraOneID"> @for(extra <- extras) {
                             <option value="@extra.id">@extra.name - @extra.price €</option>
                         }
                         </select>
                         Extra 2:
-                        <select name="extraTwoID"> @for(extra <- extras) {
+                        <select  style="margin: 0 10px" name="extraTwoID"> @for(extra <- extras) {
                             <option value="@extra.id">@extra.name - @extra.price €</option>
                         }
                         </select>
                         Extra 3:
-                        <select name="extraThreeID"> @for(extra <- extras) {
+                        <select style="margin-left: 10px" name="extraThreeID"> @for(extra <- extras) {
                             <option value="@extra.id">@extra.name - @extra.price €</option>
                         }
                         </select>
                         <br>
-                        Produkt:
+                        <h4>Zusäzliches Produkt:</h4>
                         <select name="productID"> @for(product <- products) {
                             <option value="@product.id">@product.name - @product.price €</option>
                         }

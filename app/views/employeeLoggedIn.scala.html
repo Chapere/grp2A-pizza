@@ -13,9 +13,18 @@
 
 
 
-    <div style="height: 50px; display: block; width: 100%; float: none; clear: both;"></div>
+    <div style="height: 40px; display: block; width: 100%; float: none; clear: both;"></div>
 
-    <button><a href="/allOrderDetails">Alle Bestellungen anzeigen</a></button><button><a href="/showUsers">Alle Kunden anzeigen</a></button><button><a href="/showEmployees">Alle Mitarbeiter anzeigen</a></button><button><a href="/showPizzas">Alle Pizzen anzeigen</a></button><button><a href="/showProducts">Alle Produkte anzeigen</a></button><button><a href="/showExtras">Alle Extras anzeigen</a></button>
+    <center>
+        <button><a href="/allOrderDetails">Alle Bestellungen anzeigen</a></button>
+        <button><a href="/showUsers">Alle Kunden anzeigen</a></button>
+        <button><a href="/showEmployees">Alle Mitarbeiter anzeigen</a></button><br>
+        <button><a href="/showProducts">Alle Produkte anzeigen</a></button>
+        <button><a href="/showPizzas">Alle Pizzen anzeigen</a></button>
+        <button><a href="/showExtras">Alle Extras anzeigen</a></button>
+    </center>
+
+    <div style="height: 50px; display: block; width: 100%; float: none; clear: both;"></div>
 
     @if(accesLevel == 10 && userID != null) {
     <div class="left">
@@ -55,38 +64,36 @@
         </div>
 
         <div class="left">
+            <h1>Produkt</h1>
+            <h1 style="font-size: 30px">Hinzufügen</h1>
+            @helper.form(action = routes.ProductController.addProduct()) {
+                @helper.inputText(userForm("Name"))
+                @helper.inputText(userForm("Preis"))
+                @helper.inputText(userForm("Größe"))
+                @helper.inputText(userForm("Einheit"))
+                <button type="submit" name="id" value="-1">Hinzufügen</button>
+            }
+
+
+            <h1>Extra</h1>
+            <h1 style="font-size: 30px">Hinzufügen</h1>
+            @helper.form(action = routes.ExtraController.addExtra()) {
+                @helper.inputText(userForm("Name"))
+                @helper.inputText(userForm("Preis"))
+                <button type="submit" name="id" value="-1">Hinzufügen</button>
+            }
+        </div>
+        <div class="right">
             <h1>Pizza</h1>
-            <h1 style="font-size: 30px">Registrierung</h1>
+            <h1 style="font-size: 30px">Hinzufügen</h1>
             <h3> @helper.form(action = routes.PizzaController.addPizza()) {
                 @helper.inputText(pizzaForm("Name"))
                 @helper.inputText(pizzaForm("Preis pro cm"))
                 @helper.inputText(pizzaForm("Zutaten"))
                 @helper.inputText(pizzaForm("Kommentar"))
                 @helper.inputText(pizzaForm("Zusatzstoffe"))
-                <input type="submit" value="Hinzufügen" />
+                <button type="submit" name="id" value="-1">Hinzufügen</button>
             } </h3>
         </div>
-        <div class="right">
-            <h1>Extra</h1>
-            <h1 style="font-size: 30px">Registrierung</h1>
-        @helper.form(action = routes.ExtraController.addExtra()) {
-            @helper.inputText(userForm("Name"))
-            @helper.inputText(userForm("Preis"))
-            <button type="submit" name="id" value="-1">Registrieren</button>
-        }
-
-            <h1>Produkt</h1>
-            <h1 style="font-size: 30px">Registrierung</h1>
-            @helper.form(action = routes.ProductController.addProduct()) {
-                @helper.inputText(userForm("Name"))
-                @helper.inputText(userForm("Preis"))
-                @helper.inputText(userForm("Größe"))
-                @helper.inputText(userForm("Einheit"))
-                <button type="submit" name="id" value="-1">Registrieren</button>
-            }
-        </div>
-
     }
-
-
 }
