@@ -1,7 +1,6 @@
-# Pizza-WebApp
+# Pizza-Power Web Applikation
 
-Sehen Sie sich die Web-Applikation im Browser an.
+Einfache Scala/Play Framework Application die das bestellen und verwalten eines Online-Pizzalieferdienstes spiegeln soll.
+Mehr Informationen in /doc/Statusberricht
 
-Sehen Sie sich die Commits an um zu sehen, wie die Web-Applikation
-Schritt für Schritt umgebaut wurde.
-
+Erstellt von Kamil Gorszczyk, Johannes Krumm, Simon Parussel
