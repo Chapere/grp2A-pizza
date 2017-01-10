@@ -14,7 +14,7 @@ CREATE TABLE Users (
 );
 
 INSERT INTO Users (id, name, lastname, adress, city, plz, distance, email, password, activeFlag)
-VALUES (1, 'Padron', 'Schulz', 'Lerchenauer Str. 12', 'München', 80935, '19 km', 'user', 'user', 1);
+VALUES (1, 'Emil', 'Schulz', 'Lerchenauer Str. 12', 'München', 80935, '19 km', 'user', 'user', 1);
 
 CREATE TABLE Employees (
     id serial PRIMARY KEY,
@@ -30,7 +30,7 @@ CREATE TABLE Employees (
 );
 
 INSERT INTO Employees (id, name, lastname, workplace, acces,accesLevel , netRate, email, password, activeFlag)
-VALUES (1, 'Emil', 'Hubert', 'IT', 'root', 10, 15.84, 'root', 'root', 1);
+VALUES (1, 'Padrone', 'Hubert', 'IT', 'root', 10, 15.84, 'root', 'root', 1);
 
 CREATE TABLE Pizzas (
     id serial PRIMARY KEY,

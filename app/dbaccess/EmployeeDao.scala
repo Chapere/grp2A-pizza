@@ -28,6 +28,11 @@ trait EmployeeDaoT {
     employee
   }
 
+   /**
+    * Edit the given user in the database.
+    * @param employee the user object to be updated.
+    * @return the persisted user object
+    */
   def updateEmployeeDao(employee: Employee): Employee = {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
@@ -37,7 +42,11 @@ trait EmployeeDaoT {
     employee
   }
 
-
+   /**
+    * get the name of the user.
+    * @param id the user id.
+    * @return name of the user
+    */
   def getEmployee(id: Double): Employee = {
     DB.withConnection { implicit c =>
       val selectEmployees = SQL("SELECT * FROM Employees WHERE id = {id};").on(

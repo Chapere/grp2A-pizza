@@ -27,7 +27,6 @@ object ExtraController extends Controller {
       "Name" -> nonEmptyText,
       "Preis" -> of(doubleFormat))(CreateExtraForm.apply)(CreateExtraForm.unapply))
 
-
   val selectExtraForm = Form(
     mapping(
       "id" -> of(longFormat))(IDForm.apply)(IDForm.unapply))
@@ -50,6 +49,10 @@ object ExtraController extends Controller {
       })
   }
 
+  /**
+    * edit a extra.
+    * @return page for a changed extra.
+    */
   def updateExtra: Action[AnyContent] = Action { implicit request =>
     extraForm.bindFromRequest.fold(
       formWithErrors => {
@@ -62,7 +65,10 @@ object ExtraController extends Controller {
       })
   }
 
-
+  /**
+    * delete a extra.
+    * @return page to delete a extra.
+    */
   def rmExtra: Action[AnyContent] = Action { implicit request =>
     selectExtraForm.bindFromRequest.fold(
       formWithErrors => {
@@ -75,7 +81,10 @@ object ExtraController extends Controller {
       })
   }
 
-
+  /**
+    *
+    * @return page change a extra
+    */
   def getExtra: Action[AnyContent] = Action { implicit request =>
     selectExtraForm.bindFromRequest.fold(
       formWithErrors => {
@@ -90,21 +99,30 @@ object ExtraController extends Controller {
 
 
   /**
-    * Shows the welcome view for a newly registered extra.
+    * Shows the view for a newly registered extra.
     */
 
   def newExtraCreated(id: Long, name: String, price: Double): Action[AnyContent] = Action {
     Ok(views.html.newExtraCreated(id, name, price))
   }
 
+  /**
+    * Shows the view to change a extra.
+    */
   def changeExtra1(id: Long, name: String, price: Double): Action[AnyContent] = Action {
     Ok(views.html.changeExtra(id, name, price, extraForm))
   }
 
+  /**
+    * Shows the view for a changed extra.
+    */
   def upgradeExtra(id: Long, name: String, price: Double): Action[AnyContent] = Action {
     Ok(views.html.extraUpdated(id, name, price))
   }
 
+  /**
+    * Shows the view for a deleted extra.
+    */
   def extraDeleted(deleted: Boolean): Action[AnyContent] = Action {
     Ok(views.html.extraDeleted())
   }

@@ -22,6 +22,11 @@ object Application extends Controller {
     Ok(views.html.index())
   }
 
+  /**
+    * log all user out & Shows the start page of the application.
+    *
+    * @return main web page (NewSession)
+    */
   def logOut = Action { request =>
     Ok(views.html.index()).withNewSession
   }

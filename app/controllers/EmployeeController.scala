@@ -30,6 +30,9 @@ object EmployeeController extends Controller {
       "Passwort" -> nonEmptyText)(CreateEmployeeForm.apply)(CreateEmployeeForm.unapply))
 
 
+  /**
+    * Form object for update employee data.
+    */
   val updateEmployeeForm = Form(
     mapping(
       "id" -> of(longFormat),
@@ -43,15 +46,25 @@ object EmployeeController extends Controller {
       "Passwort" -> text)(UpdateEmployeeForm.apply)(UpdateEmployeeForm.unapply))
 
 
+  /**
+    * Form object for employee login.
+    */
   val employeeLogInForm = Form(
     mapping(
       "E-Mail" -> nonEmptyText,
       "Passwort" -> nonEmptyText)(CreateEmployeeLogInForm.apply)(CreateEmployeeLogInForm.unapply))
 
+
+  /**
+    * Form object to select an employee.
+    */
   val selectEmployeeForm = Form(
     mapping(
       "Mitarbeiter ID" -> of(longFormat))(SelectEmployeeForm.apply)(SelectEmployeeForm.unapply))
 
+  /**
+    * Shows the view to register a new employee.
+    */
   def addEmployee : Action[AnyContent] = Action { implicit request =>
     employeeForm.bindFromRequest.fold(
       formWithErrors => {
@@ -64,7 +77,9 @@ object EmployeeController extends Controller {
       })
   }
 
-
+  /**
+    * Shows the view to update an employee.
+    */
   def updateEmployee : Action[AnyContent] = Action { implicit request =>
     updateEmployeeForm.bindFromRequest.fold(
       formWithErrors => {
@@ -77,7 +92,9 @@ object EmployeeController extends Controller {
       })
   }
 
-
+  /**
+    * Shows the view to choose an employee.
+    */
   def chooseEmployee : Action[AnyContent] = Action { implicit request =>
     selectEmployeeForm.bindFromRequest.fold(
       formWithErrors => {
@@ -90,6 +107,9 @@ object EmployeeController extends Controller {
       })
   }
 
+  /**
+    * Shows the view for loged in employees.
+    */
   def logInEmployee : Action[AnyContent] = Action { implicit request =>
     employeeLogInForm.bindFromRequest.fold(
       formWithErrors => {
@@ -107,6 +127,9 @@ object EmployeeController extends Controller {
     )
   }
 
+  /**
+    * Shows the view for an inaktiv employee.
+    */
   def employeeFlagZero: Action[AnyContent] = Action { implicit request =>
     selectEmployeeForm.bindFromRequest.fold(
       formWithErrors => {
@@ -119,6 +142,9 @@ object EmployeeController extends Controller {
       })
   }
 
+  /**
+    * Shows the view for an aktiv employee.
+    */
   def employeeFlagOne: Action[AnyContent] = Action { implicit request =>
     selectEmployeeForm.bindFromRequest.fold(
       formWithErrors => {
@@ -131,6 +157,10 @@ object EmployeeController extends Controller {
       })
   }
 
+
+  /**
+    * Shows the view for an successfully deleted employee.
+    */
   def rmEmployee: Action[AnyContent] = Action { implicit request =>
     selectEmployeeForm.bindFromRequest.fold(
       formWithErrors => {
@@ -155,28 +185,46 @@ object EmployeeController extends Controller {
     }
   }
 
+  /**
+    * Shows the view for logedin employees.
+    */
   def completeLogInEmployee(id: Long, name: String) : Action[AnyContent] = Action {
     Ok(views.html.employeeLoggedIn(id.toString, name, controllers.EmployeeController.employeeForm, controllers.EmployeeController.selectEmployeeForm, EmployeeService.registredEmployees, controllers.UserController.userForm, UserService.registeredUsers, EmployeeService.getEmployeeByID(id).accesLevel, EmployeeService.getEmployeeByID(id).activeFlag, EmployeeService.getEmployeeByID(id.toLong).acces, PizzaController.pizzaForm)).withSession(
       "loggedInEmployee" -> id.toString
     )
   }
 
+  /**
+    * Shows the view for an new created employee.
+    */
   def newEmployeeCreated(name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String) : Action[AnyContent] = Action {
     Ok(views.html.newEmployeeCreated(name, lastname, workplace, acces, accesLevel, netRate, email, password))
   }
 
+  /**
+    * Shows the view to edit an employee.
+    */
   def changeEmployee(id: Long, name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String, activeFlag: Int) : Action[AnyContent] = Action {
     Ok(views.html.changeEmployee(id, name, lastname, workplace, acces, accesLevel, netRate, email, password, activeFlag, controllers.EmployeeController.updateEmployeeForm))
   }
 
+  /**
+    * Shows the view to edit an employee.
+    */
   def upgradeEmployee(id: Long, name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String) : Action[AnyContent] = Action {
     Ok(views.html.employeeUpdated(id, name, lastname, workplace, acces, accesLevel, netRate, email, password))
   }
 
+  /**
+    * Shows the view to delete an employee.
+    */
   def employeeDeleted(deleted: Boolean): Action[AnyContent] = Action {
     Ok(views.html.employeeDeleted())
   }
 
+  /**
+    * Shows the view to set an employee active/inactive.
+    */
   def setEmployeeFlag(id: Double): Action[AnyContent] = Action {
     Ok(views.html.employeeFlagChanged(id))
   }
@@ -190,6 +238,9 @@ object EmployeeController extends Controller {
     Ok(views.html.allEmployees(EmployeeService.registredEmployees))
   }
 
+  /**
+    * Shows the view for a all Order details.
+    */
   def showAllOrderDetails : Action[AnyContent] = Action {
     Ok(views.html.allOrders(OrderService.availableOrderWithAdress))
   }
