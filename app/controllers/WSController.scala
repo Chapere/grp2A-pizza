@@ -18,18 +18,13 @@ import scala.concurrent.Future
 object WSController extends Controller {
 
 
-  private def parseGoogleJson(json: JsValue): String = {
-    val rows = (json \ "rows").as[List[JsObject]]
-    val jsonDistance = (rows.head \ "elements").as[List[JsObject]].head
-    (jsonDistance \ "distance" \ "text").asOpt[String].get
-  }
   private def parseGoogleJsonNumber(json: JsValue): Int = {
     val rows = (json \ "rows").as[List[JsObject]]
     val jsonDistance = (rows.head \ "elements").as[List[JsObject]].head
     (jsonDistance \ "distance" \ "value").asOpt[Int].get
   }
 
-  def getDistance(adress: String, plz: String, city: String, email: String, password: String): Future[String] = {
+  def getDistance(adress: String, plz: String, city: String, email: String, password: String): Future[Double] = {
     val apiUrl = "https://maps.googleapis.com/maps/api/distancematrix/json"
     val apiKey = "AIzaSyC6VCdDfHl2b9yRYnJnMq2PgSjPoXlEXow"
     val futureDistance = WS.url(apiUrl +
@@ -37,14 +32,8 @@ object WSController extends Controller {
       "&destinations=" + adress.replaceAll(" ", "")  + "+" + plz + "+" + city + "&mode=car&language=de-DE&key=" + apiKey).get
     futureDistance map { response =>
       val distanceNumber: Int = parseGoogleJsonNumber(response.json)
-      val distanceText: String = parseGoogleJson(response.json)
-      if (distanceNumber > 20000) {
-        val updateDistance = controllers.UserController.distanceError(email, password, distanceText)
-        updateDistance.toString()
-      } else {
-        val updateDistance = services.UserService.updateDistanceData(email, password, distanceText)
-        updateDistance.toString
-      }
+        val updateDistance = services.UserService.updateDistanceData(email, password, distanceNumber)
+        updateDistance
 
     }
 

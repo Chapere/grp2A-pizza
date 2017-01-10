@@ -2,7 +2,7 @@
 
 @main(models.Company.name) {
 
-    <h1 align="center">Kundenübersicht übersicht</h1>
+    <h1 align="center">Kundenübersicht</h1>
 
     <h3>
         <table>
@@ -26,7 +26,7 @@
                 <th>@user.plz</th>
                 <th>@user.city</th>
                 <th>@user.email</th>
-                <th>@user.distance</th>
+                <th>@{user.distance.toInt / 1000} km</th>
                 @if(user.activeFlag == 1) {
                     <th>Aktiv</th>
                 } else {

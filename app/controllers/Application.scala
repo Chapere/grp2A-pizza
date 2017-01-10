@@ -22,6 +22,10 @@ object Application extends Controller {
     Ok(views.html.index())
   }
 
+  def impressum : Action[AnyContent] = Action {
+    Ok(views.html.impressum())
+  }
+
   /**
     * log all user out & Shows the start page of the application.
     *

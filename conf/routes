@@ -46,10 +46,10 @@ GET         /employeeFlagSet     controllers.EmployeeController.setEmployeeFlag(
 
 
 GET         /showUsers           controllers.UserController.showUsers
-GET         /newUserCreated      controllers.UserController.newUserCreated(username, lastname, adress, city, plz, distance: String, email, password)
+GET         /newUserCreated      controllers.UserController.newUserCreated(id: Long, username, lastname, adress, city, plz, distance: Double, email, password)
 GET         /userLoggedIn        controllers.UserController.completeLogInUser(id: Long, name)
-GET         /upgradeUser         controllers.UserController.upgradeUser(id: Long, name, lastname, adress, city, plz, distance: String, email, password)
-GET         /changeUser          controllers.UserController.changeUser1(id: Long, name, lastname, adress, city, plz, distance: String, email, password, activeFlag: Int)
+GET         /upgradeUser         controllers.UserController.upgradeUser(id: Long, name, lastname, adress, city, plz, distance: Double, email, password)
+GET         /changeUser          controllers.UserController.changeUser1(id: Long, name, lastname, adress, city, plz, distance: Double, email, password, activeFlag: Int)
 GET         /userDeleted         controllers.UserController.userDeleted(deleted: Boolean)
 GET         /userFlagSet         controllers.UserController.setUserFlag(id: Double)
 
@@ -86,6 +86,8 @@ GET         /showPizzas           controllers.PizzaController.showPizzas
 
 
 GET         /logout              controllers.Application.logOut
+
+GET         /impressum           controllers.Application.impressum
 
 
 

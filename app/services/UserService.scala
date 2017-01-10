@@ -17,7 +17,7 @@ trait UserServiceT {
    * @param name name of the new user.
    * @return the new user.
    */
-  def addUser(name: String, lastname: String, adress: String, city: String, plz: String, distance: String, email: String, password: String): User = {
+  def addUser(name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String): User = {
     // create User
     val newUser = User(-1, name, lastname, adress, city, plz, distance, email, password, 1)
     // persist and return User
@@ -48,14 +48,14 @@ trait UserServiceT {
     UserDao.activateUser(id)
   }
 
-  def updateUser(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: String, email: String, password: String): User = {
+  def updateUser(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String): User = {
     // create User
     val updateUserService = User(id, name, lastname, adress, city, plz, distance, email, password, 1)
     // persist and return User
     UserDao.updateUserDao(updateUserService)
   }
 
-  def makeError(distance: String, email: String, password: String): String = {
+  def makeError(distance: Double, email: String, password: String): Double = {
     // create User
     val updateUserService = User(-1, null, null, null, null, null, distance, email, password, -1)
     // persist and return User
@@ -64,12 +64,12 @@ trait UserServiceT {
 
   def accesUserData(email: String, password: String): User = {
     // create User
-    val logInUser = User(-1, null, null, null, null, null, null, email, password, -1)
+    val logInUser = User(-1, null, null, null, null, null, 0, email, password, -1)
     // persist and return User
     userDao.getUser(logInUser)
   }
 
-  def updateDistanceData(email: String, password: String, distance: String): String = {
+  def updateDistanceData(email: String, password: String, distance: Double): Double = {
     // create User
     val logInUser = User(-1, null, null, null, null, null, distance, email, password, -1)
     // persist and return User

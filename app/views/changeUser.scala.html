@@ -1,4 +1,4 @@
-@(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: String, email: String, password: String, activeFlag: Int, updateUserForm: Form[forms.UpdateUserForm])
+@(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String, activeFlag: Int, updateUserForm: Form[forms.UpdateUserForm])
 
 @main(models.Company.name) {
 
@@ -15,7 +15,7 @@
             <h1>Stadt</h1>
             <h2>@city</h2>
             <h1>Entfernung</h1>
-            <h2>@distance km</h2>
+            <h2>@{distance.toInt / 1000} km</h2>
             <h1>PLZ</h1>
             <h2>@plz</h2>
             <h1>E-Mail</h1>

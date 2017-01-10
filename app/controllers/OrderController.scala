@@ -1,7 +1,6 @@
 package controllers
 
 import play.api.mvc.{Action, AnyContent, Controller}
-import services._
 import forms._
 import play.api.data.Form
 import play.api.data.Forms._
@@ -10,6 +9,9 @@ import com.github.nscala_time.time.Imports._
 
 /**
  * Controller for user specific operations.
+  *
+  * Import of nscala Library to make time calculations more easily.
+  * (C) https://github.com/nscala-time/nscala-time
  *
  * @author ob, scs
  */
@@ -54,7 +56,7 @@ object OrderController extends Controller {
       orderData => {
         try {
           val selectUser = services.UserService.getUserByID(orderData.userID.toLong)
-          var time: Int = (2 * selectUser.head.distance.toInt) + (10 * orderData.pizzaAmount.toInt)
+          var time: Int = (2 * (selectUser.head.distance.toInt / 1000)) + (10 * orderData.pizzaAmount.toInt)
           var deliveryTime = DateTimeFormat.forPattern("kk:mm - DD.MM.YYYY").print(DateTime.now() + time.minutes)
 
 

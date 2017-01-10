@@ -20,7 +20,7 @@
             <th>@orderWithAdress.plz</th>
             <th>@orderWithAdress.city</th>
             <th>@orderWithAdress.email</th>
-            <th>@orderWithAdress.distance km</th>
+            <th>@{orderWithAdress.distance.toInt / 1000} km</th>
         </tr>
         <tr>
             <th>Bestellnummer</th>

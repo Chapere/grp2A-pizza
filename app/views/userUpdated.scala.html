@@ -1,5 +1,5 @@
 
-@(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: String, email: String, password: String)
+@(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String)
 
 @main(models.Company.name) {
 
@@ -15,7 +15,7 @@
     <h1>PLZ</h1>
     <h2>@plz</h2>
     <h1>Entfernung:</h1>
-    <h2>@distance km</h2>
+    <h2>@{distance.toInt / 1000} km</h2>
     <h1>Email</h1>
     <h2>@email</h2>
 

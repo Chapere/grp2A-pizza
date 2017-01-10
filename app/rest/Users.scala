@@ -94,7 +94,7 @@ object Users extends Controller {
     }.getOrElse(NotFound)
   }
 
-  private case class Username(name: String, lastname: String, adress: String, city: String, plz: String, distance: String, email: String, password: String)
+  private case class Username(name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String)
   private implicit val usernameReads = Json.reads[Username]
 
   /**
