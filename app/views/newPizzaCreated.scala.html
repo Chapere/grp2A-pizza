@@ -2,9 +2,9 @@
 
 @main(models.Company.name) {
 
-    <h1 align="center">Eine neuee Pizza wurde erfolgreich angelegt</h1>
+    <h1 align="center">Eine neue Pizza wurde erfolgreich angelegt</h1>
     <h2 align="center">Name: @name</h2>
-    <h2 align="center">Preis: @price</h2>
+    <h2 align="center">Preis: @("%.2f".format(price)) €</h2>
     <h2 align="center">Zutaten: @ingredients</h2>
     <h2 align="center">Kommentar: @comment</h2>
     <h2 align="center">Zusatzstoffe: @supplements</h2>

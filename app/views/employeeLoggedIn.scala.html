@@ -5,7 +5,7 @@
 
 @main(models.Company.name) {
 
-    <h2 align="center">Willkommen @name bei @models.Company.name. Sie wurden Eingeloggt.</h2>
+    <h2 align="center">Willkommen @name bei @models.Company.name. Sie wurden Eingeloggt. </h2>
 
     <h2 style="font-size: 25px; margin-top: -25px; margin-bottom: 60px; font-style: normal;" align="center">
         Als Mitarbeieter der Stufe: @accesLevel (@acces) haben Sie Zugriff zu folgenden Webparts:
@@ -55,7 +55,6 @@
                 @helper.inputText(userForm("Adresse"))
                 @helper.inputText(userForm("Stadt"))
                 @helper.inputText(userForm("PLZ"))
-                @helper.inputText(userForm("Entfernung"))
                 @helper.inputText(userForm("E-Mail"))
                 @helper.inputText(userForm("Passwort"))
                 <button type="submit" >Registrieren</button>

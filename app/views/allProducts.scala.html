@@ -13,14 +13,15 @@
                 <th>Preis</th>
                 <th>Größe</th>
                 <th>Einheit</th>
+                <th>Bearbeiten</th>
                 <th>Löschen</th>
 
             </tr>
             <tr>
                 <th>@product.id</th>
                 <th>@product.name</th>
-                <th>@product.price</th>
-                <th>@product.size</th>
+                <th>@("%.2f".format(product.price)) €</th>
+                <th>@("%.2f".format(product.size))</th>
                 <th>@product.unit</th>
                 <th><h1>@if(product.id != 0) {
                     @helper.form(action = routes.ProductController.getProduct()) {

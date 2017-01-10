@@ -30,7 +30,6 @@ object UserController extends Controller {
       "Adresse" -> nonEmptyText,
       "Stadt" -> nonEmptyText,
       "PLZ" -> nonEmptyText,
-      "Entfernung" -> of(doubleFormat),
       "E-Mail" -> nonEmptyText,
       "Passwort" -> nonEmptyText)(CreateUserForm.apply)(CreateUserForm.unapply))
 
@@ -47,7 +46,6 @@ object UserController extends Controller {
       "Adresse" -> nonEmptyText,
       "Stadt" -> nonEmptyText,
       "PLZ" -> nonEmptyText,
-      "Entfernung" -> of(doubleFormat),
       "E-Mail" -> nonEmptyText,
       "Passwort" -> nonEmptyText)(UpdateUserForm.apply)(UpdateUserForm.unapply))
 
@@ -70,7 +68,7 @@ object UserController extends Controller {
         BadRequest(views.html.userLogIn(formWithErrors, UserService.registeredUsers, userLogInForm))
       },
       userData => {
-        val newUser = services.UserService.addUser(userData.name, userData.lastname, userData.adress, userData.city, userData.plz, userData.distance, userData.email, userData.password)
+        val newUser = services.UserService.addUser(userData.name, userData.lastname, userData.adress, userData.city, userData.plz, "N/A", userData.email, userData.password)
         Redirect(routes.UserController.newUserCreated(newUser.name, newUser.lastname, newUser.adress, newUser.city, newUser.plz, newUser.distance, newUser.email, newUser.password)).
           flashing("success" -> "User saved!")
       })
@@ -82,7 +80,7 @@ object UserController extends Controller {
         BadRequest(views.html.badRequest())
       },
       updateUserData => {
-        val selectUser = services.UserService.updateUser(updateUserData.id, updateUserData.name, updateUserData.lastname, updateUserData.adress, updateUserData.city, updateUserData.plz, updateUserData.distance, updateUserData.email, updateUserData.password)
+        val selectUser = services.UserService.updateUser(updateUserData.id, updateUserData.name, updateUserData.lastname, updateUserData.adress, updateUserData.city, updateUserData.plz, "N/A", updateUserData.email, updateUserData.password)
         Redirect(routes.UserController.upgradeUser(selectUser.id, selectUser.name, selectUser.lastname, selectUser.adress, selectUser.city, selectUser.plz, selectUser.distance, selectUser.email, selectUser.password)).
           flashing("success" -> "Employee saved!")
       })
@@ -137,6 +135,11 @@ object UserController extends Controller {
       })
   }
 
+  def distanceError(distance: String, email: String, password: String): Action[AnyContent] = Action { implicit request =>
+    val delete = services.UserService.makeError(distance, email, password)
+    BadRequest(views.html.badDistance())
+  }
+
   def logInUser: Action[AnyContent] = Action { implicit request =>
     userLogInForm.bindFromRequest.fold(
       formWithErrors => {
@@ -157,10 +160,7 @@ object UserController extends Controller {
 
   /**
     * Shows the welcome view for a newly registered user.
-    *
-  def registerUser: Action[AnyContent] = Action {
-    Ok(views.html.userLogIn(controllers.UserController.userForm, UserService.registeredUsers, controllers.UserController.userLogInForm))
-  }*/
+    */
 
 
   def registerUser = Action { request =>
@@ -178,15 +178,15 @@ object UserController extends Controller {
     )
   }
 
-  def newUserCreated(username: String, name: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String): Action[AnyContent] = Action {
+  def newUserCreated(username: String, name: String, adress: String, city: String, plz: String, distance: String, email: String, password: String): Action[AnyContent] = Action {
     Ok(views.html.newUserCreated(username, name, adress, city, plz, email, password))
   }
 
-  def changeUser1(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String, activeFlag: Int): Action[AnyContent] = Action {
+  def changeUser1(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: String, email: String, password: String, activeFlag: Int): Action[AnyContent] = Action {
     Ok(views.html.changeUser(id, name, lastname, adress, city, plz, distance, email, password, activeFlag, controllers.UserController.updateUserForm))
   }
 
-  def upgradeUser(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String): Action[AnyContent] = Action {
+  def upgradeUser(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: String, email: String, password: String): Action[AnyContent] = Action {
     Ok(views.html.userUpdated(id, name, lastname, adress, city, plz, distance, email, password))
   }
 

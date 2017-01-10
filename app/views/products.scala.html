@@ -16,7 +16,7 @@
                         <h3>Bestellnummer: @pizza.id</h3>
                         <h3>@pizza.comment</h3>
                         <h3>@pizza.ingredients</h3>
-                        <h3>Preis pro cm: @pizza.price €</h3>
+                        <h3>Preis pro cm: @("%.2f".format(pizza.price)) €</h3>
                     </div>
                 }
                 </section>
@@ -29,7 +29,7 @@
                         <h2 style="margin-top: 20px;
                             text-align: center;">@product.name</h2>
                         <h3>Bestellnummer: @product.id</h3>
-                        <h3>Preis pro @product.unit: @product.price €</h3>
+                        <h3>Preis pro @product.unit: @("%.2f".format(product.price)) €</h3>
                     </div>
                 }
             </div>
@@ -42,7 +42,7 @@
                     @helper.form(action = routes.OrderController.createOrder()) {
                         <h4>Pizza Sorte:</h4>
                         <select name="pizzaID"> @for(pizza <- pizzas) {
-                            <option value="@pizza.id">@pizza.name - @pizza.price €</option>
+                            <option value="@pizza.id">@pizza.name - @("%.2f".format(pizza.price)) €</option>
                         }
                         </select>
                         @helper.inputText(orderForm("pizzaAmount"),'_label -> "Pizza Anzahl:")
@@ -56,23 +56,23 @@
                             <h4>Pizza Extras:</h4>
                         Extra 1:
                         <select style="margin: 0 10px" name="extraOneID"> @for(extra <- extras) {
-                            <option value="@extra.id">@extra.name - @extra.price €</option>
+                            <option value="@extra.id">@extra.name - @("%.2f".format(extra.price)) €</option>
                         }
                         </select>
                         Extra 2:
                         <select  style="margin: 0 10px" name="extraTwoID"> @for(extra <- extras) {
-                            <option value="@extra.id">@extra.name - @extra.price €</option>
+                            <option value="@extra.id">@extra.name - @("%.2f".format(extra.price)) €</option>
                         }
                         </select>
                         Extra 3:
                         <select style="margin-left: 10px" name="extraThreeID"> @for(extra <- extras) {
-                            <option value="@extra.id">@extra.name - @extra.price €</option>
+                            <option value="@extra.id">@extra.name - @("%.2f".format(extra.price)) €</option>
                         }
                         </select>
                         <br>
                         <h4>Zusäzliches Produkt:</h4>
                         <select name="productID"> @for(product <- products) {
-                            <option value="@product.id">@product.name - @product.price €</option>
+                            <option value="@product.id">@product.name - @("%.2f".format(product.price)) €</option>
                         }
                         </select>
                         <br>

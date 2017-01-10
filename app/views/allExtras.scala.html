@@ -18,7 +18,7 @@
             <tr>
                 <th>@extra.id</th>
                 <th>@extra.name</th>
-                <th>@extra.price</th>
+                <th>@("%.2f".format(extra.price)) €</th>
                 <th><h1>@if(extra.id != 0) {
                 @helper.form(action = routes.ExtraController.getExtra()) {
                     <button type="submit" name="id" value="@extra.id">Bearbeiten</button>

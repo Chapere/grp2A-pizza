@@ -7,14 +7,14 @@ CREATE TABLE Users (
     adress VARCHAR(255) NOT NULL,
     city VARCHAR(255) NOT NULL,
     plz VARCHAR(255) NOT NULL,
-    distance NUMERIC NOT NULL,
+    distance VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR (255) NOT NULL,
     activeFlag INT NOT NULL
 );
 
 INSERT INTO Users (id, name, lastname, adress, city, plz, distance, email, password, activeFlag)
-VALUES (1, 'Padron', 'Schulz', 'Lerchenauer Str. 12', 'München', 80935, 20, 'user', 'user', 1);
+VALUES (1, 'Padron', 'Schulz', 'Lerchenauer Str. 12', 'München', 80935, '19 km', 'user', 'user', 1);
 
 CREATE TABLE Employees (
     id serial PRIMARY KEY,

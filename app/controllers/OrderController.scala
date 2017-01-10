@@ -176,9 +176,6 @@ object OrderController extends Controller {
    * Shows the welcome view for a newly registered user.
    */
 
-  def orders : Action[AnyContent] = Action {
-    Ok(views.html.orders(OrderService.availableOrder))
-  }
 
   def orderDeleted : Action[AnyContent] = Action {
     Ok(views.html.orderDeleted())
