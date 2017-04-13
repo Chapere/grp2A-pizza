@@ -9,7 +9,6 @@ import play.api.libs.json._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-
 /**
  * Main controller of the Pizza Service application.
  *
