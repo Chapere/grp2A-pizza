@@ -17,5 +17,4 @@ class MockedUserDaoSpec extends Specification with Mockito {
     import models.User
     userDao.registeredUsers returns List(User(1,"Helge"), User(2,"Helga"), User(3,"Tina"))
   }
-
 }

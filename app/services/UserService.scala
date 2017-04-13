@@ -17,7 +17,8 @@ trait UserServiceT {
    * @param name name of the new user.
    * @return the new user.
    */
-  def addUser(name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String): User = {
+  def addUser(name: String, lastname: String, adress: String, city: String, plz: String, distance: Double,
+              email: String, password: String): User = {
     // create User
     val newUser = User(-1, name, lastname, adress, city, plz, distance, email, password, 1)
     // persist and return User
@@ -48,7 +49,8 @@ trait UserServiceT {
     UserDao.activateUser(id)
   }
 
-  def updateUser(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String): User = {
+  def updateUser(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double,
+                 email: String, password: String): User = {
     // create User
     val updateUserService = User(id, name, lastname, adress, city, plz, distance, email, password, 1)
     // persist and return User
@@ -96,7 +98,6 @@ trait UserServiceT {
   def registeredUsers: List[User] = {
     userDao.registeredUsers
   }
-
 }
 
 object UserService extends UserServiceT

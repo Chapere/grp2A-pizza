@@ -6,12 +6,12 @@ import anorm.NamedParameter.symbol
 import models.User
 import anorm.{ SQL, SqlParser }
 
-
 /**
  * Data access object for user related operations.
  *
  * @author ob, scs, Kamil Gorszczyk
  */
+//noinspection ScalaStyle
 trait UserDaoT {
 
   /**
@@ -90,29 +90,28 @@ trait UserDaoT {
 
       return users.head
     }
-
   }
 
   def getUserByIdentification(id: Long): List[User] = {
     DB.withConnection { implicit c =>
       val selectUsers = SQL("SELECT * FROM USERS WHERE id = {id};").on(
         'id -> id)
-      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"), row[Double]("distance"), null, null, row[Int]("activeFlag"))).toList
+      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"),
+        row[String]("adress"), row[String]("city"), row[String]("plz"), row[Double]("distance"), null, null,
+        row[Int]("activeFlag"))).toList
       users
     }
-
   }
 
   def selectUserByIdentification(id: Long): User = {
-
       DB.withConnection { implicit c =>
         val selectUser = SQL("SELECT * FROM Users WHERE id = {id};").on(
           'id -> id)
-        val users = selectUser().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"), row[Double]("distance"), row[String]("email"), null, row[Int]("activeFlag"))).toList
-
+        val users = selectUser().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"),
+          row[String]("adress"), row[String]("city"), row[String]("plz"), row[Double]("distance"), row[String]("email"),
+          null, row[Int]("activeFlag"))).toList
         users.head
       }
-
   }
 
   /**
@@ -120,7 +119,6 @@ trait UserDaoT {
    * @param id the users id
    * @return a boolean success flag
    */
-
   def rmUser(id: Long): Boolean = {
     DB.withConnection { implicit c =>
       val rowsCount = SQL("delete from Users where id = ({id})").on('id -> id).executeUpdate()
@@ -140,7 +138,6 @@ trait UserDaoT {
       users
     }
   }
-
 }
 
 object UserDao extends UserDaoT

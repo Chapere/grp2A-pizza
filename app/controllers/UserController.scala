@@ -7,9 +7,6 @@ import services._
 import forms._
 import play.api.data.format.Formats._
 
-
-
-
 /**
  * Controller for user specific operations.
   *
@@ -18,7 +15,6 @@ import play.api.data.format.Formats._
  * @author ob, scs
  */
 object UserController extends Controller {
-
 
   /**
     * Form object for user data.
