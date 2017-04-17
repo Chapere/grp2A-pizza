@@ -10,6 +10,8 @@ Teammitglieder der Gruppe ***2A***
 + **Andreas** 
 > Testing, Reporting
 
+vorläufig
+
 Fertiges Projekt zur Verfügung gestellt von:
 
 + ***Johannes Krumm***
