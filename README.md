@@ -4,11 +4,11 @@ Pizza-Power Web Applikation
 Teammitglieder der Gruppe ***2A***
 ----------------------------------
 + **Felix Thomas**
-> Testen,...
+> Testing, Documentation
 + **Taha Obed**
-> Testen,...
+> Testing, Software Quality, Documentation
 + **Andreas** 
-> Testen,...
+> Testing, Reporting
 
 Fertiges Projekt zur Verfügung gestellt von:
 
