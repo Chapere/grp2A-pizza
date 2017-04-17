@@ -1,7 +1,8 @@
 package forms
 
 /**
- * Form containing data to create a user.
- * @param name name of the user.
+ * Form containing data to login a user.
+ * @param email email of the user.
+ * @param password password of the user
  */
 case class CreateUserLogInForm(email: String, password: String)

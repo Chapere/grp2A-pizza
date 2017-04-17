@@ -1,7 +1,7 @@
 package forms
 
 /**
- * Form containing data to create a user.
- * @param name name of the user.
+ * Form containing data to modify a order.
+ * @param orderID ID of the order.
  */
 case class ModifyOrderForm(orderID: Double)

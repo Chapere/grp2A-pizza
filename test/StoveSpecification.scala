@@ -50,7 +50,5 @@ class StoveSpecification extends Specification with ScalaCheck {
         noOfNext must_== (noOfPizza / capa + (if (noOfPizza % capa > 0) 1 else 0))
       }
     }
-
   }
-
 }

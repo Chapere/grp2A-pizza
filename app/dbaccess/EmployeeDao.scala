@@ -8,8 +8,6 @@ import models.Employee
 
 /**
  * Data access object for user related operations.
- *
- * @author ob, scs
  */
 trait EmployeeDaoT {
 
@@ -21,8 +19,13 @@ trait EmployeeDaoT {
   def addEmployee(employee: Employee): Employee = {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
-        SQL("insert into Employees(name, lastname, workplace, acces, accesLevel, netRate, email, password, activeFlag) values ({name}, {lastname}, {workplace}, {acces}, {accesLevel}, {netRate}, {email}, {password}, 1)").on(
-          'name -> employee.name, 'lastname -> employee.lastname, 'workplace -> employee.workplace, 'acces -> employee.acces, 'accesLevel -> employee.accesLevel, 'netRate -> employee.netRate, 'email -> employee.email, 'password -> employee.password).executeInsert()
+        SQL("insert into Employees(name, lastname, workplace, acces, accesLevel, netRate, email, " +
+          "password, activeFlag) values ({name}, {lastname}, {workplace}, {acces}, {accesLevel}, " +
+          "{netRate}, {email}, {password}, 1)").on(
+          'name -> employee.name, 'lastname -> employee.lastname, 'workplace -> employee.workplace,
+          'acces -> employee.acces, 'accesLevel -> employee.accesLevel,
+          'netRate -> employee.netRate, 'email -> employee.email,
+          'password -> employee.password).executeInsert()
       employee.id = id.get
     }
     employee
@@ -36,8 +39,13 @@ trait EmployeeDaoT {
   def updateEmployeeDao(employee: Employee): Employee = {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
-        SQL("UPDATE Employees SET name = {name}, lastname = {lastname}, workplace = {workplace}, acces = {acces}, netRate = {netRate}, email = {email}, password = {password} WHERE id = {id}").on(
-          'name -> employee.name, 'lastname -> employee.lastname, 'workplace -> employee.workplace, 'acces -> employee.acces, 'accesLevel -> employee.accesLevel, 'netRate -> employee.netRate, 'email -> employee.email, 'password -> employee.password, 'id -> employee.id).executeInsert()
+        SQL("UPDATE Employees SET name = {name}, lastname = {lastname}, workplace = {workplace}, " +
+          "acces = {acces}, netRate = {netRate}, email = {email}, password = {password} " +
+          "WHERE id = {id}").on(
+          'name -> employee.name, 'lastname -> employee.lastname, 'workplace -> employee.workplace,
+          'acces -> employee.acces, 'accesLevel -> employee.accesLevel,
+          'netRate -> employee.netRate, 'email -> employee.email, 'password -> employee.password,
+          'id -> employee.id).executeInsert()
     }
     employee
   }
@@ -51,14 +59,19 @@ trait EmployeeDaoT {
     DB.withConnection { implicit c =>
       val selectEmployees = SQL("SELECT * FROM Employees WHERE id = {id};").on(
         'id -> id)
-      val employees = selectEmployees().map(row => Employee(row[Long]("id"), row[String]("name"), row[String]("lastname"),
-        row[String]("workplace"), row[String]("acces"), row[Int]("accesLevel"), row[Double]("netRate"), row[String]("email"), null, row[Int]("activeFlag"))).toList
-
+      val employees = selectEmployees().map(row => Employee(row[Long]("id"), row[String]("name"),
+        row[String]("lastname"),
+        row[String]("workplace"), row[String]("acces"), row[Int]("accesLevel"),
+        row[Double]("netRate"), row[String]("email"), null, row[Int]("activeFlag"))).toList
       employees.head
     }
   }
 
-
+  /**
+    * login an employee into the system
+    * @param employee employee in the database
+    * @return successful login into the system
+    */
   def logInEmployee(employee: Employee): Employee = {
     DB.withConnection { implicit c =>
       val selectEmployees = SQL("SELECT * FROM EMPLOYEES WHERE email = {email} AND password = {password};").on(
@@ -70,6 +83,11 @@ trait EmployeeDaoT {
     }
   }
 
+  /**
+    * deactivate an active employee in the system
+    * @param id ID of the active employee
+    * @return an inactive employee
+    */
   def deactivateEmployee(id: Long): Long = {
     DB.withConnection { implicit c =>
       val updateFlag: Option[Long] =
@@ -79,6 +97,11 @@ trait EmployeeDaoT {
     0
   }
 
+  /**
+    * activate an inactive employee in the system
+    * @param id ID of the inactive employee
+    * @return an active employee
+    */
   def activateEmployee(id: Long): Long = {
     DB.withConnection { implicit c =>
       val updateFlag: Option[Long] =
@@ -89,8 +112,8 @@ trait EmployeeDaoT {
   }
 
   /**
-   * Removes a user by id from the database.
-   * @param id the users id
+   * Removes a employee by id from the database.
+   * @param id the employee's id
    * @return a boolean success flag
    */
   def rmEmployee(id: Long): Boolean = {
@@ -104,7 +127,6 @@ trait EmployeeDaoT {
    * Returns a list of available user from the database.
    * @return a list of user objects.
    */
-
   def availableEmployees: List[Employee] = {
     DB.withConnection { implicit c =>
       val selectEmployees = SQL("Select id, name, lastname, workplace, acces, accesLevel, netRate, email, password, activeFlag from Employees;")

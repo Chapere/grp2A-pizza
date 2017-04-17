@@ -1,7 +1,7 @@
 package forms
 
 /**
- * Form containing data to create a user.
- * @param name name of the user.
+ * Form containing data for the IDForm of a user.
+ * @param id ID of the user.
  */
 case class IDForm(id: Long)
