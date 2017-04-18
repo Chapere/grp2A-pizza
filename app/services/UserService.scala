@@ -51,7 +51,7 @@ trait UserServiceT {
 
   def updateUser(id: Long, name: String, lastname: String, adress: String, city: String, plz: String, distance: Double,
                  email: String, password: String): User = {
-    // create User
+    // update User
     val updateUserService = User(id, name, lastname, adress, city, plz, distance, email, password, 1)
     // persist and return User
     UserDao.updateUserDao(updateUserService)

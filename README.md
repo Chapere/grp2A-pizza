@@ -12,7 +12,7 @@ Teammitglieder der Gruppe ***2A***
 
 vorläufig
 
-Fertiges Projekt zur Verfügung gestellt von:
+Projektvorlage zur Verfügung gestellt von:
 
 + ***Johannes Krumm***
 + ***Kamil Gorszczyk***

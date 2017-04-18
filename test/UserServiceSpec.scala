@@ -46,38 +46,30 @@ class UserServiceSpec extends Specification {
       registeredUsers(1).activeFlag must be equalTo(1)
     }
 
-    /**"add a user Taha" in memDB {
-      UserService.addUser("Taha", "Obed", "Flurstraße 14", "München", "84587", 0 , "taha@gmx", "123") must
-        be equalTo("Taha", "Obed", "Flurstraße 14", "München", "84587", 0 , "taha@gmx", "123")
-    }
-
     "add a user Taha" in memDB {
-      UserService.addUser("Taha", "Obed", "Flurstraße 14", "München", "80123", 0, "taha@gmx", "123").
-      must be equalTo("Taha")
-      UserService.addUser("Obed").lastname must be equalTo("Obed")
-      UserService.addUser("Flurstraße 14").adress must be equalTo("Flurstraße 14")
-      UserService.addUser("München").city must be equalTo("München")
-      UserService.addUser("80142").plz must be equalTo("80142")
-      UserService.addUser(0).distance must be equalTo(0)
-      UserService.addUser("taha@gmx").email must be equalTo("taha@gmx")
-      UserService.addUser("123").password must be equalTo("123")
-    }
-
-    "add a user Helga" in memDB {
-      UserService.addUser("Helga").name must be equalTo("Helga")
+      UserService.addUser("Taha", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234") must
+        beTheSameAs("Taha", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234")
     }
 
     "return a list containing just Helge after adding user Helge" in memDB {
-      UserService.addUser("Helge")
+      UserService.addUser("Taha", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234")
       val registeredUsers = UserService.registeredUsers
       registeredUsers.length must be equalTo(1)
-      registeredUsers(0).name must be equalTo("Helge")
+      registeredUsers(0).name must be equalTo("Taha")
     }
 
     "return a list of two users after adding two users Helge" in memDB {
-      UserService.addUser("Helge")
-      UserService.addUser("Helge")
+      UserService.addUser("Taha", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234")
+      UserService.addUser("Taha", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234")
       UserService.registeredUsers.length must be equalTo(2)
-    } */
+    }
+
+    "add a user and update info" in memDB {
+      UserService.addUser("Taha", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234") must
+        beTheSameAs("Taha", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234")
+      UserService.updateUser(1, "Thomas", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234")
+      val registeredUsers = UserService.registeredUsers
+      registeredUsers(0).name must be equalTo("Thomas")
+    }
   }
 }
