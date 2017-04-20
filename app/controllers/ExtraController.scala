@@ -17,7 +17,6 @@ import play.api.data.format.Formats._
  */
 object ExtraController extends Controller {
 
-
   /**
     * Form object for extra data.
     */
