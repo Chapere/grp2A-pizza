@@ -86,7 +86,9 @@ trait UserDaoT {
 
       val selectUsers = SQL("SELECT * FROM USERS WHERE email = {email} AND password = {password};").on(
         'email -> user.email, 'password -> user.password)
-      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"), row[Double]("distance"), null, null, row[Int]("activeFlag"))).toList
+      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"),
+        row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"),
+        row[Double]("distance"), null, null, row[Int]("activeFlag"))).toList
 
       return users.head
     }
@@ -121,7 +123,7 @@ trait UserDaoT {
    */
   def rmUser(id: Long): Boolean = {
     DB.withConnection { implicit c =>
-      val rowsCount = SQL("delete from Users where id = ({id})").on('id -> id).executeUpdate()
+      val rowsCount = SQL("Delete from Users where id = ({id})").on('id -> id).executeUpdate()
       rowsCount > 0
     }
   }
@@ -134,7 +136,9 @@ trait UserDaoT {
       DB.withConnection { implicit c =>
       val selectUsers = SQL("Select * from Users;")
       // Transform the resulting Stream[Row] to a List[(String,String)]
-      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"), row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"), row[Double]("distance"), row[String]("email"), null, row[Int]("activeFlag"))).toList
+      val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"),
+        row[String]("lastname"), row[String]("adress"), row[String]("city"), row[String]("plz"),
+        row[Double]("distance"), row[String]("email"), null, row[Int]("activeFlag"))).toList
       users
     }
   }

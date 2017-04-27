@@ -27,6 +27,10 @@ Projektvorlage zur Verfügung gestellt von:
 * Jenkins --wird später nachgereicht--
 * Travis --wird später nachgereicht--
 
+## Documentation
+
++ User Manual
+
 ## Bedienung
 Bereits existierende Nutzer:
 -	Vorname: Padrone, Name: Sal, Email: root Passwort: root, Rolle: Mitarbeiter
