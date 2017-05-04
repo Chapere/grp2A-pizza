@@ -1,16 +1,16 @@
+![alt text](https://www.magicsushi-ffb.de/image/data/pizza_banner.jpg "Pizza Banner")
+
 Pizza-Power Web Applikation
 ===========================
 
 Teammitglieder der Gruppe ***2A***
 ----------------------------------
 + **Felix Thomas**
-> Testing, Documentation
+> Testing
 + **Taha Obed**
-> Testing, Software Quality, Documentation
+> Testing, Software Quality, Documentation (WIKI)
 + **Andreas** 
 > Testing, Reporting
-
-vorläufig
 
 Projektvorlage zur Verfügung gestellt von:
 
@@ -29,7 +29,7 @@ Projektvorlage zur Verfügung gestellt von:
 
 ## Documentation
 
-+ User Manual
+[Project Wiki](https://github.com/swenib/grp2A-pizza/wiki)
 
 ## Bedienung
 Bereits existierende Nutzer:

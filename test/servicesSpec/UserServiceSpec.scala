@@ -3,6 +3,7 @@ package servicesSpec
 import org.junit.runner._
 import org.specs2.mutable._
 import org.specs2.runner._
+
 import play.api.test.Helpers._
 import play.api.test._
 import services.UserService
@@ -29,11 +30,12 @@ class UserServiceSpec extends Specification {
       registeredUsers(0).id must be equalTo(1)
     }
 
+
+
     "Set user Emil inactive" in memDB {
-      UserService.addUser("Taha", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234")
-      UserService.setUserFlag0(1)
+      UserService.setUserFlag0(0)
       val registeredUsers = UserService.registeredUsers
-      registeredUsers(1).activeFlag must be equalTo(0)
+      registeredUsers(0).activeFlag must be equalTo(0)
     }
 
     "Set user Emil inactive and active again" in memDB {
@@ -44,10 +46,17 @@ class UserServiceSpec extends Specification {
       registeredUsers(0).activeFlag must be equalTo(1)
     }
 
+    "add a user Taha and update the information" in memDB {
+      UserService.addUser("Taha", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234").name must
+        beEqualTo("Taha")
+      UserService.updateUser(2, "Thomas", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234").name must
+        beEqualTo("Thomas")
+    }
+
     "add a user Taha" in memDB {
       val registeredUsers = UserService.registeredUsers
-      UserService.addUser("Taha", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234") must
-        beEqualTo(registeredUsers(1))
+      UserService.addUser("Taha", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234").name must
+        beEqualTo("Taha")
     }
 
     "add a user Taha and remove him" in memDB {

@@ -83,7 +83,6 @@ trait UserDaoT {
 
   def getUser(user: User): User = {
     DB.withConnection { implicit c =>
-
       val selectUsers = SQL("SELECT * FROM USERS WHERE email = {email} AND password = {password};").on(
         'email -> user.email, 'password -> user.password)
       val users = selectUsers().map(row => User(row[Long]("id"), row[String]("name"),

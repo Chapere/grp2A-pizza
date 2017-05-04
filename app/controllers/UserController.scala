@@ -154,12 +154,9 @@ object UserController extends Controller {
     )
   }
 
-
   /**
     * Shows the welcome view for a newly registered user.
     */
-
-
   def registerUser = Action { request =>
     request.session.get("loggedInUser").map { userID =>
       Ok(views.html.userLoggedIn(UserService.getUserByID(userID.toLong), OrderService.availableOrderByID(userID.toDouble), userID.toLong))
@@ -167,7 +164,6 @@ object UserController extends Controller {
       Ok(views.html.userLogIn(controllers.UserController.userForm, UserService.registeredUsers, controllers.UserController.userLogInForm))
     }
   }
-
 
   def completeLogInUser(id: Long, name: String): Action[AnyContent] = Action {
     Ok(views.html.userLoggedIn(UserService.getUserByID(id), OrderService.availableOrderByID(id), id)).withSession(
@@ -192,6 +188,7 @@ object UserController extends Controller {
   def userDeleted(deleted: Boolean): Action[AnyContent] = Action {
     Ok(views.html.userDeleted())
   }
+
   def setUserFlag(id: Double): Action[AnyContent] = Action {
     Ok(views.html.userFlagChanged(id))
   }
@@ -202,7 +199,5 @@ object UserController extends Controller {
   def showUsers: Action[AnyContent] = Action {
     Ok(views.html.allUsers(UserService.registeredUsers))
   }
-
-
 }
 

@@ -1,5 +1,3 @@
-package controllersSpec
-
 import org.junit.runner._
 import org.specs2.mutable._
 import org.specs2.runner._
@@ -25,7 +23,7 @@ class ApplicationSpec extends Specification {
 
       status(home) must equalTo(OK)
       contentType(home) must beSome.which(_ == "text/html")
-      contentAsString(home) must contain ("Willkommen")
+      contentAsString(home) must contain ("Produkte")
     }
 
     "add a user" in new WithApplication{
