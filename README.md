@@ -1,6 +1,7 @@
 ![alt text](https://www.magicsushi-ffb.de/image/data/pizza_banner.jpg "Pizza Banner")
 
 ![buildpassing](https://api.travis-ci.org/swenib/grp2A-pizza.svg?branch=master "Build Passing")
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/520946bafeca4cd1bee2f5783604605f)](https://www.codacy.com/app/Chapere/grp2A-pizza?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=swenib/grp2A-pizza&amp;utm_campaign=Badge_Grade)
 
 Pizza-Power Web Applikation
 ===========================
