@@ -1,6 +1,6 @@
 ![alt text](https://www.magicsushi-ffb.de/image/data/pizza_banner.jpg "Pizza Banner")
 
-![buildpassing](https://api.travis-ci.org/swenib/grp2B-pizza.svg?branch=master "Build Passing")
+![buildpassing](https://api.travis-ci.org/swenib/grp2A-pizza.svg?branch=master "Build Passing")
 
 Pizza-Power Web Applikation
 ===========================
