@@ -26,7 +26,7 @@ class ApplicationSpec extends Specification {
       contentAsString(home) must contain ("Produkte")
     }
 
-    "add a user" in new WithApplication{
+    /*"add a user" in new WithApplication{
       val username = "TestUser"
       val result = route(FakeRequest(POST, "/addUser").withFormUrlEncodedBody(
           "Name" -> username
@@ -45,7 +45,6 @@ class ApplicationSpec extends Specification {
       status(newResult) must equalTo(OK)
       contentType(newResult) must beSome.which(_ == "text/html")
       contentAsString(newResult) must contain("Willkommen " + username)
-
-    }
+    }*/
   }
 }
