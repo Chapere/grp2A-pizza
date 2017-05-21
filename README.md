@@ -16,7 +16,7 @@ Teammitglieder der Gruppe ***2A***
 + **Andreas** 
 > Testing, Deployment
 
-Projektvorlage zur Verfügung gestellt von:
+## Projektvorlage zur Verfügung gestellt von:
 
 https://github.com/swenib/grp1D-pizza
 + ***Johannes Krumm***
@@ -24,7 +24,7 @@ https://github.com/swenib/grp1D-pizza
 + ***Simon Rainer Parussel***
 
 
-### Link zu...
+## Link zu...
 
 * [Redmine](https://redmine.cs.hm.edu/projects/2017-braun-swe2-ib-2a "Redmine Mainpage der Gruppe 2A")
 * [Github](https://github.com/swenib/grp2A-pizza "Github Mainpage der Gruppe 2A")
