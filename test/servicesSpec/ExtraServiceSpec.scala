@@ -54,7 +54,15 @@ class ExtraServiceSpec extends Specification {
       ExtraService.selectExtra(7).price must be equalTo(0.5)
       }
 
-
+    "remove extra and return available extras" in memDB {
+      ExtraService.addExtra("mushrooms",1)
+      ExtraService.addExtra("mushrooms",1)
+      ExtraService.availableExtras.length must be equalTo(7)
+      ExtraService.rmExtra(5)
+      ExtraService.selectExtraByID(6).name must be equalTo("mushrooms")
+      ExtraService.selectExtraByID(6).price must be equalTo(1)
+      ExtraService.availableExtras.length must be equalTo(6)
+    }
   }
 
 }
