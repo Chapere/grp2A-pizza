@@ -1,11 +1,11 @@
 package controllers
 
-import play.api.mvc._
+import play.api.mvc.{Controller, Action, AnyContent}
 import play.api.data.Form
-import play.api.data.Forms._
-import services._
-import forms._
-import play.api.data.format.Formats._
+import play.api.data.Forms.{mapping, of, nonEmptyText}
+import services.ProductService
+import forms.{IDForm, CreateProductForm}
+import play.api.data.format.Formats.{longFormat, doubleFormat}
 
 /**
  * Controller for user specific operations.
@@ -14,22 +14,29 @@ import play.api.data.format.Formats._
  */
 object ProductController extends Controller {
 
+  val id = "id"
+  val name = "Name"
+  val price = "Preis"
+  val size = "Größe"
+  val unit = "Einheit"
+  val success = "success"
+
 
   /**
    * Form object for user data.
    */
   val productForm = Form(
     mapping(
-      "id" -> of(longFormat),
-      "Name" -> nonEmptyText,
-      "Preis" -> of(doubleFormat),
-      "Größe" -> of(doubleFormat),
-      "Einheit" -> nonEmptyText)(CreateProductForm.apply)(CreateProductForm.unapply))
+      id -> of(longFormat),
+      name -> nonEmptyText,
+      price -> of(doubleFormat),
+      size -> of(doubleFormat),
+      unit -> nonEmptyText)(CreateProductForm.apply)(CreateProductForm.unapply))
 
 
   val selectProductForm = Form(
     mapping(
-      "id" -> of(longFormat))(IDForm.apply)(IDForm.unapply))
+      id -> of(longFormat))(IDForm.apply)(IDForm.unapply))
   /**
    * Adds a new user with the given data to the system.
    *
@@ -43,7 +50,7 @@ object ProductController extends Controller {
       productData => {
         val newProduct = services.ProductService.addProduct(productData.name, productData.price, productData.size, productData.unit)
         Redirect(routes.ProductController.newProductCreated(newProduct.id, newProduct.name, newProduct.price, newProduct.size, newProduct.unit)).
-          flashing("success" -> "Product saved!")
+          flashing(success -> "Product saved!")
       })
   }
 
@@ -55,7 +62,7 @@ object ProductController extends Controller {
       productData => {
         val selectProduct = services.ProductService.updateProduct(productData.id, productData.name, productData.price, productData.size, productData.unit)
         Redirect(routes.ProductController.upgradeProduct(selectProduct.id, selectProduct.name, selectProduct.price, selectProduct.size, selectProduct.unit)).
-          flashing("success" -> "Employee saved!")
+          flashing(success -> "Product updated!")
       })
   }
 
@@ -68,7 +75,7 @@ object ProductController extends Controller {
       deleteProductData => {
         val deleteProductVal = services.ProductService.rmProduct(deleteProductData.id)
         Redirect(routes.ProductController.productDeleted(deleteProductVal)).
-          flashing("success" -> "Product saved!")
+          flashing(success -> "Product deleted!")
       })
   }
 
@@ -81,7 +88,7 @@ object ProductController extends Controller {
       selectProductData => {
         val selectProduct = services.ProductService.selectProduct(selectProductData.id)
         Redirect(routes.ProductController.changeProduct1(selectProduct.id, selectProduct.name, selectProduct.price, selectProduct.size, selectProduct.unit)).
-          flashing("success" -> "Product saved!")
+          flashing(success -> "Product retrieved!")
       })
   }
 

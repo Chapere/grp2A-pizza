@@ -1,8 +1,8 @@
-@(id: Long, name: String, lastname: String, workplace: String, acces: String, accesLevel: Int, netRate: Double, email: String, password: String, activeFlag: Int, updateEmployeeForm: Form[forms.UpdateEmployeeForm])
+@(id: Long, name: String, lastName: String, workplace: String, access: String, accessLevel: Int, netRate: Double, email: String, password: String, activeFlag: Int, updateEmployeeForm: Form[forms.UpdateEmployeeForm])
 
 @main(models.Company.name) {
 
-    <h1 align="center", style="margin-top: 0px; margin-bottom: 100px">Edit Employee: @lastname, @name</h1>
+    <h1 align="center", style="margin-top: 0px; margin-bottom: 100px">Edit Employee: @lastName, @name</h1>
 
     <div id="editEmployee">
 
@@ -12,18 +12,18 @@
                 <h2>Alter Wert: @name</h2>
 
                 <h1>@helper.inputText(updateEmployeeForm("Vorname"))</h1>
-                <h2>Alter Wert: @lastname</h2>
+                <h2>Alter Wert: @lastName</h2>
 
                 <h1>@helper.inputText(updateEmployeeForm("Gebiet"))</h1>
                 <h2>Alter Wert: @workplace</h2>
 
                 <h1>@helper.inputText(updateEmployeeForm("Zugriff"))</h1>
-                <h2>Alter Wert: @acces</h2>
+                <h2>Alter Wert: @access</h2>
             </div>
 
             <div class="right">
                 <h1>@helper.inputText(updateEmployeeForm("Zugriffsebene"))</h1>
-                <h2>Alter Wert: @accesLevel</h2>
+                <h2>Alter Wert: @accessLevel</h2>
 
                 <h1>@helper.inputText(updateEmployeeForm("Stundenrate"))</h1>
                 <h2>Alter Wert: @netRate</h2>

@@ -1,6 +1,6 @@
 @(userID: String, name: String, employeeForm: Form[forms.CreateEmployeeForm],
         selectEmployeeForm: Form[forms.SelectEmployeeForm], employees: List[models.Employee],
-        userForm: Form[forms.CreateUserForm], users: List[models.User], accesLevel: Double, activeFlag: Double, acces: String,
+        userForm: Form[forms.CreateUserForm], users: List[models.User], accessLevel: Double, activeFlag: Double, access: String,
         pizzaForm: Form[forms.CreatePizzaForm])
 
 @main(models.Company.name) {
@@ -8,7 +8,7 @@
     <h2 align="center">Willkommen @name bei @models.Company.name. Sie wurden Eingeloggt. </h2>
 
     <h2 style="font-size: 25px; margin-top: -25px; margin-bottom: 60px; font-style: normal;" align="center">
-        Als Mitarbeieter der Stufe: @accesLevel (@acces) haben Sie Zugriff zu folgenden Webparts:
+        Als Mitarbeieter der Stufe: @accessLevel (@access) haben Sie Zugriff zu folgenden Webparts:
     </h2>
 
 
@@ -26,7 +26,7 @@
 
     <div style="height: 50px; display: block; width: 100%; float: none; clear: both;"></div>
 
-    @if(accesLevel == 10 && userID != null) {
+    @if(accessLevel == 10 && userID != null) {
     <div class="left">
         <h1>Mitarbeiter</h1>
         <h1 style="font-size: 30px">Registrierung</h1>
@@ -45,7 +45,7 @@
 
     }
     </div>
-    @if(accesLevel >= 5 && activeFlag == 1) {
+    @if(accessLevel >= 5 && activeFlag == 1) {
         <div class="right">
             <h1>Kunden</h1>
             <h1 style="font-size: 30px">Registrierung</h1>

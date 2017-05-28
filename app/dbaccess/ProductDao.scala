@@ -13,6 +13,12 @@ import models._
  */
 trait ProductDaoT {
 
+  val ID = "id"
+  val name = "name"
+  val price = "price"
+  val size = "size"
+  val unit = "unit"
+
   /**
    * Creates the given user in the database.
    * @param product the user object to be stored.
@@ -43,8 +49,8 @@ trait ProductDaoT {
     DB.withConnection { implicit c =>
       val selectProducts = SQL("SELECT * FROM USERS WHERE id = {id};").on(
         'id -> id)
-      val products = selectProducts().map(row => Product(row[Long]("id"), row[String]("name"), row[Double]("price"),
-        row[Double]("size"), row[String]("unit"))).toList
+      val products = selectProducts().map(row => Product(row[Long](ID), row[String](name), row[Double](price),
+        row[Double](size), row[String](unit))).toList
       products
     }
 
@@ -55,8 +61,8 @@ trait ProductDaoT {
     DB.withConnection { implicit c =>
       val selectProduct = SQL("SELECT * FROM Products WHERE id = {id};").on(
         'id -> id)
-      val products = selectProduct().map(row => Product(row[Long]("id"), row[String]("name"), row[Double]("price"),
-        row[Double]("size"), row[String]("unit"))).toList
+      val products = selectProduct().map(row => Product(row[Long](ID), row[String](name), row[Double](price),
+        row[Double](size), row[String](unit))).toList
 
       products.head
     }
@@ -84,8 +90,8 @@ trait ProductDaoT {
     DB.withConnection { implicit c =>
       val selectProducts = SQL("Select id, name, price, size, unit from Products;")
       // Transform the resulting Stream[Row] to a List[(String,String)]
-      val products = selectProducts().map(row => Product(row[Long]("id"), row[String]("name"), row[Double]("price"),
-        row[Double]("size"), row[String]("unit"))).toList
+      val products = selectProducts().map(row => Product(row[Long](ID), row[String](name), row[Double](price),
+        row[Double](size), row[String](unit))).toList
       products
     }
   }

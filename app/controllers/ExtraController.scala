@@ -1,11 +1,11 @@
 package controllers
 
-import play.api.mvc._
+import play.api.mvc.{Action, AnyContent, Controller}
 import play.api.data.Form
-import play.api.data.Forms._
-import services._
-import forms._
-import play.api.data.format.Formats._
+import play.api.data.Forms.{mapping, of, nonEmptyText}
+import services.ExtraService
+import forms.{IDForm, CreateExtraForm}
+import play.api.data.format.Formats.{longFormat, doubleFormat}
 
 
 /**
@@ -17,18 +17,23 @@ import play.api.data.format.Formats._
  */
 object ExtraController extends Controller {
 
+  val id = "id"
+  val name = "Name"
+  val price = "Preis"
+  val success = "success"
+
   /**
     * Form object for extra data.
     */
   val extraForm = Form(
     mapping(
-      "id" -> of(longFormat),
-      "Name" -> nonEmptyText,
-      "Preis" -> of(doubleFormat))(CreateExtraForm.apply)(CreateExtraForm.unapply))
+      id -> of(longFormat),
+      name -> nonEmptyText,
+      price -> of(doubleFormat))(CreateExtraForm.apply)(CreateExtraForm.unapply))
 
   val selectExtraForm = Form(
     mapping(
-      "id" -> of(longFormat))(IDForm.apply)(IDForm.unapply))
+      id -> of(longFormat))(IDForm.apply)(IDForm.unapply))
 
 
   /**
@@ -44,7 +49,7 @@ object ExtraController extends Controller {
       extraData => {
         val newExtra = services.ExtraService.addExtra(extraData.name, extraData.price)
         Redirect(routes.ExtraController.newExtraCreated(newExtra.id, newExtra.name, newExtra.price)).
-          flashing("success" -> "Extra saved!")
+          flashing(success -> "Extra saved!")
       })
   }
 
@@ -60,7 +65,7 @@ object ExtraController extends Controller {
       extraData => {
         val selectExtra = services.ExtraService.updateExtra(extraData.id, extraData.name, extraData.price)
         Redirect(routes.ExtraController.upgradeExtra(selectExtra.id, selectExtra.name, selectExtra.price)).
-          flashing("success" -> "Employee saved!")
+          flashing(success -> "Extra updated!")
       })
   }
 
@@ -76,7 +81,7 @@ object ExtraController extends Controller {
       deleteExtraData => {
         val deleteExtraVal = services.ExtraService.rmExtra(deleteExtraData.id)
         Redirect(routes.ExtraController.extraDeleted(deleteExtraVal)).
-          flashing("success" -> "Extra saved!")
+          flashing(success -> "Extra deleted!")
       })
   }
 
@@ -92,7 +97,7 @@ object ExtraController extends Controller {
       selectExtraData => {
         val selectExtra = services.ExtraService.selectExtra(selectExtraData.id)
         Redirect(routes.ExtraController.changeExtra1(selectExtra.id, selectExtra.name, selectExtra.price)).
-          flashing("success" -> "Extra saved!")
+          flashing(success -> "Extras retrieved!")
       })
   }
 

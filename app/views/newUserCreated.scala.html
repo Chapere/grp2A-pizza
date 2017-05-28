@@ -1,13 +1,13 @@
 
-@(username: String, lastname: String, adress: String, city: String, plz: String, email: String, password: String)
+@(username: String, lastName: String, address: String, city: String, plz: String, email: String, password: String)
 
 @main(models.Company.name) {
 
     <h1 align="center">Willkommen @username bei @models.Company.name</h1>
 
     <h1>Name: @username</h1>
-    <h1>Vorname: @lastname</h1>
-    <h1>Adresse: @adress, @plz @city</h1>
+    <h1>Vorname: @lastName</h1>
+    <h1>Adresse: @address, @plz @city</h1>
     <h1>E-Mail: @email</h1>
 
 
