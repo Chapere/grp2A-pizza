@@ -42,7 +42,7 @@ trait ExtraDaoT {
 
   def getExtraByIdentification(id: Long): List[Extra] = {
     DB.withConnection { implicit c =>
-      val selectExtras = SQL("SELECT * FROM USERS WHERE id = {id};").on(
+      val selectExtras = SQL("SELECT * FROM Extras WHERE id = {id};").on(
         'id -> id)
       val extras = selectExtras().map(row => Extra(row[Long]("id"), row[String]("name"), row[Double]("price"))).toList
       extras
