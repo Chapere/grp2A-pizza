@@ -28,6 +28,21 @@ class ApplicationSpec extends Specification {
       contentAsString(home) must contain ("Produkte")
     }
 
+    "render the impressum page" in new WithApplication{
+      val impressum = route(FakeRequest(GET, "/impressum")).get
+
+      status(impressum) must equalTo(OK)
+      contentType(impressum) must beSome.which(_== "text/html")
+      contentAsString(impressum) must contain ("Impressum")
+    }
+
+    "render logout Action" in new WithApplication{
+      val logOut = route(FakeRequest(GET, "/logout")).get
+
+      status(logOut) must equalTo(OK)
+      contentType(logOut) must beSome.which(_== "text/html")
+    }
+
     /*"add a user" in new WithApplication{
       val username = "TestUser"
       val result = route(FakeRequest(POST, "/addUser").withFormUrlEncodedBody(
