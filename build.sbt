@@ -1,6 +1,6 @@
-name := """texmaex""" // please change me
+name := """Pizza-Power""" // please change me
 
-version := "Milestone2" // please change me later
+version := "1.0-RELEASE" // please change me later
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
@@ -20,5 +20,3 @@ libraryDependencies ++= Seq(
   "org.specs2" %% "specs2-mock" % "3.5" % "test",
   "postgresql" % "postgresql" % "9.1-901-1.jdbc4"
 )
-
-
