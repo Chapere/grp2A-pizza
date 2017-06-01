@@ -34,5 +34,4 @@ object Application extends Controller {
   def logOut = Action { request =>
     Ok(views.html.index()).withNewSession
   }
-
 }

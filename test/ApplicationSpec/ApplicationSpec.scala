@@ -1,3 +1,5 @@
+package ApplicationSpec
+
 import org.junit.runner._
 import org.specs2.mutable._
 import org.specs2.runner._
@@ -24,6 +26,21 @@ class ApplicationSpec extends Specification {
       status(home) must equalTo(OK)
       contentType(home) must beSome.which(_ == "text/html")
       contentAsString(home) must contain ("Produkte")
+    }
+
+    "render the impressum page" in new WithApplication{
+      val impressum = route(FakeRequest(GET, "/impressum")).get
+
+      status(impressum) must equalTo(OK)
+      contentType(impressum) must beSome.which(_== "text/html")
+      contentAsString(impressum) must contain ("Impressum")
+    }
+
+    "render logout Action" in new WithApplication{
+      val logOut = route(FakeRequest(GET, "/logout")).get
+
+      status(logOut) must equalTo(OK)
+      contentType(logOut) must beSome.which(_== "text/html")
     }
 
     /*"add a user" in new WithApplication{
