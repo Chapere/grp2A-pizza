@@ -20,7 +20,7 @@ object ExtraController extends Controller {
   val success = "success"
 
   /**
-    * Form object for extra data.
+    * Form object for extra data
     */
   val extraForm = Form(
     mapping(
