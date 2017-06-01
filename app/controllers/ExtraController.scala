@@ -17,9 +17,6 @@ import play.api.data.format.Formats.{longFormat, doubleFormat}
  */
 object ExtraController extends Controller {
 
-  val id = "id"
-  val name = "Name"
-  val price = "Preis"
   val success = "success"
 
   /**
@@ -27,13 +24,13 @@ object ExtraController extends Controller {
     */
   val extraForm = Form(
     mapping(
-      id -> of(longFormat),
-      name -> nonEmptyText,
-      price -> of(doubleFormat))(CreateExtraForm.apply)(CreateExtraForm.unapply))
+      "id" -> of(longFormat),
+      "Name" -> nonEmptyText,
+      "Preis" -> of(doubleFormat))(CreateExtraForm.apply)(CreateExtraForm.unapply))
 
   val selectExtraForm = Form(
     mapping(
-      id -> of(longFormat))(IDForm.apply)(IDForm.unapply))
+      "id" -> of(longFormat))(IDForm.apply)(IDForm.unapply))
 
 
   /**
