@@ -7,7 +7,6 @@ import services.ExtraService
 import forms.{IDForm, CreateExtraForm}
 import play.api.data.format.Formats.{longFormat, doubleFormat}
 
-
 /**
  * Controller for extra specific operations.
   *
@@ -134,7 +133,5 @@ object ExtraController extends Controller {
   def showExtras: Action[AnyContent] = Action {
     Ok(views.html.allExtras(ExtraService.availableExtras))
   }
-
-
 }
 

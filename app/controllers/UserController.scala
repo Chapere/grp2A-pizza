@@ -118,7 +118,6 @@ object UserController extends Controller {
       })
   }
 
-
   def chooseUser: Action[AnyContent] = Action { implicit request =>
     selectUserForm.bindFromRequest.fold(
       formWithErrors => {
@@ -131,11 +130,10 @@ object UserController extends Controller {
       })
   }
 
-  def distanceError(email: String, password: String, distance: Double): Action[AnyContent] = Action { implicit request =>
+  /*def distanceError(email: String, password: String, distance: Double): Action[AnyContent] = Action { implicit request =>
     val delete = services.UserService.makeError(distance, email, password)
     BadRequest(views.html.badDistance())
-
-  }
+  }*/
 
   def logInUser: Action[AnyContent] = Action { implicit request =>
     userLogInForm.bindFromRequest.fold(
@@ -200,4 +198,3 @@ object UserController extends Controller {
     Ok(views.html.allUsers(UserService.registeredUsers))
   }
 }
-
