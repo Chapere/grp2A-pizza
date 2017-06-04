@@ -176,5 +176,16 @@ class ExtraControllerSpec extends Specification{
       status(result) must equalTo(OK)
       contentAsString(result) must contain ("Extra Gelöscht!")
     }
+
+    "showExtras" in memDB {
+      val request = FakeRequest(POST, "/addExtra").withFormUrlEncodedBody(
+        "id" -> "0",
+        "Name" -> "Kas",
+        "Preis" -> "1"
+      )
+      val result = ExtraController.showExtras()(request)
+      status(result) must equalTo(OK)
+      contentAsString(result) must contain ("Extrasübersicht")
+    }
   }
 }
