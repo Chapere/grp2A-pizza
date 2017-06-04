@@ -197,7 +197,7 @@ class PizzaControllerSpec extends Specification{
       )
       val result = PizzaController.upgradePizza(0,"Speck",0.3,"Speck","Super Lecker","Gluten")(request)
       status(result) must equalTo(OK)
-      contentAsString(result) must contain ("0") contain "Speck" contain "0,3"
+      contentAsString(result) must contain ("0") contain "Speck" contain "Gluten"
     }
 
     "show view for deleted Pizza" in memDB {
