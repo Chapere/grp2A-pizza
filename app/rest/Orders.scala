@@ -112,16 +112,6 @@ object Orders extends Controller {
   private implicit val OrderReads = Json.reads[OrderName]
 
   /**
-   * Create a new user by a POST request including the user name as JSON content.
-   * Use for example
-   * {{{
-   * curl --include --request POST --header "Content-type: application/json"
-   *      --data '{"name" : "WieAuchImmer"}' http://localhost:9000/api/user
-   * }}}
-   * @return info about the new user in a JSON representation
-   */
-
-  /**
    * Delete a user by id using a DELETE request.
    * {{{
    * curl --include --request DELETE http://localhost:9000/api/user/1
@@ -129,11 +119,11 @@ object Orders extends Controller {
    * @param id the user id.
    * @return success info or NotFound
    */
-  def rmOrder(id: Long): Action[AnyContent] = Action { implicit request =>
+  /*def rmOrder(id: Long): Action[AnyContent] = Action { implicit request =>
     val success = OrderService.rmOrder(id)
     if (success)
       Ok(Json.obj("status" -> "OK"))
     else
       NotFound
-  }
+  }*/
 }
