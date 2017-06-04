@@ -117,7 +117,7 @@ class PizzaControllerSpec extends Specification{
         "Kommentar" -> "Lecker",
         "Zusatzstoffe" -> "Gluten"
       )
-      val request2 = FakeRequest(POST, "/rmExtra").withFormUrlEncodedBody(
+      val request2 = FakeRequest(POST, "/rmPizza").withFormUrlEncodedBody(
         "ID" -> "0"
       )
       val result = PizzaController.rmPizza()(request2)
