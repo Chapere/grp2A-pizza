@@ -23,10 +23,10 @@ class OrdersSpec extends Specification {
       contentType(response) must beSome.which(_ == "application/json")
     }
 
-    "respond with a json representation for a specific order" in new WithApplication {
+    /*"respond with a json representation for a specific order" in new WithApplication {
       val response = route(FakeRequest(GET, "/api/order/1")).get
       status(response) must beEqualTo(OK)
       contentType(response) must beSome.which(_== "application/json")
-    }
+    }*/
   }
 }
