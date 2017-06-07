@@ -47,7 +47,7 @@ trait ProductDaoT {
 
   def getProductByIdentification(id: Long): List[Product] = {
     DB.withConnection { implicit c =>
-      val selectProducts = SQL("SELECT * FROM USERS WHERE id = {id};").on(
+      val selectProducts = SQL("SELECT * FROM Products WHERE id = {id};").on(
         'id -> id)
       val products = selectProducts().map(row => Product(row[Long](ID), row[String](name), row[Double](price),
         row[Double](size), row[String](unit))).toList
