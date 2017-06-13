@@ -17,8 +17,6 @@ class MockedExtraDaoSpec extends Specification with Mockito {
     }
   }
 
-  "The Extra"
-
   object ExtraService extends services.ExtraServiceT {
     override val extraDao = mock[dbaccess.ExtraDaoT]
     import models.Extra

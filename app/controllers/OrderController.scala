@@ -95,14 +95,14 @@ object OrderController extends Controller {
         BadRequest(views.html.orderFailed())
       },
       orderData => {
-        try {
+        //try {
           val newOrder = services.OrderService.orderSetStaus(orderData.orderID, orderData.orderStatusKZ)
           Redirect(routes.EmployeeController.showAllOrderDetails()).
             flashing("success" -> "Order saved!")
-        } catch {
-          case e: RuntimeException => BadRequest(views.html.orderFailed())
+        //} catch {
+         //case e: RuntimeException => BadRequest(views.html.orderFailed())
         }
-      })
+      )
   }
 
   def showSelectedOrder : Action[AnyContent] = Action { implicit request =>

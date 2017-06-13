@@ -43,88 +43,58 @@ class ExtraControllerSpec extends Specification{
     }
 
     "update an Extra" in memDB {
-      val request = FakeRequest(POST, "/addExtra").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Name" -> "Kas",
-        "Preis" -> "1"
-      )
-      val request2 = FakeRequest(POST, "/updateExtra").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/updateExtra").withFormUrlEncodedBody(
         "id" -> "0",
         "Name" -> "Speck",
         "Preis" -> "1"
       )
-      val result = ExtraController.updateExtra()(request2)
+      val result = ExtraController.updateExtra()(request)
       status(result) must equalTo(SEE_OTHER)
       redirectLocation(result) must beSome("/upgradeExtra?id=0&name=Speck&price=1.0")
     }
 
     "update an Extra bad request" in memDB {
-      val request = FakeRequest(POST, "/addExtra").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Name" -> "Kas",
-        "Preis" -> "1"
-      )
-      val request2 = FakeRequest(POST, "/updateExtra").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/updateExtra").withFormUrlEncodedBody(
         "Name" -> "Speck",
         "Preis" -> "1"
       )
-      val result = ExtraController.updateExtra()(request2)
+      val result = ExtraController.updateExtra()(request)
       status(result) must equalTo(BAD_REQUEST)
       redirectLocation(result) must beNone
     }
 
     "remove an Extra" in memDB {
-      val request = FakeRequest(POST, "/addExtra").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Name" -> "Kas",
-        "Preis" -> "1"
-      )
-      val request2 = FakeRequest(POST, "/rmExtra").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/rmExtra").withFormUrlEncodedBody(
         "id" -> "0"
       )
-      val result = ExtraController.rmExtra()(request2)
+      val result = ExtraController.rmExtra()(request)
       status(result) must equalTo(SEE_OTHER)
       redirectLocation(result) must beSome("/extraDeleted?deleted=true")
     }
 
     "remove an Extra bad request" in memDB {
-      val request = FakeRequest(POST, "/addExtra").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Name" -> "Kas",
-        "Preis" -> "1"
-      )
-      val request2 = FakeRequest(POST, "/rmExtra").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/rmExtra").withFormUrlEncodedBody(
         "ID" -> "0"
       )
-      val result = ExtraController.rmExtra()(request2)
+      val result = ExtraController.rmExtra()(request)
       status(result) must equalTo(BAD_REQUEST)
       redirectLocation(result) must beNone
     }
 
     "get an Extra" in memDB {
-      val request = FakeRequest(POST, "/addExtra").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Name" -> "Kas",
-        "Preis" -> "1"
-      )
-      val request2 = FakeRequest(POST, "/selectExtra").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/selectExtra").withFormUrlEncodedBody(
         "id" -> "0"
       )
-      val result = ExtraController.getExtra()(request2)
+      val result = ExtraController.getExtra()(request)
       status(result) must equalTo(SEE_OTHER)
       redirectLocation(result) must beSome("/changeExtra?id=0&name=&price=0.0")
     }
 
     "get an Extra bad request" in memDB {
-      val request = FakeRequest(POST, "/addExtra").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Name" -> "Kas",
-        "Preis" -> "1"
-      )
-      val request2 = FakeRequest(POST, "/selectExtra").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/selectExtra").withFormUrlEncodedBody(
         "Id" -> "0"
       )
-      val result = ExtraController.getExtra()(request2)
+      val result = ExtraController.getExtra()(request)
       status(result) must equalTo(BAD_REQUEST)
       redirectLocation(result) must beNone
     }
