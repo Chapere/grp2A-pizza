@@ -212,7 +212,7 @@ class ProductControllerSpec extends Specification{
       )
       val result = ProductController.showProducts()(request)
       status(result) must equalTo(OK)
-      contentAsString(result) must contain ("Extrasübersicht")
+      contentAsString(result) must contain ("Produktübersicht")
     }
   }
 }
