@@ -54,7 +54,7 @@ object OrderController extends Controller {
         BadRequest(views.html.badRequest())
       },
       orderData => {
-        try {
+        //try {
           val selectUser = services.UserService.getUserByID(orderData.userID.toLong)
           var time: Int = (2 * (selectUser.head.distance.toInt / 1000)) + (10 * orderData.pizzaAmount.toInt)
           var deliveryTime = DateTimeFormat.forPattern("kk:mm - DD.MM.YYYY").print(DateTime.now() + time.minutes)
@@ -83,10 +83,10 @@ object OrderController extends Controller {
             orderNew.pizzaAmount, orderNew.pizzaSize, orderNew.pizzaPrice, orderNew.productAmount, orderNew.productPrice,
             extrasName.toString, extraTotalPrice, orderNew.totalPrice, orderNew.orderTime, orderNew.status, deliveryTime)).
             flashing("success" -> "Order saved!")
-        } catch {
-          case e: RuntimeException => BadRequest(views.html.orderFailed())
+        //} catch {
+          //case e: RuntimeException => BadRequest(views.html.orderFailed())
         }
-      })
+      )
   }
 
   def setStatusOrder : Action[AnyContent] = Action { implicit request =>

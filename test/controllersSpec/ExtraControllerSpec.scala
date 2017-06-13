@@ -1,15 +1,11 @@
 package controllersSpec
 
-import akka.japi.Option.Some
 import org.junit.runner._
 import org.specs2.mutable._
 import org.specs2.runner._
 import play.api.test.Helpers._
 import play.api.test._
 import controllers.ExtraController
-import dbaccess.ExtraDao
-
-import scala.None
 
 /**
   * Created by ifw15124 on 21.04.2017.
