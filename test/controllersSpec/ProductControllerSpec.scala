@@ -48,104 +48,62 @@ class ProductControllerSpec extends Specification{
     }
 
     "update a Product" in memDB {
-      val request = FakeRequest(POST, "/addProduct").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Name" -> "Kas",
-        "Preis" -> "3",
-        "Größe" -> "500",
-        "Einheit" -> "g"
-      )
-      val request2 = FakeRequest(POST, "/updateProduct").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/updateProduct").withFormUrlEncodedBody(
         "id" -> "0",
         "Name" -> "Nuggets",
         "Preis" -> "2",
         "Größe" -> "300",
         "Einheit" -> "g"
       )
-      val result = ProductController.updateProduct()(request2)
+      val result = ProductController.updateProduct()(request)
       status(result) must equalTo(SEE_OTHER)
       redirectLocation(result) must beSome("/upgradeProduct?id=0&name=Nuggets&price=2.0&size=300.0&unit=g")
     }
 
     "update a Product bad request" in memDB {
-      val request = FakeRequest(POST, "/addProduct").withFormUrlEncodedBody(
-        "id" -> "0",
+      val request = FakeRequest(POST, "/updateProduct").withFormUrlEncodedBody(
         "Name" -> "Kas",
         "Preis" -> "3",
         "Größe" -> "500",
         "Einheit" -> "g"
       )
-      val request2 = FakeRequest(POST, "/updateProduct").withFormUrlEncodedBody(
-        "Name" -> "Kas",
-        "Preis" -> "3",
-        "Größe" -> "500",
-        "Einheit" -> "g"
-      )
-      val result = ProductController.updateProduct()(request2)
+      val result = ProductController.updateProduct()(request)
       status(result) must equalTo(BAD_REQUEST)
       redirectLocation(result) must beNone
     }
 
     "remove a Product" in memDB {
-      val request = FakeRequest(POST, "/addProduct").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Name" -> "Kas",
-        "Preis" -> "3",
-        "Größe" -> "500",
-        "Einheit" -> "g"
-      )
-      val request2 = FakeRequest(POST, "/rmProduct").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/rmProduct").withFormUrlEncodedBody(
         "id" -> "0"
       )
-      val result = ProductController.rmProduct()(request2)
+      val result = ProductController.rmProduct()(request)
       status(result) must equalTo(SEE_OTHER)
       redirectLocation(result) must beSome("/productDeleted?deleted=true")
     }
 
     "remove a Product bad request" in memDB {
-     val request = FakeRequest(POST, "/addProduct").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Name" -> "Kas",
-        "Preis" -> "3",
-        "Größe" -> "500",
-        "Einheit" -> "g"
-      )
-      val request2 = FakeRequest(POST, "/rmProduct").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/rmProduct").withFormUrlEncodedBody(
         "ID" -> "0"
       )
-      val result = ProductController.rmProduct()(request2)
+      val result = ProductController.rmProduct()(request)
       status(result) must equalTo(BAD_REQUEST)
       redirectLocation(result) must beNone
     }
 
     "get a Product" in memDB {
-      val request = FakeRequest(POST, "/addProduct").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Name" -> "Kas",
-        "Preis" -> "3",
-        "Größe" -> "500",
-        "Einheit" -> "g"
-      )
-      val request2 = FakeRequest(POST, "/selectProduct").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/selectProduct").withFormUrlEncodedBody(
         "id" -> "0"
       )
-      val result = ProductController.getProduct()(request2)
+      val result = ProductController.getProduct()(request)
       status(result) must equalTo(SEE_OTHER)
       redirectLocation(result) must beSome("/changeProduct?id=0&name=&price=0.0&size=0.0&unit=")
     }
 
     "get a Product bad request" in memDB {
-      val request = FakeRequest(POST, "/addProduct").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Name" -> "Kas",
-        "Preis" -> "3",
-        "Größe" -> "500",
-        "Einheit" -> "g"
-      )
-      val request2 = FakeRequest(POST, "/selectProduct").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/selectProduct").withFormUrlEncodedBody(
         "Id" -> "0"
       )
-      val result = ProductController.getProduct()(request2)
+      val result = ProductController.getProduct()(request)
       status(result) must equalTo(BAD_REQUEST)
       redirectLocation(result) must beNone
     }

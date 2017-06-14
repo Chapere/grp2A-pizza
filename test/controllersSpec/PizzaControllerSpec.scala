@@ -50,15 +50,7 @@ class PizzaControllerSpec extends Specification{
     }
 
     "update a Pizza" in memDB {
-      val request = FakeRequest(POST, "/addPizza").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Name" -> "Kas",
-        "Preis pro cm" -> "0.2",
-        "Zutaten" -> "Käse",
-        "Kommentar" -> "Lecker",
-        "Zusatzstoffe" -> "Gluten"
-      )
-      val request2 = FakeRequest(POST, "/updatePizza").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/updatePizza").withFormUrlEncodedBody(
         "id" -> "0",
         "Name" -> "Speck",
         "Preis pro cm" -> "0.3",
@@ -66,94 +58,56 @@ class PizzaControllerSpec extends Specification{
         "Kommentar" -> " Super Lecker",
         "Zusatzstoffe" -> "Gluten"
       )
-      val result = PizzaController.updatePizza()(request2)
+      val result = PizzaController.updatePizza()(request)
       status(result) must equalTo(SEE_OTHER)
       redirectLocation(result) must beSome("/upgradePizza?id=0&name=Speck&price=0.3&ingredients=Speck&comment=+Super+Lecker&supplements=Gluten")
     }
 
     "update a Pizza bad request" in memDB {
-      val request = FakeRequest(POST, "/addPizza").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Name" -> "Kas",
-        "Preis pro cm" -> "0.2",
-        "Zutaten" -> "Käse",
-        "Kommentar" -> "Lecker",
-        "Zusatzstoffe" -> "Gluten"
-      )
-      val request2 = FakeRequest(POST, "/updatePizza").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/updatePizza").withFormUrlEncodedBody(
         "Name" -> "Speck",
         "Preis pro cm" -> "0.3",
         "Zutaten" -> "Speck",
         "Kommentar" -> " Super Lecker",
         "Zusatzstoffe" -> "Gluten"
       )
-      val result = PizzaController.updatePizza()(request2)
+      val result = PizzaController.updatePizza()(request)
       status(result) must equalTo(BAD_REQUEST)
       redirectLocation(result) must beNone
     }
 
     "remove a Pizza" in memDB {
-      val request = FakeRequest(POST, "/addPizza").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Name" -> "Kas",
-        "Preis pro cm" -> "0.2",
-        "Zutaten" -> "Käse",
-        "Kommentar" -> "Lecker",
-        "Zusatzstoffe" -> "Gluten"
-      )
-      val request2 = FakeRequest(POST, "/rmPizza").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/rmPizza").withFormUrlEncodedBody(
         "id" -> "0"
       )
-      val result = PizzaController.rmPizza()(request2)
+      val result = PizzaController.rmPizza()(request)
       status(result) must equalTo(SEE_OTHER)
       redirectLocation(result) must beSome("/pizzaDeleted?deleted=true")
     }
 
     "remove a Pizza bad request" in memDB {
-      val request = FakeRequest(POST, "/addPizza").withFormUrlEncodedBody(
-        "Name" -> "Kas",
-        "Preis pro cm" -> "0.2",
-        "Zutaten" -> "Käse",
-        "Kommentar" -> "Lecker",
-        "Zusatzstoffe" -> "Gluten"
-      )
-      val request2 = FakeRequest(POST, "/rmPizza").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/rmPizza").withFormUrlEncodedBody(
         "ID" -> "0"
       )
-      val result = PizzaController.rmPizza()(request2)
+      val result = PizzaController.rmPizza()(request)
       status(result) must equalTo(BAD_REQUEST)
       redirectLocation(result) must beNone
     }
 
     "get a Pizza" in memDB {
-      val request = FakeRequest(POST, "/addPizza").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Name" -> "Kas",
-        "Preis pro cm" -> "0.2",
-        "Zutaten" -> "Käse",
-        "Kommentar" -> "Lecker",
-        "Zusatzstoffe" -> "Gluten"
-      )
-      val request2 = FakeRequest(POST, "/selectPizza").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/selectPizza").withFormUrlEncodedBody(
         "id" -> "0"
       )
-      val result = PizzaController.getPizza()(request2)
+      val result = PizzaController.getPizza()(request)
       status(result) must equalTo(SEE_OTHER)
       redirectLocation(result) must beSome("/changePizza?id=0&name=&price=0.0&ingredients=&comment=&supplements=")
     }
 
     "get a Pizza bad request" in memDB {
-      val request = FakeRequest(POST, "/addPizza").withFormUrlEncodedBody(
-        "id" -> "0",
-        "Preis pro cm" -> "0.2",
-        "Zutaten" -> "Käse",
-        "Kommentar" -> "Lecker",
-        "Zusatzstoffe" -> "Gluten"
-      )
-      val request2 = FakeRequest(POST, "/selectPizza").withFormUrlEncodedBody(
+      val request = FakeRequest(POST, "/selectPizza").withFormUrlEncodedBody(
         "Id" -> "0"
       )
-      val result = PizzaController.getPizza()(request2)
+      val result = PizzaController.getPizza()(request)
       status(result) must equalTo(BAD_REQUEST)
       redirectLocation(result) must beNone
     }
