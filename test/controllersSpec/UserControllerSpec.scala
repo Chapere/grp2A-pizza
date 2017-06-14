@@ -19,7 +19,7 @@ import services.UserService
 @RunWith(classOf[JUnitRunner])
 class UserControllerSpec extends Specification {
 
-  /*def memDB[T](code: => T) =
+  def memDB[T](code: => T) =
     running(FakeApplication(additionalConfiguration = Map(
       "db.default.driver" -> "org.h2.Driver",
       "db.default.url" -> "jdbc:h2:mem:test;MODE=PostgreSQL"
@@ -284,5 +284,5 @@ class UserControllerSpec extends Specification {
       contentAsString(result) must contain("Emil")
 
     }
-  }*/
+  }
 }
