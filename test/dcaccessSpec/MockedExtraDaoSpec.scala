@@ -6,7 +6,7 @@ import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 
 /**
-  * Created by Felix on 12.06.2017.
+  * @author Felix Thomas
   */
 @RunWith(classOf[JUnitRunner])
 class MockedExtraDaoSpec extends Specification with Mockito {

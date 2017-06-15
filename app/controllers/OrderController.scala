@@ -8,7 +8,7 @@ import play.api.data.format.Formats._
 import com.github.nscala_time.time.Imports._
 
 /**
- * Controller for user specific operations.
+ * Controller for order specific operations.
   *
   * Import of nscala Library to make time calculations more easily.
   * (C) https://github.com/nscala-time/nscala-time
@@ -19,7 +19,7 @@ object OrderController extends Controller {
 
 
   /**
-   * Form object for user data.
+   * Form object for order data.
    */
   val orderForm = Form(
     mapping(
@@ -33,21 +33,26 @@ object OrderController extends Controller {
       "extraTwoID" -> of(doubleFormat),
       "extraThreeID" -> of(doubleFormat))(CreateOrderForm.apply)(CreateOrderForm.unapply))
 
+  /**
+    * Form object for modifying order data.
+    */
   val modifyOrderForm = Form(
     mapping(
       "orderID" -> of(doubleFormat))(ModifyOrderForm.apply)(ModifyOrderForm.unapply))
 
+  /**
+    * Form object for modifying order data.
+    */
   val orderStatusForm = Form(
     mapping(
       "orderID" -> of(longFormat),
       "orderStatusKZ" -> text)(OrderStatusForm.apply)(OrderStatusForm.unapply))
 
   /**
-   * Adds a new user with the given data to the system.
+   * Adds a new order with the given data to the system.
    *
-   * @return welcome page for new user
+   * @return page for a new order
    */
-
   def createOrder : Action[AnyContent] = Action { implicit request =>
     orderForm.bindFromRequest.fold(
       formWithErrors => {
@@ -89,6 +94,11 @@ object OrderController extends Controller {
       )
   }
 
+  /**
+    * Updates the status of an order in the database.
+    *
+    * @return page showing all orders
+    */
   def setStatusOrder : Action[AnyContent] = Action { implicit request =>
     orderStatusForm.bindFromRequest.fold(
       formWithErrors => {
@@ -105,6 +115,11 @@ object OrderController extends Controller {
       )
   }
 
+  /**
+    * Retrieves an order from the database.
+    *
+    * @return page for a retrieved order
+    */
   def showSelectedOrder : Action[AnyContent] = Action { implicit request =>
     modifyOrderForm.bindFromRequest.fold(
       formWithErrors => {
@@ -130,6 +145,11 @@ object OrderController extends Controller {
       })
   }
 
+  /**
+    * Removes an order from the database.
+    *
+    * @return page for a deleted order
+    */
   def deleteOrder : Action[AnyContent] = Action { implicit request =>
     modifyOrderForm.bindFromRequest.fold(
       formWithErrors => {
@@ -142,6 +162,11 @@ object OrderController extends Controller {
       })
   }
 
+  /**
+    * Deactivates an order in the database.
+    *
+    * @return page for a deactivated order
+    */
   def deactivateOrder : Action[AnyContent] = Action { implicit request =>
     modifyOrderForm.bindFromRequest.fold(
       formWithErrors => {
@@ -154,6 +179,9 @@ object OrderController extends Controller {
       })
   }
 
+  /**
+    * Shows the view for a newly created order.
+    */
   def newOrderCreated(id: Long, customerID: Double, pizzaID: Double, productID: Double,
                       pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,
                       pizzaPrice: Double, productAmount: Double, productPrice: Double,
@@ -164,6 +192,9 @@ object OrderController extends Controller {
       extraTotalPrice, totalPrice, orderTime, status, deliveryTime))
   }
 
+  /**
+    * Shows the view for a retrieved order.
+    */
   def showOrder(customerID: Double, pizzaID: Double, productID: Double,
                       pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,
                       pizzaPrice: Double, productAmount: Double, productPrice: Double, totalPrice: Double,
@@ -175,16 +206,9 @@ object OrderController extends Controller {
   }
 
   /**
-   * Shows the welcome view for a newly registered user.
-   */
-
-
+    * Shows the view for a deleted order.
+    */
   def orderDeleted : Action[AnyContent] = Action {
     Ok(views.html.orderDeleted())
   }
-
-  /**
-   * List all users currently available in the system.
-   */
-
 }

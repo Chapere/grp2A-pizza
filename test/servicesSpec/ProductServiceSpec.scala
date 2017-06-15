@@ -7,7 +7,7 @@ import play.api.test.Helpers._
 import play.api.test._
 import services.ProductService
 /**
-  * Created by FT 07.06.2017.
+  * @author Felix Thomas
   */
 @RunWith(classOf[JUnitRunner])
 class ProductServiceSpec extends Specification {

@@ -8,7 +8,7 @@ import forms._
 import play.api.data.format.Formats._
 
 /**
- * Controller for user specific operations.
+ * Controller for pizza specific operations.
  *
  * @author ob, scs
  */
@@ -16,7 +16,7 @@ object PizzaController extends Controller {
 
 
   /**
-   * Form object for user data.
+   * Form object for pizza data.
    */
   val pizzaForm = Form(
     mapping(
@@ -27,16 +27,18 @@ object PizzaController extends Controller {
       "Kommentar" -> nonEmptyText,
       "Zusatzstoffe" -> nonEmptyText)(CreatePizzaForm.apply)(CreatePizzaForm.unapply))
 
-
+  /**
+    * Form object for retrieving pizza data from the database.
+    */
   val selectPizzaForm = Form(
     mapping(
       "id" -> of(longFormat))(IDForm.apply)(IDForm.unapply))
 
   /**
-   * Adds a new user with the given data to the system.
-   *
-   * @return welcome page for new user
-   */
+    * Adds a new pizza with the given data to the database.
+    *
+    * @return page for a new pizza
+    */
   def addPizza : Action[AnyContent] = Action { implicit request =>
     pizzaForm.bindFromRequest.fold(
       formWithErrors => {
@@ -49,6 +51,11 @@ object PizzaController extends Controller {
       })
   }
 
+  /**
+    * Changes an already existing pizza in the database.
+    *
+    * @return page for a changed pizza
+    */
   def updatePizza: Action[AnyContent] = Action { implicit request =>
     pizzaForm.bindFromRequest.fold(
       formWithErrors => {
@@ -61,6 +68,11 @@ object PizzaController extends Controller {
       })
   }
 
+  /**
+    * Removes/deactivates a pizza.
+    *
+    * @return page for a deleted pizza
+    */
   def rmPizza: Action[AnyContent] = Action { implicit request =>
     selectPizzaForm.bindFromRequest.fold(
       formWithErrors => {
@@ -73,7 +85,11 @@ object PizzaController extends Controller {
       })
   }
 
-
+  /**
+    * Retrieves a pizza from the database.
+    *
+    * @return page to change a pizza
+    */
   def getPizza: Action[AnyContent] = Action { implicit request =>
     selectPizzaForm.bindFromRequest.fold(
       formWithErrors => {
@@ -87,35 +103,43 @@ object PizzaController extends Controller {
   }
 
   /**
-   * Shows the welcome view for a newly registered user.
-   */
-
+    * Shows the view for a newly created pizza.
+    */
   def newPizzaCreated(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String): Action[AnyContent] = Action {
     Ok(views.html.newPizzaCreated(id, name, price, ingredients, comment, supplements))
   }
 
+  /**
+    * Shows the view to change a pizza.
+    */
   def changePizza1(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String): Action[AnyContent] = Action {
     Ok(views.html.changePizza(id, name, price, ingredients, comment, supplements, pizzaForm))
   }
 
+  /**
+    * Shows the view for a changed pizza.
+    */
   def upgradePizza(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String): Action[AnyContent] = Action {
     Ok(views.html.pizzaUpdated(id, name, price, ingredients, comment, supplements))
   }
 
+  /**
+    * Shows the view for a deleted pizza.
+    */
   def pizzaDeleted(deleted: Boolean): Action[AnyContent] = Action {
     Ok(views.html.pizzaDeleted())
   }
 
-
-
   /**
-   * List all users currently available in the system.
-   */
-
+    * List all pizzas currently available in the database.
+    */
   def showPizzas : Action[AnyContent] = Action {
     Ok(views.html.allPizzas(PizzaService.availablePizza))
   }
 
+  /**
+    * List all products currently available in the database.
+    */
   def products = Action { request =>
     request.session.get("loggedInUser").map { userID =>
       Ok(views.html.products(PizzaService.availablePizza, ProductService.availableProducts, OrderController.orderForm, userID.toDouble, ExtraService.availableExtras))

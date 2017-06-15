@@ -8,7 +8,7 @@ import forms.{IDForm, CreateProductForm}
 import play.api.data.format.Formats.{longFormat, doubleFormat}
 
 /**
- * Controller for user specific operations.
+ * Controller for product specific operations.
  *
  * @author ob, scs
  */
@@ -23,8 +23,8 @@ object ProductController extends Controller {
 
 
   /**
-   * Form object for user data.
-   */
+    * Form object for product data.
+    */
   val productForm = Form(
     mapping(
       id -> of(longFormat),
@@ -33,15 +33,18 @@ object ProductController extends Controller {
       size -> of(doubleFormat),
       unit -> nonEmptyText)(CreateProductForm.apply)(CreateProductForm.unapply))
 
-
+  /**
+    * Form object for retrieving product data from the database.
+    */
   val selectProductForm = Form(
     mapping(
       id -> of(longFormat))(IDForm.apply)(IDForm.unapply))
+
   /**
-   * Adds a new user with the given data to the system.
-   *
-   * @return welcome page for new user
-   */
+    * Adds a new product with the given data to the database.
+    *
+    * @return page for a new product
+    */
   def addProduct: Action[AnyContent] = Action { implicit request =>
     productForm.bindFromRequest.fold(
       formWithErrors => {
@@ -54,6 +57,11 @@ object ProductController extends Controller {
       })
   }
 
+  /**
+    * Changes an already existing product in the database.
+    *
+    * @return page for a changed product
+    */
   def updateProduct: Action[AnyContent] = Action { implicit request =>
     productForm.bindFromRequest.fold(
       formWithErrors => {
@@ -66,7 +74,11 @@ object ProductController extends Controller {
       })
   }
 
-
+  /**
+    * Removes/deactivates a product.
+    *
+    * @return page for a deleted product
+    */
   def rmProduct: Action[AnyContent] = Action { implicit request =>
     selectProductForm.bindFromRequest.fold(
       formWithErrors => {
@@ -79,7 +91,11 @@ object ProductController extends Controller {
       })
   }
 
-
+  /**
+    * Retrieves a product from the database.
+    *
+    * @return page to change a product
+    */
   def getProduct: Action[AnyContent] = Action { implicit request =>
     selectProductForm.bindFromRequest.fold(
       formWithErrors => {
@@ -93,34 +109,37 @@ object ProductController extends Controller {
   }
 
   /**
-   * Shows the welcome view for a newly registered user.
-   */
-
+    * Shows the view for a newly created product.
+    */
   def newProductCreated(id: Long, name: String, price: Double, size: Double, unit: String): Action[AnyContent] = Action {
     Ok(views.html.newProductCreated(id, name, price, size, unit))
   }
 
+  /**
+    * Shows the view to change a product.
+    */
   def changeProduct1(id: Long, name: String, price: Double, size: Double, unit: String): Action[AnyContent] = Action {
     Ok(views.html.changeProduct(id, name, price, size, unit, productForm))
   }
 
+  /**
+    * Shows the view for a changed product.
+    */
   def upgradeProduct(id: Long, name: String, price: Double, size: Double, unit: String): Action[AnyContent] = Action {
     Ok(views.html.productUpdated(id, name, price, size, unit))
   }
 
+  /**
+    * Shows the view for a deleted product.
+    */
   def productDeleted(deleted: Boolean): Action[AnyContent] = Action {
     Ok(views.html.productDeleted())
   }
 
   /**
-    * List all products currently available in the system.
+    * List all products currently available in the database.
     */
   def showProducts: Action[AnyContent] = Action {
     Ok(views.html.allProducts(ProductService.availableProducts))
   }
-
-  /**
-   * List all users currently available in the system.
-   */
-
 }

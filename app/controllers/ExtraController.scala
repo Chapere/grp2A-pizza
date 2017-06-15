@@ -19,7 +19,7 @@ object ExtraController extends Controller {
   val success = "success"
 
   /**
-    * Form object for extra data
+    * Form object for extra data.
     */
   val extraForm = Form(
     mapping(
@@ -27,15 +27,18 @@ object ExtraController extends Controller {
       "Name" -> nonEmptyText,
       "Preis" -> of(doubleFormat))(CreateExtraForm.apply)(CreateExtraForm.unapply))
 
+  /**
+    * Form object for retrieving extra data from the database.
+    */
   val selectExtraForm = Form(
     mapping(
       "id" -> of(longFormat))(IDForm.apply)(IDForm.unapply))
 
 
   /**
-    * Adds a new extra with the given data to the system.
+    * Adds a new extra with the given data to the database.
     *
-    * @return welcome page for new extra
+    * @return page for a new extra
     */
   def addExtra: Action[AnyContent] = Action { implicit request =>
     extraForm.bindFromRequest.fold(
@@ -50,8 +53,9 @@ object ExtraController extends Controller {
   }
 
   /**
-    * edit a extra.
-    * @return page for a changed extra.
+    * Changes an already existing extra in the database.
+    *
+    * @return page for a changed extra
     */
   def updateExtra: Action[AnyContent] = Action { implicit request =>
     extraForm.bindFromRequest.fold(
@@ -66,8 +70,9 @@ object ExtraController extends Controller {
   }
 
   /**
-    * delete a extra.
-    * @return page to delete a extra.
+    * Removes/deactivates an extra.
+    *
+    * @return page for a deleted extra
     */
   def rmExtra: Action[AnyContent] = Action { implicit request =>
     selectExtraForm.bindFromRequest.fold(
@@ -82,8 +87,9 @@ object ExtraController extends Controller {
   }
 
   /**
+    * Retrieves an extra from the database.
     *
-    * @return page change a extra
+    * @return page to change an extra
     */
   def getExtra: Action[AnyContent] = Action { implicit request =>
     selectExtraForm.bindFromRequest.fold(
@@ -99,15 +105,14 @@ object ExtraController extends Controller {
 
 
   /**
-    * Shows the view for a newly registered extra.
+    * Shows the view for a newly created extra.
     */
-
   def newExtraCreated(id: Long, name: String, price: Double): Action[AnyContent] = Action {
     Ok(views.html.newExtraCreated(id, name, price))
   }
 
   /**
-    * Shows the view to change a extra.
+    * Shows the view to change an extra.
     */
   def changeExtra1(id: Long, name: String, price: Double): Action[AnyContent] = Action {
     Ok(views.html.changeExtra(id, name, price, extraForm))
@@ -128,7 +133,7 @@ object ExtraController extends Controller {
   }
 
   /**
-    * List all extras currently available in the system.
+    * List all extras currently available in the database.
     */
   def showExtras: Action[AnyContent] = Action {
     Ok(views.html.allExtras(ExtraService.availableExtras))

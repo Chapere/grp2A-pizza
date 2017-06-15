@@ -8,7 +8,7 @@ import play.api.test.Helpers._
 import services.OrderService
 
 /**
-  * Created by ifw15124 on 20.04.2017.
+  * @author Felix Thomas
   */
 @RunWith(classOf[JUnitRunner])
 class OrderServiceSpec extends Specification {

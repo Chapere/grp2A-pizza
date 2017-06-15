@@ -8,7 +8,7 @@ import play.api.test._
 import services.PizzaService
 
 /**
-  * Created by FT on 07.06.2017.
+  * @author Felix Thomas
   */
 @RunWith(classOf[JUnitRunner])
 class PizzaServiceSpec extends Specification {

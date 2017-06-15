@@ -9,7 +9,7 @@ import controllers.ProductController
 
 
 /**
-  * Created by Felix Thomas 04.06.2017.
+  * @author Felix Thomas
   */
 @RunWith(classOf[JUnitRunner])
 class ProductControllerSpec extends Specification{

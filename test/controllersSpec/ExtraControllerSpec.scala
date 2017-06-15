@@ -8,7 +8,7 @@ import play.api.test._
 import controllers.ExtraController
 
 /**
-  * Created by ifw15124 on 21.04.2017.
+  * @author Felix Thomas
   */
 @RunWith(classOf[JUnitRunner])
 class ExtraControllerSpec extends Specification{

@@ -11,7 +11,7 @@ import dbaccess.OrderDao
 import models.Order
 
 /**
-  * Created by ifw15124 on 20.04.2017.
+  * @author Felix Thomas
   */
 @RunWith(classOf[JUnitRunner])
 class OrderControllerSpec extends Specification{
