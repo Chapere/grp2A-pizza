@@ -52,13 +52,9 @@ object PizzaController extends Controller {
         BadRequest(views.html.badRequest())
       },
       pizzaData => {
-        val newPizza = services.PizzaService.addPizza(pizzaData.name,
-          pizzaData.price, pizzaData.ingredients,
-          pizzaData.comment, pizzaData.supplements)
-        Redirect(routes.PizzaController.newPizzaCreated(newPizza.id,
-          newPizza.name, newPizza.price, newPizza.ingredients,
-          newPizza.comment, newPizza.supplements)).
-          flashing(success -> pizzaSaved)
+        val newPizza = services.PizzaService.addPizza(pizzaData.name, pizzaData.price, pizzaData.ingredients, pizzaData.comment, pizzaData.supplements)
+        Redirect(routes.PizzaController.newPizzaCreated(newPizza.id, newPizza.name, newPizza.price, newPizza.ingredients, newPizza.comment, newPizza.supplements)).
+          flashing("success" -> "Pizza saved!")
       })
   }
 
@@ -73,13 +69,9 @@ object PizzaController extends Controller {
         BadRequest(views.html.badRequest())
       },
       pizzaData => {
-        val selectPizza = services.PizzaService.updatePizza(pizzaData.id,
-          pizzaData.name, pizzaData.price, pizzaData.ingredients,
-          pizzaData.comment, pizzaData.supplements)
-        Redirect(routes.PizzaController.upgradePizza(selectPizza.id,
-          selectPizza.name, selectPizza.price, selectPizza.ingredients,
-          selectPizza.comment, selectPizza.supplements)).
-          flashing(success -> "Employee saved!")
+        val selectPizza = services.PizzaService.updatePizza(pizzaData.id, pizzaData.name, pizzaData.price, pizzaData.ingredients, pizzaData.comment, pizzaData.supplements)
+        Redirect(routes.PizzaController.upgradePizza(selectPizza.id, selectPizza.name, selectPizza.price, selectPizza.ingredients, selectPizza.comment, selectPizza.supplements)).
+          flashing("success" -> "Employee saved!")
       })
   }
 
@@ -96,7 +88,7 @@ object PizzaController extends Controller {
       deletePizzaData => {
         val deletePizzaVal = services.PizzaService.rmPizza(deletePizzaData.id)
         Redirect(routes.PizzaController.pizzaDeleted(deletePizzaVal)).
-          flashing(success -> pizzaSaved)
+          flashing("success" -> "Pizza saved!")
       })
   }
 
@@ -112,10 +104,8 @@ object PizzaController extends Controller {
       },
       selectPizzaData => {
         val selectPizza = services.PizzaService.selectPizza(selectPizzaData.id)
-        Redirect(routes.PizzaController.changePizza1(selectPizza.id,
-          selectPizza.name, selectPizza.price, selectPizza.ingredients,
-          selectPizza.comment, selectPizza.supplements)).
-          flashing(success -> pizzaSaved)
+        Redirect(routes.PizzaController.changePizza1(selectPizza.id, selectPizza.name, selectPizza.price, selectPizza.ingredients, selectPizza.comment, selectPizza.supplements)).
+          flashing("success" -> "Pizza saved!")
       })
   }
 
@@ -129,11 +119,8 @@ object PizzaController extends Controller {
     * @param comment     the comment for a pizza
     * @param supplements the supplements of a pizza
     */
-  def newPizzaCreated(id: Long, name: String, price: Double,
-                      ingredients: String, comment: String,
-                      supplements: String): Action[AnyContent] = Action {
-    Ok(views.html.newPizzaCreated(id, name, price,
-      ingredients, comment, supplements))
+  def newPizzaCreated(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String): Action[AnyContent] = Action {
+    Ok(views.html.newPizzaCreated(id, name, price, ingredients, comment, supplements))
   }
 
   /**
@@ -146,11 +133,8 @@ object PizzaController extends Controller {
     * @param comment     the comment for a pizza
     * @param supplements the supplements of a pizza
     */
-  def changePizza1(id: Long, name: String, price: Double,
-                   ingredients: String, comment: String,
-                   supplements: String): Action[AnyContent] = Action {
-    Ok(views.html.changePizza(id, name, price, ingredients,
-      comment, supplements, pizzaForm))
+  def changePizza1(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String): Action[AnyContent] = Action {
+    Ok(views.html.changePizza(id, name, price, ingredients, comment, supplements, pizzaForm))
   }
 
   /**
@@ -163,11 +147,8 @@ object PizzaController extends Controller {
     * @param comment     the comment for a pizza
     * @param supplements the supplements of a pizza
     */
-  def upgradePizza(id: Long, name: String, price: Double,
-                   ingredients: String, comment: String,
-                   supplements: String): Action[AnyContent] = Action {
-    Ok(views.html.pizzaUpdated(id, name, price,
-      ingredients, comment, supplements))
+  def upgradePizza(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String): Action[AnyContent] = Action {
+    Ok(views.html.pizzaUpdated(id, name, price, ingredients, comment, supplements))
   }
 
   /**
@@ -191,14 +172,9 @@ object PizzaController extends Controller {
     */
   def products = Action { request =>
     request.session.get("loggedInUser").map { userID =>
-      Ok(views.html.products(PizzaService.availablePizza,
-        ProductService.availableProducts, OrderController.orderForm,
-        userID.toDouble, ExtraService.availableExtras))
+      Ok(views.html.products(PizzaService.availablePizza, ProductService.availableProducts, OrderController.orderForm, userID.toDouble, ExtraService.availableExtras))
     }.getOrElse {
-      Ok(views.html.products(PizzaService.availablePizza,
-        ProductService.availableProducts,
-        OrderController.orderForm, -1, ExtraService.availableExtras))
+      Ok(views.html.products(PizzaService.availablePizza, ProductService.availableProducts, OrderController.orderForm, -1, ExtraService.availableExtras))
     }
   }
-
 }

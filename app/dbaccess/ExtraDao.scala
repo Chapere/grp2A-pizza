@@ -16,7 +16,7 @@ trait ExtraDaoT {
   val id1 = "id"
   val name = "name"
   val price = "price"
-  val selectExtras = "SELECT * FROM Extras WHERE id = {id};"
+  val selectExtrasMain = "SELECT * FROM Extras WHERE id = {id};"
 
   /**
     * Creates the given extra in the database.
@@ -44,7 +44,7 @@ trait ExtraDaoT {
 
   def getExtraByIdentification(id: Long): List[Extra] = {
     DB.withConnection { implicit c =>
-      val selectExtras = SQL(selectExtras).on(
+      val selectExtras = SQL(selectExtrasMain).on(
         'id -> id)
       val extras = selectExtras().map(row => Extra(row[Long](id1),
         row[String](name), row[Double](price))).toList
@@ -55,7 +55,7 @@ trait ExtraDaoT {
   def selectExtraByIdentification(id: Long): Extra = {
 
     DB.withConnection { implicit c =>
-      val selectExtra = SQL(selectExtras).on(
+      val selectExtra = SQL(selectExtrasMain).on(
         'id -> id)
       val extras = selectExtra().map(row => Extra(row[Long](id1),
         row[String](name), row[Double](price))).toList
