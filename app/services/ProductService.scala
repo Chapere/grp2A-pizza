@@ -1,6 +1,6 @@
 package services
 
-import dbaccess._
+import dbaccess.{ProductDao, ProductDaoT}
 import models.Product
 
 /**

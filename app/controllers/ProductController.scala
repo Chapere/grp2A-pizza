@@ -21,7 +21,6 @@ object ProductController extends Controller {
   val unit = "Einheit"
   val success = "success"
 
-
   /**
     * Form object for product data.
     */
@@ -51,8 +50,10 @@ object ProductController extends Controller {
         BadRequest(views.html.badRequest())
       },
       productData => {
-        val newProduct = services.ProductService.addProduct(productData.name, productData.price, productData.size, productData.unit)
-        Redirect(routes.ProductController.newProductCreated(newProduct.id, newProduct.name, newProduct.price, newProduct.size, newProduct.unit)).
+        val newProduct = services.ProductService.addProduct(productData.name,
+          productData.price, productData.size, productData.unit)
+        Redirect(routes.ProductController.newProductCreated(newProduct.id,
+          newProduct.name, newProduct.price, newProduct.size, newProduct.unit)).
           flashing(success -> "Product saved!")
       })
   }
@@ -68,8 +69,10 @@ object ProductController extends Controller {
         BadRequest(views.html.badRequest())
       },
       productData => {
-        val selectProduct = services.ProductService.updateProduct(productData.id, productData.name, productData.price, productData.size, productData.unit)
-        Redirect(routes.ProductController.upgradeProduct(selectProduct.id, selectProduct.name, selectProduct.price, selectProduct.size, selectProduct.unit)).
+        val selectProduct = services.ProductService.updateProduct(productData.id,
+          productData.name, productData.price, productData.size, productData.unit)
+        Redirect(routes.ProductController.upgradeProduct(selectProduct.id,
+          selectProduct.name, selectProduct.price, selectProduct.size, selectProduct.unit)).
           flashing(success -> "Product updated!")
       })
   }
@@ -103,7 +106,8 @@ object ProductController extends Controller {
       },
       selectProductData => {
         val selectProduct = services.ProductService.selectProduct(selectProductData.id)
-        Redirect(routes.ProductController.changeProduct1(selectProduct.id, selectProduct.name, selectProduct.price, selectProduct.size, selectProduct.unit)).
+        Redirect(routes.ProductController.changeProduct1(selectProduct.id,
+          selectProduct.name, selectProduct.price, selectProduct.size, selectProduct.unit)).
           flashing(success -> "Product retrieved!")
       })
   }
@@ -111,21 +115,27 @@ object ProductController extends Controller {
   /**
     * Shows the view for a newly created product.
     */
-  def newProductCreated(id: Long, name: String, price: Double, size: Double, unit: String): Action[AnyContent] = Action {
+  def newProductCreated(id: Long, name: String,
+                        price: Double, size: Double,
+                        unit: String): Action[AnyContent] = Action {
     Ok(views.html.newProductCreated(id, name, price, size, unit))
   }
 
   /**
     * Shows the view to change a product.
     */
-  def changeProduct1(id: Long, name: String, price: Double, size: Double, unit: String): Action[AnyContent] = Action {
+  def changeProduct1(id: Long, name: String,
+                     price: Double, size: Double,
+                     unit: String): Action[AnyContent] = Action {
     Ok(views.html.changeProduct(id, name, price, size, unit, productForm))
   }
 
   /**
     * Shows the view for a changed product.
     */
-  def upgradeProduct(id: Long, name: String, price: Double, size: Double, unit: String): Action[AnyContent] = Action {
+  def upgradeProduct(id: Long, name: String,
+                     price: Double, size: Double,
+                     unit: String): Action[AnyContent] = Action {
     Ok(views.html.productUpdated(id, name, price, size, unit))
   }
 

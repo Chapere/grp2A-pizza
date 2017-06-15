@@ -7,6 +7,11 @@ import play.api.libs.json.Json
  * The root element of the REST API.
  */
 object Api extends Controller {
+  val rel = "rel"
+  val href = "href"
+  val method = "method"
+  val get = "GET"
+
   /**
    * The entry point of the REST API.
    * Use for example
@@ -19,24 +24,24 @@ object Api extends Controller {
     Ok(Json.obj(
       "links" -> Json.arr(
         Json.obj(
-          "rel" -> "self",
-          "href" -> routes.Api.api.absoluteURL(),
-          "method" -> "GET"
+          rel -> "self",
+          href -> routes.Api.api.absoluteURL(),
+          method -> get
         ),
         Json.obj(
-          "rel" -> "users",
-          "href" -> routes.Users.users.absoluteURL(),
-          "method" -> "GET"
+          rel -> "users",
+          href -> routes.Users.users.absoluteURL(),
+          method -> get
         ),
         Json.obj(
-          "rel" -> "employees",
-          "href" -> routes.Employees.employees.absoluteURL(),
-          "method" -> "GET"
+          rel -> "employees",
+          href -> routes.Employees.employees.absoluteURL(),
+          method -> get
         ),
         Json.obj(
-          "rel" -> "pizzas",
-          "href" -> routes.Pizzas.pizzas.absoluteURL(),
-          "method" -> "GET"
+          rel -> "pizzas",
+          href -> routes.Pizzas.pizzas.absoluteURL(),
+          method -> get
         )
       )
     )

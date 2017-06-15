@@ -4,7 +4,7 @@ import anorm.SQL
 import play.api.Play.current
 import play.api.db.DB
 import anorm.NamedParameter.symbol
-import models._
+import models.Product
 
 /**
  * Data access object for user related operations.
@@ -18,6 +18,7 @@ trait ProductDaoT {
   val price = "price"
   val size = "size"
   val unit = "unit"
+  val select = "SELECT * FROM Products WHERE id = {id};"
 
   /**
    * Creates the given user in the database.
@@ -27,8 +28,10 @@ trait ProductDaoT {
   def addProduct(product: Product): Product = {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
-        SQL("insert into Products(name, price, size, unit) values ({name}, {price}, {size}, {unit})").on(
-          'name -> product.name, 'price -> product.price, 'size -> product.size, 'unit -> product.unit).executeInsert()
+        SQL("insert into Products(name, price, size, unit)" +
+          "values ({name}, {price}, {size}, {unit})").on(
+          'name -> product.name, 'price -> product.price,
+          'size -> product.size, 'unit -> product.unit).executeInsert()
       product.id = id.get
     }
     product
@@ -37,8 +40,11 @@ trait ProductDaoT {
   def updateProductDao(product: Product): Product = {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
-        SQL("UPDATE Products SET name = {name}, price = {price}, size = {size}, unit = {unit} WHERE id = {id}").on(
-          'name -> product.name, 'price -> product.price, 'size -> product.size, 'unit -> product.unit, 'id -> product.id).executeInsert()
+        SQL("UPDATE Products SET name = {name}, price = {price}," +
+          "size = {size}, unit = {unit} WHERE id = {id}").on(
+          'name -> product.name, 'price -> product.price,
+          'size -> product.size, 'unit -> product.unit,
+          'id -> product.id).executeInsert()
     }
     product
   }
@@ -47,9 +53,10 @@ trait ProductDaoT {
 
   def getProductByIdentification(id: Long): List[Product] = {
     DB.withConnection { implicit c =>
-      val selectProducts = SQL("SELECT * FROM Products WHERE id = {id};").on(
+      val selectProducts = SQL(select).on(
         'id -> id)
-      val products = selectProducts().map(row => Product(row[Long](ID), row[String](name), row[Double](price),
+      val products = selectProducts().map(row => Product(row[Long](ID),
+        row[String](name), row[Double](price),
         row[Double](size), row[String](unit))).toList
       products
     }
@@ -59,9 +66,10 @@ trait ProductDaoT {
   def selectProductByIdentification(id: Long): Product = {
 
     DB.withConnection { implicit c =>
-      val selectProduct = SQL("SELECT * FROM Products WHERE id = {id};").on(
+      val selectProduct = SQL(select).on(
         'id -> id)
-      val products = selectProduct().map(row => Product(row[Long](ID), row[String](name), row[Double](price),
+      val products = selectProduct().map(row => Product(row[Long](ID),
+        row[String](name), row[Double](price),
         row[Double](size), row[String](unit))).toList
 
       products.head
@@ -90,7 +98,8 @@ trait ProductDaoT {
     DB.withConnection { implicit c =>
       val selectProducts = SQL("Select id, name, price, size, unit from Products;")
       // Transform the resulting Stream[Row] to a List[(String,String)]
-      val products = selectProducts().map(row => Product(row[Long](ID), row[String](name), row[Double](price),
+      val products = selectProducts().map(row => Product(row[Long](ID),
+        row[String](name), row[Double](price),
         row[Double](size), row[String](unit))).toList
       products
     }

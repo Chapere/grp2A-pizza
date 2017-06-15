@@ -6,11 +6,23 @@ import play.api.mvc.{Action, AnyContent, BodyParsers, Controller, RequestHeader}
 import services.UserService
 
 /**
- * REST API for the User Class.
- */
+  * REST API for the User Class.
+  */
 object Users extends Controller {
+  val links = "links"
+  val rel = "rel"
+  val status = "status"
+  val href = "href"
+  val method = "method"
+  val ok = "Ok"
+  val user = "users"
+  val self = "self"
+  val get = "GET"
 
-  private case class HateoasUser(user: User, url: String, name: String, lastname: String, adress: String, city: String, plz: String,  email: String, password: String)
+  private case class HateoasUser(user: User, url: String, name: String,
+                                 lastname: String, adress: String,
+                                 city: String, plz: String,
+                                 email: String, password: String)
 
   private def mkHateoasUser(user: User)(implicit request: RequestHeader): HateoasUser = {
     val url = routes.Users.user(user.id).absoluteURL()
@@ -27,7 +39,7 @@ object Users extends Controller {
 
   private implicit val hateoasUserWrites = new Writes[HateoasUser] {
     def writes(huser: HateoasUser): JsValue = Json.obj(
-      "user" -> Json.obj(
+      user -> Json.obj(
         "id" -> huser.user.id,
         "name" -> huser.user.name,
         "lastname" -> huser.user.lastname,
@@ -35,42 +47,43 @@ object Users extends Controller {
         "city" -> huser.user.city,
         "plz" -> huser.user.plz
       ),
-      "links" -> Json.arr(
+      links -> Json.arr(
         Json.obj(
-          "rel" -> "self",
-          "href" -> huser.url,
-          "method" -> "GET"
+          rel -> self,
+          href -> huser.url,
+          method -> get
         ),
         Json.obj(
-          "rel" -> "remove",
-          "href" -> huser.url,
-          "method" -> "DELETE"
+          rel -> "remove",
+          href -> huser.url,
+          method -> "DELETE"
         )
       )
     )
   }
 
   /**
-   * Get all users.
-   * {{{
-   * curl --include http://localhost:9000/api/users
-   * }}}
-   * @return all users in a JSON representation.
-   */
+    * Get all users.
+    * {{{
+    * curl --include http://localhost:9000/api/users
+    * }}}
+    *
+    * @return all users in a JSON representation.
+    */
   def users: Action[AnyContent] = Action { implicit request =>
     val users = UserService.registeredUsers
     Ok(Json.obj(
-      "users" -> Json.toJson(users.map { user => Json.toJson(mkHateoasUser(user)) }),
-      "links" -> Json.arr(
+      user -> Json.toJson(users.map { user => Json.toJson(mkHateoasUser(user)) }),
+      links -> Json.arr(
         Json.obj(
-          "rel" -> "self",
-          "href" -> routes.Users.users.absoluteURL(),
-          "method" -> "GET"
+          rel -> self,
+          href -> routes.Users.users.absoluteURL(),
+          method -> get
         ),
         Json.obj(
-          "rel" -> "create",
-          "href" -> routes.Users.addUser.absoluteURL(),
-          "method" -> "POST"
+          rel -> "create",
+          href -> routes.Users.addUser.absoluteURL(),
+          method -> "POST"
         )
       )
     )
@@ -78,14 +91,15 @@ object Users extends Controller {
   }
 
   /**
-   * Gets a user by id.
-   * Use for example
-   * {{{
-   * curl --include http://localhost:9000/api/user/1
-   * }}}
-   * @param id user id.
-   * @return user info in a JSON representation.
-   */
+    * Gets a user by id.
+    * Use for example
+    * {{{
+    * curl --include http://localhost:9000/api/user/1
+    * }}}
+    *
+    * @param id user id.
+    * @return user info in a JSON representation.
+    */
   def user(id: Long): Action[AnyContent] = Action { implicit request =>
     UserService.registeredUsers.find {
       _.id == id
@@ -94,44 +108,54 @@ object Users extends Controller {
     }.getOrElse(NotFound)
   }
 
-  private case class Username(name: String, lastname: String, adress: String, city: String, plz: String, distance: Double, email: String, password: String)
+  private case class Username(name: String, lastname: String,
+                              adress: String, city: String,
+                              plz: String, distance: Double,
+                              email: String, password: String)
+
   private implicit val usernameReads = Json.reads[Username]
 
   /**
-   * Create a new user by a POST request including the user name as JSON content.
-   * Use for example
-   * {{{
-   * curl --include --request POST --header "Content-type: application/json"
-   *      --data '{"name" : "WieAuchImmer"}' http://localhost:9000/api/user
-   * }}}
-   * @return info about the new user in a JSON representation
-   */
+    * Create a new user by a POST request including the user name as JSON content.
+    * Use for example
+    * {{{
+    * curl --include --request POST --header "Content-type: application/json"
+    *      --data '{"name" : "WieAuchImmer"}' http://localhost:9000/api/user
+    * }}}
+    *
+    * @return info about the new user in a JSON representation
+    */
   def addUser: Action[JsValue] = Action(BodyParsers.parse.json) { implicit request =>
     val username = request.body.validate[Username]
     username.fold(
       errors => {
-        BadRequest(Json.obj("status" -> "OK", "message" -> JsError.toFlatJson(errors)))
+        BadRequest(Json.obj(status -> ok, "message" -> JsError.toFlatJson(errors)))
       },
       username => {
-        Ok(Json.obj("status" -> "OK",
-          "user" -> Json.toJson(mkHateoasUser(UserService.addUser(username.name, username.lastname, username.adress, username.city, username.plz, username.distance, username.email, username.password)))))
+        Ok(Json.obj(status -> ok,
+          "user" -> Json.toJson(mkHateoasUser(UserService.addUser(username.name,
+            username.lastname, username.adress, username.city,
+            username.plz, username.distance, username.email,
+            username.password)))))
       }
     )
   }
 
   /**
-   * Delete a user by id using a DELETE request.
-   * {{{
-   * curl --include --request DELETE http://localhost:9000/api/user/1
-   * }}}
-   * @param id the user id.
-   * @return success info or NotFound
-   */
+    * Delete a user by id using a DELETE request.
+    * {{{
+    * curl --include --request DELETE http://localhost:9000/api/user/1
+    * }}}
+    *
+    * @param id the user id.
+    * @return success info or NotFound
+    */
   def rmUser(id: Long): Action[AnyContent] = Action { implicit request =>
     val success = UserService.rmUser(id)
-    if (success)
-      Ok(Json.obj("status" -> "OK"))
-    else
+    if (success) {
+      Ok(Json.obj(status -> ok))
+    } else {
       NotFound
+    }
   }
 }

@@ -4,19 +4,19 @@ import dbaccess.{OrderDao, OrderDaoT}
 import models.{Extra, Order, OrderWithAdress, OrdersWithExtras}
 
 /**
- * Service class for user related operations.
- *
- * @author ob, scs
- */
+  * Service class for user related operations.
+  *
+  * @author ob, scs
+  */
 trait OrderServiceT {
-
+  val na = "N/A"
   val orderDao: OrderDaoT = OrderDao
 
   /**
-   * Adds a new user to the system.
-   * @param name name of the new user.
-   * @return the new user.
-   */
+    * Adds a new user to the system.
+    *
+    * @return the new user.
+    */
 
 
   def createOrder(customerID: Double, pizzaID: Double, productID: Double,
@@ -27,8 +27,11 @@ trait OrderServiceT {
                   extraThreeID: Double, extraThreeName: String, extraThreePrice: Double,
                   orderTime: String, status: String, deliveryTime: String): OrdersWithExtras = {
     // create User
-    val newOrder = Order(-1, customerID, pizzaID, productID, pizzaName, productName, pizzaAmount, pizzaSize, pizzaPrice,
-      productAmount, productPrice, extraOneID, "N/A", 0, extraTwoID, "N/A", 0, extraThreeID, "N/A", 0, 0, orderTime, "Bestellung empfangen", deliveryTime)
+    val newOrder = Order(-1, customerID, pizzaID, productID, pizzaName,
+      productName, pizzaAmount, pizzaSize, pizzaPrice,
+      productAmount, productPrice, extraOneID, na, 0,
+      extraTwoID, na, 0, extraThreeID, na, 0, 0,
+      orderTime, "Bestellung empfangen", deliveryTime)
     // persist and return User
     orderDao.createOrder(newOrder)
   }
@@ -47,18 +50,20 @@ trait OrderServiceT {
   }
 
   /**
-   * Removes a user by id from the system.
-   * @param id users id.
-   * @return a boolean success flag.
-   */
+    * Removes a user by id from the system.
+    *
+    * @param id users id.
+    * @return a boolean success flag.
+    */
   def rmOrder(id: Double): Boolean = OrderDao.rmOrder(id)
 
   def deactivateOrder(id: Double): Boolean = OrderDao.deactivateOrder(id)
 
   /**
-   * Gets a list of all registered users.
-   * @return list of users.
-   */
+    * Gets a list of all registered users.
+    *
+    * @return list of users.
+    */
   def availableOrder: List[Order] = {
     OrderDao.availableOrders
   }

@@ -17,7 +17,8 @@ trait PizzaServiceT {
    * @param name name of the new user.
    * @return the new user.
    */
-  def addPizza(name: String, price: Double, ingredients: String, comment: String, supplements: String): Pizza = {
+  def addPizza(name: String, price: Double, ingredients: String,
+               comment: String, supplements: String): Pizza = {
     // create User
     val newPizza = Pizza(-1, name, price, ingredients, comment, supplements)
     // persist and return User
@@ -31,7 +32,8 @@ trait PizzaServiceT {
   }
 
 
-  def updatePizza(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String): Pizza = {
+  def updatePizza(id: Long, name: String, price: Double, ingredients: String,
+                  comment: String, supplements: String): Pizza = {
     // create Pizza
     val updatePizzaService = Pizza(id, name, price, ingredients, comment, supplements)
     // persist and return Pizza

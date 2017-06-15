@@ -1,10 +1,6 @@
 package controllers
 
-import com.ning.http.client.Response
-import play.api.libs.concurrent.Promise
-import play.api.libs.json.JsArray
-import play.api.mvc._
-import play.api.libs.ws._
+import play.api.mvc.{Action, AnyContent, Controller}
 
 /**
  * Main controller of the Pizza Service application.

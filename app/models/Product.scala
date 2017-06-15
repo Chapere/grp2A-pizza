@@ -5,5 +5,7 @@ package models
   * @author Kamil Gorszczyk
   */
 
-case class Product(var id: Long, var name: String, var price: Double, var size: Double, var unit: String)
+case class Product(var id: Long, var name: String,
+                   var price: Double, var size: Double,
+                   var unit: String)
 

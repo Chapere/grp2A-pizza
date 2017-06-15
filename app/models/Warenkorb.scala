@@ -6,7 +6,6 @@ package models
  * @author ob, scs
  */
 object Warenkorb {
-
   var product = ""
   var customer = ""
   var price: Double = 0
@@ -15,4 +14,6 @@ object Warenkorb {
   var produktID: Double = 0
   var customerID: Double = 0
   var size: Double = 0
+
+
 }

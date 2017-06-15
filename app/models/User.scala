@@ -13,5 +13,8 @@ package models
   * @param password password
   * @param activeFlag activeFlag
   */
-case class User(var id: Long, var name: String, var lastname: String, var adress: String, var city: String,
-                var plz: String, distance: Double, email: String, password: String, activeFlag: Int)
+case class User(var id: Long, var name: String, var lastname: String,
+                var adress: String, var city: String,
+                var plz: String, distance: Double,
+                email: String, password: String,
+                activeFlag: Int)

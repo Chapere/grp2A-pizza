@@ -10,6 +10,16 @@ import models.Employee
  * Data access object for user related operations.
  */
 trait EmployeeDaoT {
+  val id1 = "id"
+  val name = "name"
+  val lastname = "lastname"
+  val workplace = "workplace"
+  val acces = "acces"
+  val accesLevel = "accesLevel"
+  val netRate = "netRate"
+  val eMail = "email"
+  val activeFlag = "activeFlag"
+  val leer = "leer"
 
   /**
    * Creates the given user in the database.
@@ -42,9 +52,10 @@ trait EmployeeDaoT {
         SQL("UPDATE Employees SET name = {name}, lastname = {lastname}, workplace = {workplace}, " +
           "acces = {acces}, netRate = {netRate}, email = {email}, password = {password} " +
           "WHERE id = {id}").on(
-          'name -> employee.name, 'lastname -> employee.lastname, 'workplace -> employee.workplace,
-          'acces -> employee.acces, 'accesLevel -> employee.accesLevel,
-          'netRate -> employee.netRate, 'email -> employee.email, 'password -> employee.password,
+          'name -> employee.name, 'lastname -> employee.lastname,
+          'workplace -> employee.workplace, 'acces -> employee.acces,
+          'accesLevel -> employee.accesLevel, 'netRate -> employee.netRate,
+          'email -> employee.email, 'password -> employee.password,
           'id -> employee.id).executeInsert()
     }
     employee
@@ -59,10 +70,11 @@ trait EmployeeDaoT {
     DB.withConnection { implicit c =>
       val selectEmployees = SQL("SELECT * FROM Employees WHERE id = {id};").on(
         'id -> id)
-      val employees = selectEmployees().map(row => Employee(row[Long]("id"), row[String]("name"),
-        row[String]("lastname"),
-        row[String]("workplace"), row[String]("acces"), row[Int]("accesLevel"),
-        row[Double]("netRate"), row[String]("email"), null, row[Int]("activeFlag"))).toList
+      val employees = selectEmployees().map(row => Employee(row[Long](id1),
+        row[String](name), row[String](lastname),
+        row[String](workplace), row[String](acces),
+        row[Int](accesLevel), row[Double](netRate),
+        row[String](eMail), leer, row[Int](activeFlag))).toList
       employees.head
     }
   }
@@ -74,12 +86,15 @@ trait EmployeeDaoT {
     */
   def logInEmployee(employee: Employee): Employee = {
     DB.withConnection { implicit c =>
-      val selectEmployees = SQL("SELECT * FROM EMPLOYEES WHERE email = {email} AND password = {password};").on(
+      val selectEmployees = SQL("SELECT * FROM EMPLOYEES " +
+        "WHERE email = {email} AND password = {password};").on(
         'email -> employee.email, 'password -> employee.password)
-      val employees = selectEmployees().map(row => Employee(row[Long]("id"), row[String]("name"), row[String]("lastname"),
-        row[String]("workplace"), row[String]("acces"), row[Int]("accesLevel"), row[Double]("netRate"), row[String]("email"), null, row[Int]("activeFlag"))).toList
-
-      return employees.head
+      val employees = selectEmployees().map(row => Employee(row[Long](id1),
+        row[String](name), row[String](lastname),
+        row[String](workplace), row[String](acces),
+        row[Int](accesLevel), row[Double](netRate),
+        row[String](eMail), leer, row[Int](activeFlag))).toList
+      employees.head
     }
   }
 
@@ -118,7 +133,8 @@ trait EmployeeDaoT {
    */
   def rmEmployee(id: Long): Boolean = {
     DB.withConnection { implicit c =>
-      val rowsCount = SQL("delete from Employees where id = ({id})").on('id -> id).executeUpdate()
+      val rowsCount = SQL("delete from Employees " +
+        "where id = ({id})").on('id -> id).executeUpdate()
       rowsCount > 0
     }
   }
@@ -129,10 +145,14 @@ trait EmployeeDaoT {
    */
   def availableEmployees: List[Employee] = {
     DB.withConnection { implicit c =>
-      val selectEmployees = SQL("Select id, name, lastname, workplace, acces, accesLevel, netRate, email, password, activeFlag from Employees;")
+      val selectEmployees = SQL("Select id, name, lastname, workplace, acces," +
+        "accesLevel, netRate, email, password, activeFlag from Employees;")
       // Transform the resulting Stream[Row] to a List[(String,String)]
-      val employees = selectEmployees().map(row => Employee(row[Long]("id"), row[String]("name"), row[String]("lastname"),
-        row[String]("workplace"), row[String]("acces"), row[Int]("accesLevel"), row[Double]("netRate"), row[String]("email"), null, row[Int]("activeFlag"))).toList
+      val employees = selectEmployees().map(row => Employee(row[Long](id1),
+        row[String](name), row[String](lastname),
+        row[String](workplace), row[String](acces),
+        row[Int](accesLevel), row[Double](netRate),
+        row[String](eMail), leer, row[Int](activeFlag))).toList
       employees
     }
   }
