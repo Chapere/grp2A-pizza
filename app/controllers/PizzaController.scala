@@ -8,16 +8,16 @@ import forms._
 import play.api.data.format.Formats._
 
 /**
- * Controller for pizza specific operations.
- *
- * @author ob, scs
- */
+  * Controller for pizza specific operations.
+  *
+  * @author ob, scs
+  */
 object PizzaController extends Controller {
 
 
   /**
-   * Form object for pizza data.
-   */
+    * Form object for pizza data.
+    */
   val pizzaForm = Form(
     mapping(
       "id" -> of(longFormat),
@@ -39,7 +39,7 @@ object PizzaController extends Controller {
     *
     * @return page for a new pizza
     */
-  def addPizza : Action[AnyContent] = Action { implicit request =>
+  def addPizza: Action[AnyContent] = Action { implicit request =>
     pizzaForm.bindFromRequest.fold(
       formWithErrors => {
         BadRequest(views.html.badRequest())
@@ -104,6 +104,13 @@ object PizzaController extends Controller {
 
   /**
     * Shows the view for a newly created pizza.
+    *
+    * @param id          the id of a pizza
+    * @param name        the name of a pizza
+    * @param price       the price of a pizza
+    * @param ingredients the ingredients of a pizza
+    * @param comment     the comment for a pizza
+    * @param supplements the supplements of a pizza
     */
   def newPizzaCreated(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String): Action[AnyContent] = Action {
     Ok(views.html.newPizzaCreated(id, name, price, ingredients, comment, supplements))
@@ -111,6 +118,13 @@ object PizzaController extends Controller {
 
   /**
     * Shows the view to change a pizza.
+    *
+    * @param id          the id of a pizza
+    * @param name        the name of a pizza
+    * @param price       the price of a pizza
+    * @param ingredients the ingredients of a pizza
+    * @param comment     the comment for a pizza
+    * @param supplements the supplements of a pizza
     */
   def changePizza1(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String): Action[AnyContent] = Action {
     Ok(views.html.changePizza(id, name, price, ingredients, comment, supplements, pizzaForm))
@@ -118,6 +132,13 @@ object PizzaController extends Controller {
 
   /**
     * Shows the view for a changed pizza.
+    *
+    * @param id          the id of a pizza
+    * @param name        the name of a pizza
+    * @param price       the price of a pizza
+    * @param ingredients the ingredients of a pizza
+    * @param comment     the comment for a pizza
+    * @param supplements the supplements of a pizza
     */
   def upgradePizza(id: Long, name: String, price: Double, ingredients: String, comment: String, supplements: String): Action[AnyContent] = Action {
     Ok(views.html.pizzaUpdated(id, name, price, ingredients, comment, supplements))
@@ -125,6 +146,8 @@ object PizzaController extends Controller {
 
   /**
     * Shows the view for a deleted pizza.
+    *
+    * @param deleted shows whether or not a pizza has been deleted
     */
   def pizzaDeleted(deleted: Boolean): Action[AnyContent] = Action {
     Ok(views.html.pizzaDeleted())
@@ -133,7 +156,7 @@ object PizzaController extends Controller {
   /**
     * List all pizzas currently available in the database.
     */
-  def showPizzas : Action[AnyContent] = Action {
+  def showPizzas: Action[AnyContent] = Action {
     Ok(views.html.allPizzas(PizzaService.availablePizza))
   }
 

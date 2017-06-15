@@ -8,12 +8,12 @@ import forms.{IDForm, CreateExtraForm}
 import play.api.data.format.Formats.{longFormat, doubleFormat}
 
 /**
- * Controller for extra specific operations.
+  * Controller for extra specific operations.
   *
   * GoogleMaps API KEY = AIzaSyC6VCdDfHl2b9yRYnJnMq2PgSjPoXlEXow
- *
- * @author ob, scs
- */
+  *
+  * @author ob, scs
+  */
 object ExtraController extends Controller {
 
   val success = "success"
@@ -106,6 +106,10 @@ object ExtraController extends Controller {
 
   /**
     * Shows the view for a newly created extra.
+    *
+    * @param id    the id of an extra
+    * @param name  the name of an extra
+    * @param price the price of an extra
     */
   def newExtraCreated(id: Long, name: String, price: Double): Action[AnyContent] = Action {
     Ok(views.html.newExtraCreated(id, name, price))
@@ -113,6 +117,10 @@ object ExtraController extends Controller {
 
   /**
     * Shows the view to change an extra.
+    *
+    * @param id    the id of an extra
+    * @param name  the name of an extra
+    * @param price the price of an extra
     */
   def changeExtra1(id: Long, name: String, price: Double): Action[AnyContent] = Action {
     Ok(views.html.changeExtra(id, name, price, extraForm))
@@ -120,6 +128,10 @@ object ExtraController extends Controller {
 
   /**
     * Shows the view for a changed extra.
+    *
+    * @param id    the id of an extra
+    * @param name  the name of an extra
+    * @param price the price of an extra
     */
   def upgradeExtra(id: Long, name: String, price: Double): Action[AnyContent] = Action {
     Ok(views.html.extraUpdated(id, name, price))
@@ -127,6 +139,8 @@ object ExtraController extends Controller {
 
   /**
     * Shows the view for a deleted extra.
+    *
+    * @param deleted shows whether or not an extra has been deleted
     */
   def extraDeleted(deleted: Boolean): Action[AnyContent] = Action {
     Ok(views.html.extraDeleted())
