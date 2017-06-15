@@ -41,13 +41,10 @@ trait UserDaoT {
           'adress -> user.adress, 'city -> user.city,
           'plz -> user.plz, 'distance -> user.distance,
           'email -> user.email, 'password -> user.password).executeInsert()
-
       user.id = id.get
     }
     val getDistance = controllers.WSController.getDistance(user.adress, user.plz, user.city,
       user.email, user.password)
-
-
     user
   }
 
@@ -118,7 +115,7 @@ trait UserDaoT {
       val users = selectUsers().map(row => User(row[Long](id1), row[String](name),
         row[String](lastname), row[String](adress),
         row[String](city), row[String](plz),
-        row[Double](distance), nichts, nichts,
+        row[Double](distance), null, null,
         row[Int](activeFlag))).toList
       users.head
     }
@@ -131,7 +128,7 @@ trait UserDaoT {
       val users = selectUsers().map(row => User(row[Long](id1), row[String](name),
         row[String](lastname), row[String](adress),
         row[String](city), row[String](plz),
-        row[Double](distance), nichts, nichts,
+        row[Double](distance), null, null,
         row[Int](activeFlag))).toList
       users
     }
@@ -145,7 +142,7 @@ trait UserDaoT {
         row[String](name), row[String](lastname),
         row[String](adress), row[String](city),
         row[String](plz), row[Double](distance),
-        row[String](eMail), nichts, row[Int]
+        row[String](eMail), null, row[Int]
           (activeFlag))).toList
       users.head
     }
@@ -175,7 +172,7 @@ trait UserDaoT {
       // Transform the resulting Stream[Row] to a List[(String,String)]
       val users = selectUsers().map(row => User(row[Long](id1), row[String](name),
         row[String](lastname), row[String](adress), row[String](city), row[String](plz),
-        row[Double](distance), row[String](eMail), nichts, row[Int](activeFlag))).toList
+        row[Double](distance), row[String](eMail), null, row[Int](activeFlag))).toList
       users
     }
   }

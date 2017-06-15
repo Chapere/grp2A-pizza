@@ -15,7 +15,7 @@ import play.api.data.format.Formats.{longFormat, doubleFormat}
   * @author ob, scs
   */
 object ExtraController extends Controller {
-
+  val id1 = "id"
   val success = "success"
 
   /**
@@ -23,7 +23,7 @@ object ExtraController extends Controller {
     */
   val extraForm = Form(
     mapping(
-      "id" -> of(longFormat),
+      id1 -> of(longFormat),
       "Name" -> nonEmptyText,
       "Preis" -> of(doubleFormat))(CreateExtraForm.apply)(CreateExtraForm.unapply))
 
@@ -32,7 +32,7 @@ object ExtraController extends Controller {
     */
   val selectExtraForm = Form(
     mapping(
-      "id" -> of(longFormat))(IDForm.apply)(IDForm.unapply))
+      id1 -> of(longFormat))(IDForm.apply)(IDForm.unapply))
 
 
   /**
@@ -46,8 +46,10 @@ object ExtraController extends Controller {
         BadRequest(views.html.badRequest())
       },
       extraData => {
-        val newExtra = services.ExtraService.addExtra(extraData.name, extraData.price)
-        Redirect(routes.ExtraController.newExtraCreated(newExtra.id, newExtra.name, newExtra.price)).
+        val newExtra = services.ExtraService.addExtra(extraData.name,
+          extraData.price)
+        Redirect(routes.ExtraController.newExtraCreated(newExtra.id,
+          newExtra.name, newExtra.price)).
           flashing(success -> "Extra saved!")
       })
   }
@@ -63,8 +65,10 @@ object ExtraController extends Controller {
         BadRequest(views.html.badRequest())
       },
       extraData => {
-        val selectExtra = services.ExtraService.updateExtra(extraData.id, extraData.name, extraData.price)
-        Redirect(routes.ExtraController.upgradeExtra(selectExtra.id, selectExtra.name, selectExtra.price)).
+        val selectExtra = services.ExtraService.updateExtra(extraData.id,
+          extraData.name, extraData.price)
+        Redirect(routes.ExtraController.upgradeExtra(selectExtra.id,
+          selectExtra.name, selectExtra.price)).
           flashing(success -> "Extra updated!")
       })
   }
@@ -98,7 +102,8 @@ object ExtraController extends Controller {
       },
       selectExtraData => {
         val selectExtra = services.ExtraService.selectExtra(selectExtraData.id)
-        Redirect(routes.ExtraController.changeExtra1(selectExtra.id, selectExtra.name, selectExtra.price)).
+        Redirect(routes.ExtraController.changeExtra1(selectExtra.id,
+          selectExtra.name, selectExtra.price)).
           flashing(success -> "Extras retrieved!")
       })
   }

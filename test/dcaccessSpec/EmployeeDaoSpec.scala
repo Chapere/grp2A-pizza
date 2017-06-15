@@ -43,7 +43,7 @@ class EmployeeDaoSpec extends Specification {
 
     "get Employee by ID" in memDB {
       val id = EmployeeDao.getEmployee(1)
-      id must beEqualTo(Employee(1, "Padrone", "Hubert", "IT", "root", 10, 15.84, "root", null, 1))
+      id must beEqualTo(Employee(1, "Padrone", "Hubert", "IT", "root", 10, 15.84, "root", "leer", 1))
     }
 
     "login Employee into System" in memDB {

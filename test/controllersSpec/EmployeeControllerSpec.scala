@@ -93,7 +93,7 @@ class EmployeeControllerSpec extends Specification {
       )
       val result = EmployeeController.chooseEmployee()(request)
       status(result) must beEqualTo(SEE_OTHER)
-      redirectLocation(result) must beSome("/changeEmployee?id=1&name=Padrone&lastname=Hubert&workplace=IT&acces=root&accesLevel=10&netRate=15.84&email=root&password=&activeFlag=1")
+      redirectLocation(result) must beSome("/changeEmployee?id=1&name=Padrone&lastname=Hubert&workplace=IT&acces=root&accesLevel=10&netRate=15.84&email=root&password=leer&activeFlag=1")
     }
 
     "employee LogIn" in memDB {

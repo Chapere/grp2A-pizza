@@ -19,9 +19,10 @@ object UserController extends Controller {
   val vorname = "Vorname"
   val Adresse = "Adresse"
   val Stadt = "Stadt"
+  val entfernung = "Entfernung"
   val plz = "PLZ"
   val eMail = "E-Mail"
-  val passwort = "passwort"
+  val passwort = "Passwort"
   val userID = "User ID"
   val success = "success"
   val userSaved = " User saved!"
@@ -48,7 +49,7 @@ object UserController extends Controller {
 
   val updateUserForm = Form(
     mapping(
-      userID -> of(longFormat),
+      "userID" -> of(longFormat),
       name -> nonEmptyText,
       vorname -> nonEmptyText,
       Adresse -> nonEmptyText,

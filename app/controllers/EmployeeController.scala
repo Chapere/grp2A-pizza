@@ -23,6 +23,9 @@ object EmployeeController extends Controller {
   val stundenrate = "Stundenrate"
   val eMail = "E-Mail"
   val passwort = "Passwort"
+  val success = "success"
+  val employeeSaved = "Employee Saved!"
+  val loggedInEmployee = "loggedInEmployee"
 
   /**
     * Form object for employee data.
@@ -88,7 +91,7 @@ object EmployeeController extends Controller {
         Redirect(routes.EmployeeController.newEmployeeCreated(newEmployee.name,
           newEmployee.lastname, newEmployee.workplace, newEmployee.acces,
           newEmployee.accesLevel, newEmployee.netRate, newEmployee.email,
-          newEmployee.password)).flashing("success" -> "Employee saved!")
+          newEmployee.password)).flashing(success -> employeeSaved)
       })
   }
 
@@ -108,7 +111,7 @@ object EmployeeController extends Controller {
         Redirect(routes.EmployeeController.upgradeEmployee(selectEmployee.id, selectEmployee.name,
           selectEmployee.lastname, selectEmployee.workplace, selectEmployee.acces,
           selectEmployee.accesLevel, selectEmployee.netRate, selectEmployee.email,
-          selectEmployee.password)).flashing("success" -> "Employee saved!")
+          selectEmployee.password)).flashing(success -> employeeSaved)
       })
   }
 
@@ -126,7 +129,7 @@ object EmployeeController extends Controller {
           selectEmployee.lastname, selectEmployee.workplace, selectEmployee.acces,
           selectEmployee.accesLevel, selectEmployee.netRate, selectEmployee.email,
           selectEmployee.password, selectEmployee.activeFlag)).
-          flashing("success" -> "Employee saved!")
+          flashing(success -> employeeSaved)
       })
   }
 
@@ -144,7 +147,7 @@ object EmployeeController extends Controller {
           val newEmployee = services.EmployeeService.logInEmployee(employeeData.email,
             employeeData.password)
           Redirect(routes.EmployeeController.completeLogInEmployee(newEmployee.id,
-            newEmployee.name)).flashing("success" -> "Employee saved!")
+            newEmployee.name)).flashing(success -> employeeSaved)
         } catch {
           case e: RuntimeException => BadRequest(views.html.loginFailed())
         }
@@ -163,7 +166,7 @@ object EmployeeController extends Controller {
       updateEmployeeData => {
         val selectEmployee = services.EmployeeService.setEmployeeFlag0(updateEmployeeData.id)
         Redirect(routes.EmployeeController.setEmployeeFlag(selectEmployee)).
-          flashing("success" -> "Employee saved!")
+          flashing(success -> employeeSaved)
       })
   }
 
@@ -178,7 +181,7 @@ object EmployeeController extends Controller {
       updateEmployeeData => {
         val selectEmployee = services.EmployeeService.setEmployeeFlag1(updateEmployeeData.id)
         Redirect(routes.EmployeeController.setEmployeeFlag(selectEmployee)).
-          flashing("success" -> "Employee saved!")
+          flashing(success -> employeeSaved)
       })
   }
 
@@ -194,7 +197,7 @@ object EmployeeController extends Controller {
       deleteEmployeeData => {
         val deleteEmployeeVal = services.EmployeeService.rmEmployee(deleteEmployeeData.id)
         Redirect(routes.EmployeeController.employeeDeleted(deleteEmployeeVal)).
-          flashing("success" -> "Extra saved!")
+          flashing(success -> "Extra saved!")
       })
   }
 
@@ -203,7 +206,7 @@ object EmployeeController extends Controller {
     */
 
   def registerEmployee = Action { request =>
-    request.session.get("loggedInEmployee").map { userID =>
+    request.session.get(loggedInEmployee).map { userID =>
       Ok(views.html.employeeLoggedIn(userID, EmployeeService.getEmployeeByID(userID.toLong).name,
         controllers.EmployeeController.employeeForm,
         controllers.EmployeeController.selectEmployeeForm,
@@ -230,7 +233,7 @@ object EmployeeController extends Controller {
       EmployeeService.getEmployeeByID(id).activeFlag,
       EmployeeService.getEmployeeByID(id.toLong).acces,
       PizzaController.pizzaForm)).withSession(
-      "loggedInEmployee" -> id.toString
+      loggedInEmployee -> id.toString
     )
   }
 
