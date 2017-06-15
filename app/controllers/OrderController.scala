@@ -17,9 +17,6 @@ import com.github.nscala_time.time.Imports._
   */
 object OrderController extends Controller {
 
-  val dateFormat = "kk:mm - DD.MM.YYYY"
-  val notavailable = "N/A"
-  val komma = ", "
 
   /**
     * Form object for order data.
@@ -62,43 +59,37 @@ object OrderController extends Controller {
         BadRequest(views.html.badRequest())
       },
       orderData => {
-        // try {
+        //try {
         val selectUser = services.UserService.getUserByID(orderData.userID.toLong)
-        val time: Int = (2 * (selectUser.head.distance.toInt / 1000)) + (10 * orderData.pizzaAmount)
-        var deliveryTime = DateTimeFormat.forPattern(dateFormat).print(DateTime.now() + time.minutes)
+        var time: Int = (2 * (selectUser.head.distance.toInt / 1000)) + (10 * orderData.pizzaAmount.toInt)
+        var deliveryTime = DateTimeFormat.forPattern("kk:mm - DD.MM.YYYY").print(DateTime.now() + time.minutes)
+
+
 
         val orderNew = services.OrderService.createOrder(orderData.userID,
-          orderData.pizzaID, orderData.productID, notavailable, notavailable,
-          orderData.pizzaAmount.toDouble, orderData.pizzaSize, -1,
+          orderData.pizzaID, orderData.productID, "N/A", "N/A", orderData.pizzaAmount.toDouble, orderData.pizzaSize, -1,
           orderData.productAmount.toDouble, -1,
-          orderData.extraOneID, notavailable, 0,
-          orderData.extraTwoID, notavailable, 0,
-          orderData.extraThreeID, notavailable, 0,
-          DateTimeFormat.forPattern(dateFormat).print(DateTime.now()), notavailable, deliveryTime)
+          orderData.extraOneID, "N/A", 0,
+          orderData.extraTwoID, "N/A", 0,
+          orderData.extraThreeID, "N/A", 0,
+          DateTimeFormat.forPattern("kk:mm - DD.MM.YYYY").print(DateTime.now()), "N/A", deliveryTime)
 
 
-        val extraTotalPrice = orderNew.extraOnePrice +
-          orderNew.extraTwoPrice + orderNew.extraThreePrice
+        val extraTotalPrice = orderNew.extraOnePrice + orderNew.extraTwoPrice + orderNew.extraThreePrice
         val extrasName =
-          if (orderNew.extraOneID != 0 && orderNew.extraTwoID == 0
-            && orderNew.extraThreeID == 0) {orderNew.extraOneName
-          } else if (orderNew.extraOneID != 0 && orderNew.extraTwoID != 0
-            && orderNew.extraThreeID == 0) {
-            orderNew.extraOneName + komma + orderNew.extraTwoName
-          } else if (orderNew.extraOneID != 0 && orderNew.extraTwoID != 0
-            && orderNew.extraThreeID != 0) {
-            orderNew.extraOneName + komma +
-              orderNew.extraTwoName + komma + orderNew.extraThreeName
+          if (orderNew.extraOneID != 0 && orderNew.extraTwoID == 0 && orderNew.extraThreeID == 0) {
+            orderNew.extraOneName
+          } else if (orderNew.extraOneID != 0 && orderNew.extraTwoID != 0 && orderNew.extraThreeID == 0) {
+            orderNew.extraOneName + ", " + orderNew.extraTwoName
+          } else if (orderNew.extraOneID != 0 && orderNew.extraTwoID != 0 && orderNew.extraThreeID != 0) {
+            orderNew.extraOneName + ", " + orderNew.extraTwoName + ", " + orderNew.extraThreeName
           }
-        Redirect(routes.OrderController.newOrderCreated(orderNew.id, orderNew.customerID,
-          orderNew.pizzaID, orderNew.productID, orderNew.pizzaName, orderNew.productName,
-          orderNew.pizzaAmount, orderNew.pizzaSize, orderNew.pizzaPrice,
-          orderNew.productAmount, orderNew.productPrice,
-          extrasName.toString, extraTotalPrice, orderNew.totalPrice,
-          orderNew.orderTime, orderNew.status, deliveryTime)).
+        Redirect(routes.OrderController.newOrderCreated(orderNew.id, orderNew.customerID, orderNew.pizzaID, orderNew.productID, orderNew.pizzaName, orderNew.productName,
+          orderNew.pizzaAmount, orderNew.pizzaSize, orderNew.pizzaPrice, orderNew.productAmount, orderNew.productPrice,
+          extrasName.toString, extraTotalPrice, orderNew.totalPrice, orderNew.orderTime, orderNew.status, deliveryTime)).
           flashing("success" -> "Order saved!")
-        // } catch {
-        // case e: RuntimeException => BadRequest(views.html.orderFailed())
+        //} catch {
+        //case e: RuntimeException => BadRequest(views.html.orderFailed())
       }
     )
   }
@@ -114,13 +105,12 @@ object OrderController extends Controller {
         BadRequest(views.html.orderFailed())
       },
       orderData => {
-        // try {
-        val newOrder = services.OrderService.orderSetStaus(orderData.orderID,
-          orderData.orderStatusKZ)
+        //try {
+        val newOrder = services.OrderService.orderSetStaus(orderData.orderID, orderData.orderStatusKZ)
         Redirect(routes.EmployeeController.showAllOrderDetails()).
           flashing("success" -> "Order saved!")
-        // } catch {
-        // case e: RuntimeException => BadRequest(views.html.orderFailed())
+        //} catch {
+        //case e: RuntimeException => BadRequest(views.html.orderFailed())
       }
     )
   }
@@ -137,28 +127,20 @@ object OrderController extends Controller {
       },
       modifyOrderData => {
         val newOrder = services.OrderService.getOrderbyID(modifyOrderData.orderID)
-        val extraTotalPrice = newOrder.extraOnePrice +
-          newOrder.extraTwoPrice + newOrder.extraThreePrice
+        val extraTotalPrice = newOrder.extraOnePrice + newOrder.extraTwoPrice + newOrder.extraThreePrice
         val extrasName =
 
-          if (newOrder.extraOneID == 0 && newOrder.extraTwoID == 0
-            && newOrder.extraThreeID == 0) {
+          if (newOrder.extraOneID == 0 && newOrder.extraTwoID == 0 && newOrder.extraThreeID == 0) {
             "empty"
-          } else if (newOrder.extraOneID != 0 && newOrder.extraTwoID == 0
-            && newOrder.extraThreeID == 0) {
+          } else if (newOrder.extraOneID != 0 && newOrder.extraTwoID == 0 && newOrder.extraThreeID == 0) {
             newOrder.extraOneName
-          } else if (newOrder.extraOneID != 0 && newOrder.extraTwoID != 0
-            && newOrder.extraThreeID == 0) {
-            newOrder.extraOneName + komma + newOrder.extraTwoName
-          } else if (newOrder.extraOneID != 0 && newOrder.extraTwoID != 0
-            && newOrder.extraThreeID != 0) {
-            newOrder.extraOneName + komma + newOrder.extraTwoName + komma + newOrder.extraThreeName
+          } else if (newOrder.extraOneID != 0 && newOrder.extraTwoID != 0 && newOrder.extraThreeID == 0) {
+            newOrder.extraOneName + ", " + newOrder.extraTwoName
+          } else if (newOrder.extraOneID != 0 && newOrder.extraTwoID != 0 && newOrder.extraThreeID != 0) {
+            newOrder.extraOneName + ", " + newOrder.extraTwoName + ", " + newOrder.extraThreeName
           }
-        Redirect(routes.OrderController.showOrder(newOrder.customerID, newOrder.pizzaID,
-          newOrder.productID, newOrder.pizzaName, newOrder.productName,
-          newOrder.pizzaAmount, newOrder.pizzaSize, newOrder.pizzaPrice,
-          newOrder.productAmount, newOrder.productPrice, newOrder.totalPrice,
-          newOrder.orderTime, newOrder.status, extrasName.toString, extraTotalPrice)).
+        Redirect(routes.OrderController.showOrder(newOrder.customerID, newOrder.pizzaID, newOrder.productID, newOrder.pizzaName, newOrder.productName, newOrder.pizzaAmount, newOrder.pizzaSize, newOrder.pizzaPrice,
+          newOrder.productAmount, newOrder.productPrice, newOrder.totalPrice, newOrder.orderTime, newOrder.status, extrasName.toString, extraTotalPrice)).
           flashing("success" -> "Order saved!")
       })
   }
@@ -199,23 +181,53 @@ object OrderController extends Controller {
 
   /**
     * Shows the view for a newly created order.
+    *
+    * @param id              the id of an order
+    * @param customerID      the id of a customer
+    * @param pizzaID         the id of a pizza
+    * @param productID       the id of a product
+    * @param pizzaName       the name of a pizza
+    * @param productName     the name of a product
+    * @param pizzaAmount     the ordered quantity of a pizza
+    * @param pizzaSize       the size of a pizza
+    * @param pizzaPrice      the price of a pizza
+    * @param productAmount   the ordered quantity of a product
+    * @param productPrice    the price of a product
+    * @param extrasName      the name of the extra/s
+    * @param extraTotalPrice the total price of the extra/s
+    * @param totalPrice      the total price of an order
+    * @param orderTime       the time an order has been placed
+    * @param status          the status of an order
+    * @param deliveryTime    the time an order will be delivered
     */
   def newOrderCreated(id: Long, customerID: Double, pizzaID: Double, productID: Double,
-                      pizzaName: String, productName: String,
-                      pizzaAmount: Double, pizzaSize: Double,
+                      pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,
                       pizzaPrice: Double, productAmount: Double, productPrice: Double,
                       extrasName: Any, extraTotalPrice: Double, totalPrice: Double,
-                      orderTime: String, status: String,
-                      deliveryTime: String): Action[AnyContent] = Action {
-    Ok(views.html.newOrder(id.toInt, customerID.toInt,
-      pizzaID.toInt, productID.toInt, pizzaName, productName,
-      pizzaAmount, pizzaSize, pizzaPrice, productAmount,
-      productPrice, extrasName.toString, extraTotalPrice,
-      totalPrice, orderTime, status, deliveryTime))
+                      orderTime: String, status: String, deliveryTime: String): Action[AnyContent] = Action {
+    Ok(views.html.newOrder(id.toInt, customerID.toInt, pizzaID.toInt, productID.toInt, pizzaName, productName,
+      pizzaAmount, pizzaSize, pizzaPrice, productAmount, productPrice, extrasName.toString,
+      extraTotalPrice, totalPrice, orderTime, status, deliveryTime))
   }
 
   /**
     * Shows the view for a retrieved order.
+    *
+    * @param customerID       the id of a customer
+    * @param pizzaID          the id of a pizza
+    * @param productID        the id of a product
+    * @param pizzaName        the name of a pizza
+    * @param productName      the name of a product
+    * @param pizzaAmount      the ordered quantity of a pizza
+    * @param pizzaSize        the size of a pizza
+    * @param pizzaPrice       the price of a pizza
+    * @param productAmount    the ordered quantity of a product
+    * @param productPrice     the price of a product
+    * @param totalPrice       the total price of an order
+    * @param orderTime        the time an order has been placed
+    * @param status           the status of an order
+    * @param extrasName       the name of the extra/s
+    * @param extrasTotalPrice the total price of the extra/s
     */
   def showOrder(customerID: Double, pizzaID: Double, productID: Double,
                 pizzaName: String, productName: String, pizzaAmount: Double, pizzaSize: Double,
@@ -223,10 +235,8 @@ object OrderController extends Controller {
                 orderTime: String, status: String, extrasName: String,
                 extrasTotalPrice: Double): Action[AnyContent] = Action {
 
-    Ok(views.html.showOrder(customerID, pizzaID, productID,
-      pizzaName, productName, pizzaAmount, pizzaSize, pizzaPrice,
-      productAmount, productPrice, totalPrice, orderTime,
-      status, extrasName, extrasTotalPrice))
+    Ok(views.html.showOrder(customerID, pizzaID, productID, pizzaName, productName, pizzaAmount, pizzaSize, pizzaPrice,
+      productAmount, productPrice, totalPrice, orderTime, status, extrasName, extrasTotalPrice))
   }
 
   /**

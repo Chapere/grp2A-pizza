@@ -121,6 +121,13 @@ object PizzaController extends Controller {
 
   /**
     * Shows the view for a newly created pizza.
+    *
+    * @param id          the id of a pizza
+    * @param name        the name of a pizza
+    * @param price       the price of a pizza
+    * @param ingredients the ingredients of a pizza
+    * @param comment     the comment for a pizza
+    * @param supplements the supplements of a pizza
     */
   def newPizzaCreated(id: Long, name: String, price: Double,
                       ingredients: String, comment: String,
@@ -131,6 +138,13 @@ object PizzaController extends Controller {
 
   /**
     * Shows the view to change a pizza.
+    *
+    * @param id          the id of a pizza
+    * @param name        the name of a pizza
+    * @param price       the price of a pizza
+    * @param ingredients the ingredients of a pizza
+    * @param comment     the comment for a pizza
+    * @param supplements the supplements of a pizza
     */
   def changePizza1(id: Long, name: String, price: Double,
                    ingredients: String, comment: String,
@@ -141,6 +155,13 @@ object PizzaController extends Controller {
 
   /**
     * Shows the view for a changed pizza.
+    *
+    * @param id          the id of a pizza
+    * @param name        the name of a pizza
+    * @param price       the price of a pizza
+    * @param ingredients the ingredients of a pizza
+    * @param comment     the comment for a pizza
+    * @param supplements the supplements of a pizza
     */
   def upgradePizza(id: Long, name: String, price: Double,
                    ingredients: String, comment: String,
@@ -151,6 +172,8 @@ object PizzaController extends Controller {
 
   /**
     * Shows the view for a deleted pizza.
+    *
+    * @param deleted shows whether or not a pizza has been deleted
     */
   def pizzaDeleted(deleted: Boolean): Action[AnyContent] = Action {
     Ok(views.html.pizzaDeleted())

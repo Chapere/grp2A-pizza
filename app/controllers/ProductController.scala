@@ -8,10 +8,10 @@ import forms.{IDForm, CreateProductForm}
 import play.api.data.format.Formats.{longFormat, doubleFormat}
 
 /**
- * Controller for product specific operations.
- *
- * @author ob, scs
- */
+  * Controller for product specific operations.
+  *
+  * @author ob, scs
+  */
 object ProductController extends Controller {
 
   val id = "id"
@@ -114,6 +114,12 @@ object ProductController extends Controller {
 
   /**
     * Shows the view for a newly created product.
+    *
+    * @param id    the id of a product
+    * @param name  the name of a product
+    * @param price the price of a product
+    * @param size  the size of a product
+    * @param unit  the unit a product comes with
     */
   def newProductCreated(id: Long, name: String,
                         price: Double, size: Double,
@@ -123,6 +129,12 @@ object ProductController extends Controller {
 
   /**
     * Shows the view to change a product.
+    *
+    * @param id    the id of a product
+    * @param name  the name of a product
+    * @param price the price of a product
+    * @param size  the size of a product
+    * @param unit  the unit a product comes with
     */
   def changeProduct1(id: Long, name: String,
                      price: Double, size: Double,
@@ -132,6 +144,12 @@ object ProductController extends Controller {
 
   /**
     * Shows the view for a changed product.
+    *
+    * @param id    the id of a product
+    * @param name  the name of a product
+    * @param price the price of a product
+    * @param size  the size of a product
+    * @param unit  the unit a product comes with
     */
   def upgradeProduct(id: Long, name: String,
                      price: Double, size: Double,
@@ -141,6 +159,8 @@ object ProductController extends Controller {
 
   /**
     * Shows the view for a deleted product.
+    *
+    * @param deleted shows whether or not a product has been deleted
     */
   def productDeleted(deleted: Boolean): Action[AnyContent] = Action {
     Ok(views.html.productDeleted())
