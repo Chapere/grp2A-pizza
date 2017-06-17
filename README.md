@@ -33,7 +33,7 @@ https://github.com/swenib/grp1D-pizza
 
 ## Dokumentation / Wiki
 
-[PDF Handbuch]() | [Projekt Wiki](https://github.com/swenib/grp2A-pizza/wiki)
+[PDF Handbuch](https://github.com/swenib/grp2A-pizza/blob/master/doc/Sommersemester%202017/Benutzerhandbuch.pdf) | [Projekt Wiki](https://github.com/swenib/grp2A-pizza/wiki)
 
 
 
