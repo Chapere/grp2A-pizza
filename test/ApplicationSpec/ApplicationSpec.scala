@@ -1,10 +1,12 @@
 package ApplicationSpec
 
-import org.junit.runner._
-import org.specs2.mutable._
-import org.specs2.runner._
-import play.api.test.Helpers._
-import play.api.test._
+import org.junit.runner.RunWith
+import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
+import play.api.test.Helpers.{GET, OK, contentAsString, contentType, route, status, writeableOf_AnyContentAsEmpty}
+import play.api.test.{FakeRequest, WithApplication}
+import akka.util.Timeout
+import scala.concurrent.duration.DurationLong
 
 /**
   * Add your spec here.
@@ -13,6 +15,7 @@ import play.api.test._
   */
 @RunWith(classOf[JUnitRunner])
 class ApplicationSpec extends Specification {
+  implicit val duration: Timeout = 20 seconds
 
   "Application" should {
 

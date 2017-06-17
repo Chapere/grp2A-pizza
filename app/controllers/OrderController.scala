@@ -154,7 +154,6 @@ object OrderController extends Controller {
         val extraTotalPrice = newOrder.extraOnePrice +
           newOrder.extraTwoPrice + newOrder.extraThreePrice
         val extrasName =
-
           if (newOrder.extraOneID == 0
             && newOrder.extraTwoID == 0 && newOrder.extraThreeID == 0) {
             "empty"
