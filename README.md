@@ -12,7 +12,7 @@ Teammitglieder der Gruppe ***2A***
 + **Felix Thomas**
 > Testing
 + **Taha Obed**
-> Testing, Software Quality, Documentation (WIKI), Travis, Codacy
+> Testing, Software Quality, Documentation (WIKI, Manual), Travis, Codacy
 + **Andreas** 
 > Testing, Deployment
 
@@ -33,7 +33,7 @@ https://github.com/swenib/grp1D-pizza
 
 ## Dokumentation / Wiki
 
-[Projekt Wiki](https://github.com/swenib/grp2A-pizza/wiki)
+[PDF Handbuch]() | [Projekt Wiki](https://github.com/swenib/grp2A-pizza/wiki)
 
 
 

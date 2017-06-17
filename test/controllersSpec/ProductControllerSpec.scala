@@ -7,7 +7,6 @@ import play.api.test.Helpers._
 import play.api.test._
 import controllers.ProductController
 
-
 /**
   * @author Felix Thomas
   */
