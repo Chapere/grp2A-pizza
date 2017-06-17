@@ -3,7 +3,7 @@ package ApplicationSpec
 import org.junit.runner.RunWith
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
-import play.test.WithBrowser
+import play.api.test.WithBrowser
 
 /**
  * add your integration spec here.

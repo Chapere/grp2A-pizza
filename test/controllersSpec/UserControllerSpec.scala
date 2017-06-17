@@ -9,6 +9,8 @@ import org.specs2.runner.JUnitRunner
 import play.api.test.Helpers.{OK, POST, SEE_OTHER, BAD_REQUEST, redirectLocation, contentAsString, running, status}
 import play.api.test.{FakeApplication, FakeRequest}
 import services.UserService
+import scala.concurrent.duration._
+import akka.util.Timeout
 
 /**
   * Created by Taha Obed on 20.04.2017.
@@ -16,6 +18,7 @@ import services.UserService
   */
 @RunWith(classOf[JUnitRunner])
 class UserControllerSpec extends Specification {
+  implicit val duration: Timeout = 20 seconds
 
   def memDB[T](code: => T) =
     running(FakeApplication(additionalConfiguration = Map(

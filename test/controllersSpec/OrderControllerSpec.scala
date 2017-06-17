@@ -6,15 +6,19 @@ import org.specs2.runner.JUnitRunner
 import play.api.test.Helpers.{BAD_REQUEST, OK, POST, SEE_OTHER, contentAsString, redirectLocation, running, status}
 import play.api.test.{FakeApplication, FakeRequest}
 import controllers.OrderController
-import com.github.nscala_time.time.Imports._
 import dbaccess.OrderDao
 import models.Order
+import scala.concurrent.duration.DurationLong
+import akka.util.Timeout
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 
 /**
   * @author Felix Thomas
   */
 @RunWith(classOf[JUnitRunner])
 class OrderControllerSpec extends Specification{
+  implicit val duration: Timeout = 20 seconds
 
   def memDB[T](code: => T) =
     running(FakeApplication(additionalConfiguration = Map(
@@ -23,7 +27,7 @@ class OrderControllerSpec extends Specification{
     )))(code)
 
   val time: Int = (2 * (19000 / 1000)) + (10 * 1)
-  val deliveryTime = DateTimeFormat.forPattern("kk:mm+-+DD.MM.YYYY").print(DateTime.now() + time.minutes)
+  val deliveryTime = DateTimeFormat.forPattern("kk:mm+-+DD.MM.YYYY").print(DateTime.now())
 
   "OrderController" should{
 

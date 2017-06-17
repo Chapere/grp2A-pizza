@@ -3,9 +3,10 @@ package restSpec
 import org.junit.runner.RunWith
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
-import play.api.test.Helpers.{GET, OK, contentType, route, status}
-import play.api.test.FakeRequest
-import play.test.WithApplication
+import play.api.test.Helpers.{GET, OK, contentType, route, status, writeableOf_AnyContentAsEmpty}
+import play.api.test.{FakeRequest, WithApplication}
+import akka.util.Timeout
+import scala.concurrent.duration.DurationLong
 
 /**
  * Add your spec here.
@@ -14,6 +15,7 @@ import play.test.WithApplication
  */
 @RunWith(classOf[JUnitRunner])
 class ApiSpec extends Specification {
+  implicit val duration: Timeout = 20 seconds
 
   "Api" should {
 
