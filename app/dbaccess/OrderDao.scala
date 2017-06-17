@@ -146,9 +146,7 @@ trait OrderDaoT {
     */
   def setOrderStatus(id: Long, orderStatus: String): Order = {
     DB.withConnection { implicit c =>
-      val updateFlag: Option[Long] =
-        SQL(updateOrder).on(
-          'status -> orderStatus, 'id -> id).executeInsert()
+        SQL(updateOrder).on('status -> orderStatus, 'id -> id).executeInsert()
       val selectOrder = SQL(selectOrderMainID).on(
         'id -> id)
       val orders = selectOrder().map(row => Order(row[Long](id1), row[Double](customerID),
@@ -210,8 +208,7 @@ trait OrderDaoT {
     */
   def deactivateOrder(id: Double): Boolean = {
     DB.withConnection { implicit c =>
-      val rowsCount = SQL(updateOrder).on(
-        'status -> "Storniert", 'id -> id).executeInsert()
+      SQL(updateOrder).on('status -> "Storniert", 'id -> id).executeInsert()
       true
     }
   }

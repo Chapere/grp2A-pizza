@@ -109,7 +109,7 @@ trait UserDaoT {
 
   def getUser(user: User): User = {
     DB.withConnection { implicit c =>
-      val selectUsers = SQL("SELECT * FROM USERS " +
+      val selectUsers = SQL("SELECT Users.* FROM USERS " +
         "WHERE email = {email} AND password = {password};").on(
         'email -> user.email, 'password -> user.password)
       val users = selectUsers().map(row => User(row[Long](id1), row[String](name),
@@ -123,7 +123,7 @@ trait UserDaoT {
 
   def getUserByIdentification(id: Long): List[User] = {
     DB.withConnection { implicit c =>
-      val selectUsers = SQL("SELECT * FROM USERS WHERE id = {id};").on(
+      val selectUsers = SQL("SELECT Users.* FROM USERS WHERE id = {id};").on(
         'id -> id)
       val users = selectUsers().map(row => User(row[Long](id1), row[String](name),
         row[String](lastname), row[String](adress),
@@ -136,7 +136,7 @@ trait UserDaoT {
 
   def selectUserByIdentification(id: Long): User = {
     DB.withConnection { implicit c =>
-      val selectUser = SQL("SELECT * FROM Users WHERE id = {id};").on(
+      val selectUser = SQL("SELECT Users.* FROM Users WHERE id = {id};").on(
         'id -> id)
       val users = selectUser().map(row => User(row[Long](id1),
         row[String](name), row[String](lastname),
@@ -168,7 +168,7 @@ trait UserDaoT {
     */
   def registeredUsers: List[User] = {
     DB.withConnection { implicit c =>
-      val selectUsers = SQL("Select * from Users;")
+      val selectUsers = SQL("Select Users.* from Users;")
       // Transform the resulting Stream[Row] to a List[(String,String)]
       val users = selectUsers().map(row => User(row[Long](id1), row[String](name),
         row[String](lastname), row[String](adress), row[String](city), row[String](plz),
