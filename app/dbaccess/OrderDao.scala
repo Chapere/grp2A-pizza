@@ -1,13 +1,13 @@
 package dbaccess
 
-import anorm.{SQL}
+import anorm.SQL
 import play.api.Play.current
 import play.api.db.DB
 import anorm.NamedParameter.symbol
 import models.{Order, OrdersWithExtras, OrderWithAdress, Extra, Pizza, Product, User}
 
 /**
-  * Data access object for user related operations.
+  * Data access object for order related operations.
   *
   * @author ob, scs
   */
@@ -46,30 +46,29 @@ trait OrderDaoT {
   val leer = " "
 
   /**
-    * Creates the given user in the database.
+    * Creates the given order in the database.
     *
-    * @param order the user object to be stored.
-    * @return the persisted user object
+    * @param order the order object to be stored
+    * @return the persisted order object
     */
-
   def createOrder(order: Order): OrdersWithExtras = {
-    DB.withConnection { implicit c =>val addOrder: Option[Long] =
-        SQL("INSERT INTO ORDERS(customerID, pizzaID, productID, pizzaName, productName," +
-          "pizzaAmount, pizzaSize, pizzaPrice, productAmount, productPrice, extraOneID," +
-          "extraOneName, extraOnePrice, extraTwoID, extraTwoName," +
-          " extraTwoPrice, extraThreeID, extraThreeName, extraThreePrice," +
-          "extrasString, extrasTotalPrice, totalPrice, orderTime, status, deliveryTime) VALUES " +
-          "({customerID}, {pizzaID}, {productID}, 'N/A', 'N/A'," +
-          "{pizzaAmount}, {pizzaSize}, 0, {productAmount}, 0, " +
-          "{extraOneID}, 'N/A', 0, {extraTwoID}, 'N/A', 0," +
-          "{extraThreeID}, 'N/A', 0,'N/A', 0, " +
-          "0, {orderTime}, {status}, {deliveryTime})").on(
-          'customerID -> order.customerID, 'pizzaID -> order.pizzaID,
-          'productID -> order.productID, 'pizzaAmount -> order.pizzaAmount,
-          'pizzaSize -> order.pizzaSize, 'productAmount -> order.productAmount,
-          'extraOneID -> order.extraOneID, 'extraTwoID -> order.extraTwoID,
-          'extraThreeID -> order.extraThreeID, 'orderTime -> order.orderTime,
-          'status -> order.status, 'deliveryTime -> order.deliveryTime).executeInsert()
+    DB.withConnection { implicit c => val addOrder: Option[Long] =
+      SQL("INSERT INTO ORDERS(customerID, pizzaID, productID, pizzaName, productName," +
+        "pizzaAmount, pizzaSize, pizzaPrice, productAmount, productPrice, extraOneID," +
+        "extraOneName, extraOnePrice, extraTwoID, extraTwoName," +
+        " extraTwoPrice, extraThreeID, extraThreeName, extraThreePrice," +
+        "extrasString, extrasTotalPrice, totalPrice, orderTime, status, deliveryTime) VALUES " +
+        "({customerID}, {pizzaID}, {productID}, 'N/A', 'N/A'," +
+        "{pizzaAmount}, {pizzaSize}, 0, {productAmount}, 0, " +
+        "{extraOneID}, 'N/A', 0, {extraTwoID}, 'N/A', 0," +
+        "{extraThreeID}, 'N/A', 0,'N/A', 0, " +
+        "0, {orderTime}, {status}, {deliveryTime})").on(
+        'customerID -> order.customerID, 'pizzaID -> order.pizzaID,
+        'productID -> order.productID, 'pizzaAmount -> order.pizzaAmount,
+        'pizzaSize -> order.pizzaSize, 'productAmount -> order.productAmount,
+        'extraOneID -> order.extraOneID, 'extraTwoID -> order.extraTwoID,
+        'extraThreeID -> order.extraThreeID, 'orderTime -> order.orderTime,
+        'status -> order.status, 'deliveryTime -> order.deliveryTime).executeInsert()
       order.id = addOrder.get
       val selectExtraOne = SQL(selectExtrasMain +
         "WHERE id = {extraOneID}").on('extraOneID -> order.extraOneID)
@@ -137,13 +136,18 @@ trait OrderDaoT {
     }
   }
 
+  /**
+    * Updates the status of an order in the database.
+    *
+    * @param id          the order's id
+    * @param orderStatus the new status of the order
+    * @return the order object with changed status
+    */
   def setOrderStatus(id: Long, orderStatus: String): Order = {
     DB.withConnection { implicit c =>
-
       val updateFlag: Option[Long] =
         SQL(updateOrder).on(
           'status -> orderStatus, 'id -> id).executeInsert()
-
       val selectOrder = SQL(selectOrderMain).on(
         'id -> id)
       val orders = selectOrder().map(row => Order(row[Long](id1), row[Double](customerID),
@@ -160,6 +164,12 @@ trait OrderDaoT {
 
   }
 
+  /**
+    * Retrieves an order from the database.
+    *
+    * @param id the order's id
+    * @return the order object
+    */
   def getOrder(id: Double): Order = {
     DB.withConnection { implicit c =>
       val selectOrder = SQL(selectOrderMain).on(
@@ -179,9 +189,9 @@ trait OrderDaoT {
   }
 
   /**
-    * Removes a user by id from the database.
+    * Removes an order from the database.
     *
-    * @param id the users id
+    * @param id the order's id
     * @return a boolean success flag
     */
   def rmOrder(id: Double): Boolean = {
@@ -191,6 +201,12 @@ trait OrderDaoT {
     }
   }
 
+  /**
+    * Deactivates an order in the database.
+    *
+    * @param id the order's id
+    * @return a boolean success flag
+    */
   def deactivateOrder(id: Double): Boolean = {
     DB.withConnection { implicit c =>
       val rowsCount = SQL(updateOrder).on(
@@ -200,9 +216,9 @@ trait OrderDaoT {
   }
 
   /**
-    * Returns a list of available user from the database.
+    * Retrieves a list of available orders from the database.
     *
-    * @return a list of user objects.
+    * @return a list of order objects
     */
   def availableOrders: List[Order] = {
     DB.withConnection { implicit c =>
@@ -221,6 +237,12 @@ trait OrderDaoT {
     }
   }
 
+  /**
+    * Retrieves an order from the database.
+    *
+    * @param id the order's id
+    * @return the order object
+    */
   def availableOrdersByID(id: Double): List[Order] = {
     DB.withConnection { implicit c =>
       val selectOrders = SQL("Select * from Orders WHERE customerID = {id};").on('id -> id)
@@ -240,6 +262,11 @@ trait OrderDaoT {
     }
   }
 
+  /**
+    * Retrieves a list of available orders from the database including the customers's address.
+    *
+    * @return a list of order objects
+    */
   def availableOrdersWithAdress: List[OrderWithAdress] = {
     DB.withConnection { implicit c =>
       val selectOrders = SQL("Select Orders.*, Users.* from Orders " +

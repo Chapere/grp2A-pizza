@@ -7,7 +7,7 @@ import anorm.NamedParameter.symbol
 import models.Pizza
 
 /**
-  * Data access object for user related operations.
+  * Data access object for pizza related operations.
   *
   * @author ob, scs
   */
@@ -20,10 +20,10 @@ trait PizzaDaoT {
   val supplements = "supplements"
 
   /**
-    * Creates the given user in the database.
+    * Creates the given pizza in the database.
     *
-    * @param pizza the user object to be stored.
-    * @return the persisted user object
+    * @param pizza the pizza object to be stored
+    * @return the persisted pizza object
     */
   def addPizza(pizza: Pizza): Pizza = {
     DB.withConnection { implicit c =>
@@ -39,7 +39,12 @@ trait PizzaDaoT {
     pizza
   }
 
-
+  /**
+    * Changes the database entry of the given pizza.
+    *
+    * @param pizza the pizza object with the change data
+    * @return the changed pizza object
+    */
   def updatePizzaDao(pizza: Pizza): Pizza = {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
@@ -53,9 +58,13 @@ trait PizzaDaoT {
     pizza
   }
 
-
+  /**
+    * Retrieve a pizza from the database.
+    *
+    * @param id the pizza's id
+    * @return the pizza object
+    */
   def selectPizzaByIdentification(id: Long): Pizza = {
-
     DB.withConnection { implicit c =>
       val selectPizza = SQL("SELECT * FROM Pizzas WHERE id = {id};").on(
         'id -> id)
@@ -65,13 +74,12 @@ trait PizzaDaoT {
         row[String](supplements))).toList
       pizzas.head
     }
-
   }
 
   /**
-    * Removes a user by id from the database.
+    * Removes a pizza from the database.
     *
-    * @param id the users id
+    * @param id the pizza's id
     * @return a boolean success flag
     */
   def rmPizza(id: Long): Boolean = {
@@ -82,9 +90,9 @@ trait PizzaDaoT {
   }
 
   /**
-    * Returns a list of available user from the database.
+    * Retrieves a list of available pizza from the database.
     *
-    * @return a list of user objects.
+    * @return a list of pizza objects
     */
   def availablePizzas: List[Pizza] = {
     DB.withConnection { implicit c =>

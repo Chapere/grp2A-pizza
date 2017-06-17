@@ -21,7 +21,7 @@ trait ExtraDaoT {
   /**
     * Creates the given extra in the database.
     *
-    * @param extra the extra object to be stored.
+    * @param extra the extra object to be stored
     * @return the persisted extra object
     */
   def addExtra(extra: Extra): Extra = {
@@ -33,6 +33,12 @@ trait ExtraDaoT {
     extra
   }
 
+  /**
+    * Changes the database entry of the given extra.
+    *
+    * @param extra the extra object with the change data
+    * @return the changed extra object
+    */
   def updateExtraDao(extra: Extra): Extra = {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
@@ -42,6 +48,12 @@ trait ExtraDaoT {
     extra
   }
 
+  /**
+    * Retrieve an extra from the database.
+    *
+    * @param id the extra's id
+    * @return the extra object
+    */
   def getExtraByIdentification(id: Long): List[Extra] = {
     DB.withConnection { implicit c =>
       val selectExtras = SQL(selectExtrasMain).on(
@@ -52,8 +64,13 @@ trait ExtraDaoT {
     }
   }
 
+  /**
+    * Retrieves an extra from the database.
+    *
+    * @param id the extra's id
+    * @return the extra object
+    */
   def selectExtraByIdentification(id: Long): Extra = {
-
     DB.withConnection { implicit c =>
       val selectExtra = SQL(selectExtrasMain).on(
         'id -> id)
@@ -64,12 +81,11 @@ trait ExtraDaoT {
   }
 
   /**
-    * Removes a extra by id from the database.
+    * Removes an extra from the database.
     *
-    * @param id the extras id
+    * @param id the extra's id
     * @return a boolean success flag
     */
-
   def rmExtra(id: Long): Boolean = {
     DB.withConnection { implicit c =>
       val rowsCount = SQL("delete from Extras where id = ({id})").on('id -> id).executeUpdate()
@@ -78,9 +94,9 @@ trait ExtraDaoT {
   }
 
   /**
-    * Returns a list of available extra from the database.
+    * Retrieves a list of available extras from the database.
     *
-    * @return a list of extra objects.
+    * @return a list of extra objects
     */
   def registeredExtras: List[Extra] = {
     DB.withConnection { implicit c =>
