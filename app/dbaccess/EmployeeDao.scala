@@ -68,7 +68,7 @@ trait EmployeeDaoT {
     */
   def getEmployee(id: Double): Employee = {
     DB.withConnection { implicit c =>
-      val selectEmployees = SQL("SELECT * FROM Employees WHERE id = {id};").on(
+      val selectEmployees = SQL("SELECT Employees.* FROM Employees WHERE id = {id};").on(
         'id -> id)
       val employees = selectEmployees().map(row => Employee(row[Long](id1),
         row[String](name), row[String](lastname),
@@ -86,7 +86,7 @@ trait EmployeeDaoT {
     */
   def logInEmployee(employee: Employee): Employee = {
     DB.withConnection { implicit c =>
-      val selectEmployees = SQL("SELECT * FROM EMPLOYEES " +
+      val selectEmployees = SQL("SELECT Employees.* FROM EMPLOYEES " +
         "WHERE email = {email} AND password = {password};").on(
         'email -> employee.email, 'password -> employee.password)
       val employees = selectEmployees().map(row => Employee(row[Long](id1),
