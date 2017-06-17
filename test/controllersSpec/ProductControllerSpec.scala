@@ -7,7 +7,6 @@ import play.api.test.Helpers.{OK, POST, SEE_OTHER, BAD_REQUEST, redirectLocation
 import play.api.test.{FakeApplication, FakeRequest}
 import controllers.ProductController
 
-
 /**
   * @author Felix Thomas
   */
