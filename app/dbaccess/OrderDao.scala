@@ -40,9 +40,9 @@ trait OrderDaoT {
   val orderTime = "orderTime"
   val status = "status"
   val deliveryTime = "deliveryTime"
-  val updateOrder = "UPDATE Orders SET status = {status} WHERE id = {id}"
-  val selectOrderMain = "Select Orders.* FROM Orders WHERE id = {id};"
-  val selectOrderMainID = "Select Orders.* FROM Orders;"
+  val updateOrder = "UPDATE Orders SET status = {status} WHERE Orders.id = {id}"
+  val selectOrderMainID = "Select Orders.* FROM Orders WHERE Orders.id = {id};"
+  val selectOrderMain = "Select Orders.* FROM Orders;"
   val selectExtrasMain = "SELECT Extras.* FROM Extras "
   val leer = " "
 
