@@ -1,11 +1,10 @@
 package servicesSpec
 
-import org.junit.runner._
-import org.specs2.mutable._
-import org.specs2.runner._
-
-import play.api.test.Helpers._
-import play.api.test._
+import org.junit.runner.RunWith
+import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
+import play.api.test.Helpers.running
+import play.api.test.FakeApplication
 import services.UserService
 
 @RunWith(classOf[JUnitRunner])
@@ -21,27 +20,27 @@ class UserServiceSpec extends Specification {
 
     "user Emil have to be registered at the start" in memDB {
       val registeredUsers = UserService.registeredUsers
-      registeredUsers.length must be equalTo(1)
-      registeredUsers(0).name must be equalTo("Emil")
+      registeredUsers.length must be equalTo 1
+      registeredUsers.head.name must be equalTo "Emil"
     }
 
     "user Emil should have ID 1" in memDB {
       val registeredUsers = UserService.registeredUsers
-      registeredUsers(0).id must be equalTo(1)
+      registeredUsers.head.id must be equalTo 1
     }
 
     "return a list containing just Emil & Taha after adding user Taha" in memDB {
       UserService.addUser("Taha", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234")
       val registeredUsers = UserService.registeredUsers
-      registeredUsers.length must be equalTo(2)
-      registeredUsers(0).name must be equalTo("Emil")
-      registeredUsers(1).name must be equalTo("Taha")
+      registeredUsers.length must be equalTo 2
+      registeredUsers.head.name must be equalTo "Emil"
+      registeredUsers(1).name must be equalTo "Taha"
     }
 
     "return a list of three users after adding two users Taha" in memDB {
       UserService.addUser("Taha", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234")
       UserService.addUser("Taha", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234")
-      UserService.registeredUsers.length must be equalTo(3)
+      UserService.registeredUsers.length must be equalTo 3
     }
 
     "set new user Taha inactive and active again" in memDB {
@@ -72,7 +71,7 @@ class UserServiceSpec extends Specification {
       UserService.addUser("Taha", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234")
       UserService.updateUser(2, "Thomas", "Obed", "Flurstr 14", "München", "83723", 0, "taha@pronto", "1234")
       val registeredUsers = UserService.registeredUsers
-      registeredUsers(1).name must be equalTo("Thomas")
+      registeredUsers(1).name must be equalTo "Thomas"
     }
 
     "add several users and choose them by their identifaction number" in memDB {

@@ -1,17 +1,17 @@
 package controllersSpec
 
-import org.junit.runner._
-import org.specs2.mutable._
-import org.specs2.runner._
-import play.api.test.Helpers._
-import play.api.test._
+import org.junit.runner.RunWith
+import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
+import play.api.test.Helpers.{OK, POST, SEE_OTHER, redirectLocation, BAD_REQUEST, contentAsString, running, status}
+import play.api.test.{FakeApplication, FakeRequest}
 import controllers.ExtraController
 
 /**
   * @author Felix Thomas
   */
 @RunWith(classOf[JUnitRunner])
-class ExtraControllerSpec extends Specification{
+class ExtraControllerSpec extends Specification {
 
   def memDB[T](code: => T) =
     running(FakeApplication(additionalConfiguration = Map(
@@ -105,9 +105,9 @@ class ExtraControllerSpec extends Specification{
         "Name" -> "Kas",
         "Preis" -> "1"
       )
-      val result = ExtraController.newExtraCreated(0,"Kas",1)(request)
+      val result = ExtraController.newExtraCreated(0, "Kas", 1)(request)
       status(result) must equalTo(OK)
-      contentAsString(result) must contain ("0") contain "Kas" contain "1"
+      contentAsString(result) must contain("0") contain "Kas" contain "1"
     }
 
     "show view to change Extra" in memDB {
@@ -116,9 +116,9 @@ class ExtraControllerSpec extends Specification{
         "Name" -> "Kas",
         "Preis" -> "1"
       )
-      val result = ExtraController.changeExtra1(0,"Speck",2)(request)
+      val result = ExtraController.changeExtra1(0, "Speck", 2)(request)
       status(result) must equalTo(OK)
-      contentAsString(result) must contain ("0") contain "Speck" contain "2"
+      contentAsString(result) must contain("0") contain "Speck" contain "2"
     }
 
     "show changed Extra" in memDB {
@@ -127,9 +127,9 @@ class ExtraControllerSpec extends Specification{
         "Name" -> "Kas",
         "Preis" -> "1"
       )
-      val result = ExtraController.upgradeExtra(0,"Paprika",2)(request)
+      val result = ExtraController.upgradeExtra(0, "Paprika", 2)(request)
       status(result) must equalTo(OK)
-      contentAsString(result) must contain ("0") contain "Paprika" contain "2"
+      contentAsString(result) must contain("0") contain "Paprika" contain "2"
     }
 
     "show view for deleted Extra" in memDB {
@@ -140,7 +140,7 @@ class ExtraControllerSpec extends Specification{
       )
       val result = ExtraController.extraDeleted(true)(request)
       status(result) must equalTo(OK)
-      contentAsString(result) must contain ("Extra Gelöscht!")
+      contentAsString(result) must contain("Extra Gelöscht!")
     }
 
     "showExtras" in memDB {
@@ -151,7 +151,7 @@ class ExtraControllerSpec extends Specification{
       )
       val result = ExtraController.showExtras()(request)
       status(result) must equalTo(OK)
-      contentAsString(result) must contain ("Extrasübersicht")
+      contentAsString(result) must contain("Extrasübersicht")
     }
   }
 }

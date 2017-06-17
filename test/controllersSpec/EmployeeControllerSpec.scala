@@ -11,6 +11,7 @@ import akka.util.Timeout
 /**
   * @author Andreas Frey
   */
+
 @RunWith(classOf[JUnitRunner])
 class EmployeeControllerSpec extends Specification {
   implicit val duration: Timeout = 20 seconds

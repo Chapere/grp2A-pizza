@@ -1,10 +1,11 @@
 package restSpec
 
-import org.junit.runner._
-import org.specs2.mutable._
-import org.specs2.runner._
-import play.api.test.Helpers._
-import play.api.test._
+import org.junit.runner.RunWith
+import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
+import play.api.test.Helpers.{GET, OK, contentType, route, status}
+import play.api.test.FakeRequest
+import play.test.WithApplication
 
 /**
   * Add your spec here.
@@ -23,10 +24,12 @@ class OrdersSpec extends Specification {
       contentType(response) must beSome.which(_ == "application/json")
     }
 
-    /*"respond with a json representation for a specific order" in new WithApplication {
+    /*
+    "respond with a json representation for a specific order" in new WithApplication {
       val response = route(FakeRequest(GET, "/api/order/1")).get
       status(response) must beEqualTo(OK)
       contentType(response) must beSome.which(_== "application/json")
-    }*/
+    }
+    */
   }
 }
