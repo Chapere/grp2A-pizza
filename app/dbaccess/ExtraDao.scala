@@ -49,7 +49,7 @@ trait ExtraDaoT {
   }
 
   /**
-    * Retrieve an extra from the database.
+    * Retrieves an extra from the database.
     *
     * @param id the extra's id
     * @return the extra object
