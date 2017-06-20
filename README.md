@@ -8,7 +8,7 @@ Pizza-Power Web Applikation
 ===========================
 
 Teammitglieder der Gruppe ***2A***
-----------------------------------
+-----------------------------------
 + **Felix Thomas**
 > Testing
 + **Taha Obed**
