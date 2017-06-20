@@ -9,10 +9,12 @@ import models.Extra
 /**
   * @author Felix Thomas
   */
-@RunWith(classOf[JUnitRunner])
-class MockedExtraDaoSpec extends Specification with Mockito {
 
-  /*"The ExtraService" should {
+@RunWith(classOf[JUnitRunner])
+class MockedExtraDaoSpec extends Specification with Mockito
+
+  /*
+  "The ExtraService" should {
 
     "return a list of five extras" in {
       ExtraService.availableExtras.length must be equalTo(5)
@@ -37,5 +39,6 @@ class MockedExtraDaoSpec extends Specification with Mockito {
 
     extraDao.addExtra(null) returns Extra(5,"mushrooms",1)
     extraDao.getExtraByIdentification(5) returns List(Extra(5,"mushrooms",1))
-  }*/
-}
+  }
+  */
+

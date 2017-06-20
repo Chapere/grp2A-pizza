@@ -6,11 +6,12 @@ import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import play.api.test.{FakeApplication, FakeRequest}
 import play.api.test.Helpers.{POST, SEE_OTHER, BAD_REQUEST, OK, redirectLocation, running, status, contentAsString}
-import scala.concurrent.duration._
+import scala.concurrent.duration.DurationLong
 import akka.util.Timeout
 /**
   * @author Andreas Frey
   */
+
 @RunWith(classOf[JUnitRunner])
 class EmployeeControllerSpec extends Specification {
   implicit val duration: Timeout = 20 seconds

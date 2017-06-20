@@ -1,20 +1,24 @@
 package controllersSpec
 
-import org.junit.runner._
-import org.specs2.mutable._
-import org.specs2.runner._
-import play.api.test.Helpers._
-import play.api.test._
+import org.junit.runner.RunWith
+import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
+import play.api.test.Helpers.{BAD_REQUEST, OK, POST, SEE_OTHER, contentAsString, redirectLocation, running, status}
+import play.api.test.{FakeApplication, FakeRequest}
 import controllers.OrderController
-import com.github.nscala_time.time.Imports._
 import dbaccess.OrderDao
 import models.Order
+import scala.concurrent.duration.DurationLong
+import akka.util.Timeout
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 
 /**
   * @author Felix Thomas
   */
 @RunWith(classOf[JUnitRunner])
 class OrderControllerSpec extends Specification{
+  implicit val duration: Timeout = 20 seconds
 
   def memDB[T](code: => T) =
     running(FakeApplication(additionalConfiguration = Map(
@@ -22,8 +26,8 @@ class OrderControllerSpec extends Specification{
       "db.default.url" -> "jdbc:h2:mem:test;MODE=PostgreSQL"
     )))(code)
 
-  var time: Int = (2 * (19000 / 1000)) + (10 * 1)
-  var deliveryTime = DateTimeFormat.forPattern("kk:mm+-+DD.MM.YYYY").print(DateTime.now() + time.minutes)
+  val time: Int = (2 * (19000 / 1000)) + (10 * 1)
+  val deliveryTime = DateTimeFormat.forPattern("kk:mm+-+DD.MM.YYYY").print(DateTime.now())
 
   "OrderController" should{
 
@@ -41,7 +45,7 @@ class OrderControllerSpec extends Specification{
       )
       val result = OrderController.createOrder()(request)
       status(result) must equalTo(SEE_OTHER)
-      //redirectLocation(result) must beSome("/newOrderCreated?id=1&customerID=1.0&pizzaID=1.0&productID=0.0&pizzaName=Margherita&productName=&pizzaAmount=1.0&pizzaSize=14.0&pizzaPrice=0.6&productAmount=0.0&productPrice=0.0&extrasName=%28%29&extraTotalPrice=0.0&totalPrice=8.4&orderTime=" + DateTimeFormat.forPattern("kk:mm+-+DD.MM.YYYY").print(DateTime.now()).replaceAll(":","%3A") + "&status=Bestellung+empfangen&deliveryTime=" + deliveryTime.replaceAll(":","%3A"))
+      // redirectLocation(result) must beSome("/newOrderCreated?id=1&customerID=1.0&pizzaID=1.0&productID=0.0&pizzaName=Margherita&productName=&pizzaAmount=1.0&pizzaSize=14.0&pizzaPrice=0.6&productAmount=0.0&productPrice=0.0&extrasName=%28%29&extraTotalPrice=0.0&totalPrice=8.4&orderTime=" + DateTimeFormat.forPattern("kk:mm+-+DD.MM.YYYY").print(DateTime.now()).replaceAll(":","%3A") + "&status=Bestellung+empfangen&deliveryTime=" + deliveryTime.replaceAll(":","%3A"))
     }
 
     "create an order bad request" in memDB {

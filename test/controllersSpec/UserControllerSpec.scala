@@ -3,14 +3,14 @@ package controllersSpec
 import controllers.UserController
 import dbaccess.UserDao
 import models.User
-
-import org.junit.runner._
-import org.specs2.mutable._
-import org.specs2.runner._
-
-import play.api.test.Helpers._
-import play.api.test._
+import org.junit.runner.RunWith
+import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
+import play.api.test.Helpers.{OK, POST, SEE_OTHER, BAD_REQUEST, redirectLocation, contentAsString, running, status}
+import play.api.test.{FakeApplication, FakeRequest}
 import services.UserService
+import scala.concurrent.duration._
+import akka.util.Timeout
 
 /**
   * Created by Taha Obed on 20.04.2017.
@@ -18,6 +18,7 @@ import services.UserService
   */
 @RunWith(classOf[JUnitRunner])
 class UserControllerSpec extends Specification {
+  implicit val duration: Timeout = 20 seconds
 
   def memDB[T](code: => T) =
     running(FakeApplication(additionalConfiguration = Map(
@@ -155,14 +156,16 @@ class UserControllerSpec extends Specification {
       redirectLocation(result) must beNone
     }
 
-    /*"user makes an distance error" in memDB {
+    /*
+    "user makes an distance error" in memDB {
       val request = FakeRequest(POST, "addUser").withFormUrlEncodedBody(
         "User ID" -> "1"
       )
       val result = UserController.distanceError()(request)
       status(result) must beEqualTo(BAD_REQUEST)
       redirectLocation(result) must beNone
-    }*/
+    }
+    */
 
     "login an user" in memDB {
       val request = FakeRequest(POST, "/userLoggedIn").withFormUrlEncodedBody(

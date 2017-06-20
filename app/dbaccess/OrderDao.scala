@@ -4,7 +4,7 @@ import anorm.SQL
 import play.api.Play.current
 import play.api.db.DB
 import anorm.NamedParameter.symbol
-import models.{Order, OrdersWithExtras, OrderWithAdress, Extra, Pizza, Product, User}
+import models.{Order, OrdersWithExtras, OrderWithAdress, Extra, Pizza, Product}
 
 /**
   * Data access object for order related operations.
@@ -40,9 +40,10 @@ trait OrderDaoT {
   val orderTime = "orderTime"
   val status = "status"
   val deliveryTime = "deliveryTime"
-  val updateOrder = "UPDATE Orders SET status = {status} WHERE id = {id}"
-  val selectOrderMain = "SELECT * FROM Orders WHERE id = {id};"
-  val selectExtrasMain = "SELECT * FROM Extras "
+  val updateOrder = "UPDATE Orders SET status = {status} WHERE Orders.id = {id}"
+  val selectOrderMainID = "Select Orders.* FROM Orders WHERE Orders.id = {id};"
+  val selectOrderMain = "Select Orders.* FROM Orders;"
+  val selectExtrasMain = "SELECT Extras.* FROM Extras "
   val leer = " "
 
   /**
@@ -145,10 +146,8 @@ trait OrderDaoT {
     */
   def setOrderStatus(id: Long, orderStatus: String): Order = {
     DB.withConnection { implicit c =>
-      val updateFlag: Option[Long] =
-        SQL(updateOrder).on(
-          'status -> orderStatus, 'id -> id).executeInsert()
-      val selectOrder = SQL(selectOrderMain).on(
+        SQL(updateOrder).on('status -> orderStatus, 'id -> id).executeInsert()
+      val selectOrder = SQL(selectOrderMainID).on(
         'id -> id)
       val orders = selectOrder().map(row => Order(row[Long](id1), row[Double](customerID),
         row[Double](pizzaID), row[Double](productID), row[String](pizzaName),
@@ -172,7 +171,7 @@ trait OrderDaoT {
     */
   def getOrder(id: Double): Order = {
     DB.withConnection { implicit c =>
-      val selectOrder = SQL(selectOrderMain).on(
+      val selectOrder = SQL(selectOrderMainID).on(
         'id -> id)
       val orders = selectOrder().map(row => Order(row[Long](id1), row[Double](customerID),
         row[Double](pizzaID), row[Double](productID), row[String](pizzaName),
@@ -209,8 +208,7 @@ trait OrderDaoT {
     */
   def deactivateOrder(id: Double): Boolean = {
     DB.withConnection { implicit c =>
-      val rowsCount = SQL(updateOrder).on(
-        'status -> "Storniert", 'id -> id).executeInsert()
+      SQL(updateOrder).on('status -> "Storniert", 'id -> id).executeInsert()
       true
     }
   }
@@ -222,7 +220,7 @@ trait OrderDaoT {
     */
   def availableOrders: List[Order] = {
     DB.withConnection { implicit c =>
-      val selectOrders = SQL("Select * from Orders;")
+      val selectOrders = SQL(selectOrderMain)
       // Transform the resulting Stream[Row] to a List[(String,String)]
       val orders = selectOrders().map(row => Order(row[Long](id1), row[Double](customerID),
         row[Double](pizzaID), row[Double](productID),
@@ -245,7 +243,7 @@ trait OrderDaoT {
     */
   def availableOrdersByID(id: Double): List[Order] = {
     DB.withConnection { implicit c =>
-      val selectOrders = SQL("Select * from Orders WHERE customerID = {id};").on('id -> id)
+      val selectOrders = SQL(selectOrderMainID).on('id -> id)
       // Transform the resulting Stream[Row] to a List[(String,String)]
       val orders = selectOrders().map(row => Order(row[Long](id1), row[Double](customerID),
         row[Double](pizzaID), row[Double](productID),
@@ -271,7 +269,6 @@ trait OrderDaoT {
     DB.withConnection { implicit c =>
       val selectOrders = SQL("Select Orders.*, Users.* from Orders " +
         "LEFT JOIN Users ON Orders.customerID = Users.id;")
-
       // Transform the resulting Stream[Row] to a List[(String,String)]
       val orders = selectOrders().map(row => OrderWithAdress(row[Long]("Orders.id"),
         row[Double](customerID), row[Double](pizzaID),

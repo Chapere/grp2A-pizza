@@ -4,19 +4,24 @@ import dbaccess.{PizzaDao, PizzaDaoT}
 import models.Pizza
 
 /**
- * Service class for user related operations.
- *
- * @author ob, scs
- */
+  * Service class for pizza related operations.
+  *
+  * @author ob, scs
+  */
 trait PizzaServiceT {
 
   val pizzaDao: PizzaDaoT = PizzaDao
 
   /**
-   * Adds a new user to the system.
-   * @param name name of the new user.
-   * @return the new user.
-   */
+    * Adds a new pizza to the system.
+    *
+    * @param name        the name of a pizza
+    * @param price       the price of a pizza
+    * @param ingredients the ingredients of a pizza
+    * @param comment     the comment for a pizza
+    * @param supplements the supplements of a pizza
+    * @return the new pizza
+    */
   def addPizza(name: String, price: Double, ingredients: String,
                comment: String, supplements: String): Pizza = {
     // create User
@@ -25,13 +30,29 @@ trait PizzaServiceT {
     PizzaDao.addPizza(newPizza)
   }
 
+  /**
+    * Retrieve a pizza from the database.
+    *
+    * @param id the pizza's id
+    * @return the pizza object
+    */
   def selectPizza(id: Long): Pizza = {
     // create Pizza
     // persist and return Pizza
     PizzaDao.selectPizzaByIdentification(id)
   }
 
-
+  /**
+    * Changes the database entry of the given pizza.
+    *
+    * @param id          the id of a pizza
+    * @param name        the name of a pizza
+    * @param price       the price of a pizza
+    * @param ingredients the ingredients of a pizza
+    * @param comment     the comment for a pizza
+    * @param supplements the supplements of a pizza
+    * @return the changed pizza object
+    */
   def updatePizza(id: Long, name: String, price: Double, ingredients: String,
                   comment: String, supplements: String): Pizza = {
     // create Pizza
@@ -41,20 +62,21 @@ trait PizzaServiceT {
   }
 
   /**
-   * Removes a user by id from the system.
-   * @param id users id.
-   * @return a boolean success flag.
-   */
+    * Removes a pizza from the database.
+    *
+    * @param id the pizza's id
+    * @return a boolean success flag
+    */
   def rmPizza(id: Long): Boolean = PizzaDao.rmPizza(id)
 
   /**
-   * Gets a list of all registered users.
-   * @return list of users.
-   */
+    * Retrieves a list of available pizza from the database.
+    *
+    * @return a list of pizza objects
+    */
   def availablePizza: List[Pizza] = {
     PizzaDao.availablePizzas
   }
-
 }
 
 object PizzaService extends PizzaServiceT

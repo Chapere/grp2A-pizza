@@ -9,7 +9,7 @@ import org.specs2.runner.JUnitRunner
 
   "The UserService" should {
     "return a list of three users" in {
-      UserService.registeredUsers.length must be equalTo(3)
+      UserService.registeredUsers.length must be equalTo 3
     }
   }
 

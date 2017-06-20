@@ -57,7 +57,7 @@ trait ProductDaoT {
   }
 
   /**
-    * Retrieve a product from the database.
+    * Retrieves a product from the database.
     *
     * @param id the product's id
     * @return the product object
@@ -75,7 +75,7 @@ trait ProductDaoT {
   }
 
   /**
-    * Retrieve a product from the database.
+    * Retrieves a product from the database.
     *
     * @param id the product's id
     * @return the product object

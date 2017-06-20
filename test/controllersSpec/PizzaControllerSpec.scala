@@ -1,18 +1,20 @@
 package controllersSpec
 
-import org.junit.runner._
-import org.specs2.mutable._
-import org.specs2.runner._
-import play.api.test.Helpers._
-import play.api.test._
+import org.junit.runner.RunWith
+import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
+import play.api.test.Helpers.{OK, POST, SEE_OTHER, redirectLocation, contentAsString, BAD_REQUEST, running, status}
+import play.api.test.{FakeApplication, FakeRequest}
 import controllers.PizzaController
-
+import scala.concurrent.duration._
+import akka.util.Timeout
 
 /**
   * @author Felix Thomas
   */
 @RunWith(classOf[JUnitRunner])
 class PizzaControllerSpec extends Specification{
+  implicit val duration: Timeout = 20 seconds
 
   def memDB[T](code: => T) =
     running(FakeApplication(additionalConfiguration = Map(

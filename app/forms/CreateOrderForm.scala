@@ -1,7 +1,8 @@
 package forms
 
 /**
-  * Form containing data to create a user.
+  * Form containing data to create an order.
+  *
   * @param userID ID of the user
   * @param pizzaID ID of the pizza
   * @param productID ID of the product

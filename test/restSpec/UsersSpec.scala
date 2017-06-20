@@ -22,7 +22,8 @@ class UsersSpec extends Specification {
       contentType(response) must beSome.which(_== "application/json")
     }
 
-    /*"respond with a json representation for an user" in new WithApplication {
+    /*
+    "respond with a json representation for an user" in new WithApplication {
       val response = route(FakeRequest(GET, "/api/user/1")).get
       status(response) must equalTo(OK)
       contentType(response) must beSome.which(_== "application/json")
@@ -38,6 +39,7 @@ class UsersSpec extends Specification {
       val response = route(FakeRequest(DELETE, "/api/user/1")).get
       status(response) must beEqualTo(OK)
       contentType(response) must beSome.which(_== "application/json")
-    }*/
+    }
+    */
   }
 }
