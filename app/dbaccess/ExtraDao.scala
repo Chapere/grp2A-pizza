@@ -6,7 +6,6 @@ import anorm.NamedParameter.symbol
 import models.Extra
 import anorm.{SQL, SqlParser}
 
-
 /**
   * Data access object for extra related operations.
   *

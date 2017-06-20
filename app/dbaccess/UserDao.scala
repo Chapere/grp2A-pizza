@@ -11,7 +11,6 @@ import anorm.{SQL, SqlParser}
   *
   * @author ob, scs, Kamil Gorszczyk
   */
-
 trait UserDaoT {
   val id1 = "id"
   val name = "name"
@@ -48,6 +47,11 @@ trait UserDaoT {
     user
   }
 
+  /**
+    * update userinformation
+    * @param user a given user
+    * @return an updated user
+    */
   def updateUserDao(user: User): User = {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
@@ -68,6 +72,11 @@ trait UserDaoT {
     user
   }
 
+  /**
+    * thrown a error site if given information are wrong
+    * @param user false user information
+    * @return mistake with user information
+    */
   def makeMistake(user: User): Double = {
     DB.withConnection { implicit c =>
       val delete = SQL("delete from Users " +
@@ -78,6 +87,11 @@ trait UserDaoT {
     user.distance
   }
 
+  /**
+    * update the distance for an user
+    * @param user the specific user
+    * @return an user with updated distance
+    */
   def updateDistance(user: User): Double = {
     DB.withConnection { implicit c =>
       val id: Option[Long] =
@@ -89,6 +103,11 @@ trait UserDaoT {
     user.distance
   }
 
+  /**
+    * deactivate an user in the shop
+    * @param id the id of the user
+    * @return an deactivated user
+    */
   def deactivateUser(id: Long): Long = {
     DB.withConnection { implicit c =>
       val updateFlag: Option[Long] =
@@ -98,6 +117,11 @@ trait UserDaoT {
     0
   }
 
+  /**
+    * activate an inactive user
+    * @param id the id of the user
+    * @return an activated user
+    */
   def activateUser(id: Long): Long = {
     DB.withConnection { implicit c =>
       val updateFlag: Option[Long] =
@@ -107,6 +131,11 @@ trait UserDaoT {
     1
   }
 
+  /**
+    * get an user out of the database
+    * @param user the specific user
+    * @return an user
+    */
   def getUser(user: User): User = {
     DB.withConnection { implicit c =>
       val selectUsers = SQL("SELECT Users.* FROM USERS " +
@@ -121,6 +150,11 @@ trait UserDaoT {
     }
   }
 
+  /**
+    * get an user out of the database
+    * @param id the specific user
+    * @return an user
+    */
   def getUserByIdentification(id: Long): List[User] = {
     DB.withConnection { implicit c =>
       val selectUsers = SQL("SELECT Users.* FROM USERS WHERE id = {id};").on(
@@ -134,6 +168,11 @@ trait UserDaoT {
     }
   }
 
+  /**
+    * get an user out of the database
+    * @param id the specific user
+    * @return an user
+    */
   def selectUserByIdentification(id: Long): User = {
     DB.withConnection { implicit c =>
       val selectUser = SQL("SELECT Users.* FROM Users WHERE id = {id};").on(

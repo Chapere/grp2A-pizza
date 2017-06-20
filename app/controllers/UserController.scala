@@ -15,7 +15,7 @@ import play.api.data.format.Formats.{longFormat}
  * @author ob, scs
  */
 object UserController extends Controller {
- val name = "Name"
+  val name = "Name"
   val vorname = "Vorname"
   val Adresse = "Adresse"
   val Stadt = "Stadt"
@@ -42,11 +42,17 @@ object UserController extends Controller {
       eMail -> nonEmptyText,
       passwort -> nonEmptyText)(CreateUserForm.apply)(CreateUserForm.unapply))
 
+  /**
+    * Form object for user login data
+    */
   val userLogInForm = Form(
     mapping(
       eMail -> nonEmptyText,
       passwort -> nonEmptyText)(CreateUserLogInForm.apply)(CreateUserLogInForm.unapply))
 
+  /**
+    * Form object for update user data
+    */
   val updateUserForm = Form(
     mapping(
       "userID" -> of(longFormat),
@@ -58,10 +64,16 @@ object UserController extends Controller {
       eMail -> nonEmptyText,
       passwort -> nonEmptyText)(UpdateUserForm.apply)(UpdateUserForm.unapply))
 
+  /**
+    * Form object for select user data
+    */
   val selectUserForm = Form(
     mapping(
       userID -> of(longFormat))(SelectUserForm.apply)(SelectUserForm.unapply))
 
+  /**
+    * Form object for delete user data
+    */
   val deleteUserForm = Form(
     mapping(
       userID -> of(longFormat))(DeleteUserForm.apply)(DeleteUserForm.unapply))
@@ -87,6 +99,10 @@ object UserController extends Controller {
       })
   }
 
+  /**
+    * update an user with given data
+    * @return an updated user
+    */
   def updateUser: Action[AnyContent] = Action { implicit request =>
     updateUserForm.bindFromRequest.fold(
       formWithErrors => {
@@ -106,6 +122,10 @@ object UserController extends Controller {
       })
   }
 
+  /**
+    * set the user flag of an user to zero(deactivated)
+    * @return an deactivated user
+    */
   def userFlagZero: Action[AnyContent] = Action { implicit request =>
     selectUserForm.bindFromRequest.fold(
       formWithErrors => {
@@ -118,6 +138,10 @@ object UserController extends Controller {
       })
   }
 
+  /**
+    * set the user flag of an user to one(activated)
+    * @return an activated user
+    */
   def userFlagOne: Action[AnyContent] = Action { implicit request =>
     selectUserForm.bindFromRequest.fold(
       formWithErrors => {
@@ -130,6 +154,10 @@ object UserController extends Controller {
       })
   }
 
+  /**
+    * remove an user of the database
+    * @return an deleted user
+    */
   def rmUser: Action[AnyContent] = Action { implicit request =>
     deleteUserForm.bindFromRequest.fold(
       formWithErrors => {
@@ -142,6 +170,10 @@ object UserController extends Controller {
       })
   }
 
+  /**
+    * choose an user out of the database
+    * @return an specific user
+    */
   def chooseUser: Action[AnyContent] = Action { implicit request =>
     selectUserForm.bindFromRequest.fold(
       formWithErrors => {
@@ -165,6 +197,10 @@ object UserController extends Controller {
   }
   */
 
+  /**
+    * login an user with given email and password
+    * @return an logged user
+    */
   def logInUser: Action[AnyContent] = Action { implicit request =>
     userLogInForm.bindFromRequest.fold(
       formWithErrors => {
@@ -195,6 +231,12 @@ object UserController extends Controller {
     }
   }
 
+  /**
+    * complete the login of an user
+    * @param id id of the user
+    * @param name name of the user
+    * @return an completed login
+    */
   def completeLogInUser(id: Long, name: String): Action[AnyContent] = Action {
     Ok(views.html.userLoggedIn(UserService.getUserByID(id),
       OrderService.availableOrderByID(id), id)).withSession(
@@ -202,6 +244,19 @@ object UserController extends Controller {
     )
   }
 
+  /**
+    * create a new user with given information
+    * @param id id of the user
+    * @param username lastname
+    * @param name name
+    * @param adress adress
+    * @param city city
+    * @param plz plz
+    * @param distance distance
+    * @param email email
+    * @param password password
+    * @return an registered user
+    */
   def newUserCreated(id: Long, username: String, name: String, adress: String,
                      city: String, plz: String, distance: Double,
                      email: String,
@@ -212,6 +267,20 @@ object UserController extends Controller {
     )
   }
 
+  /**
+    * change an user
+    * @param id id of the user
+    * @param name name
+    * @param lastname lastname
+    * @param adress adress
+    * @param city city
+    * @param plz plz
+    * @param distance distance
+    * @param email email
+    * @param password password
+    * @param activeFlag activeFlag
+    * @return an changed user
+    */
   def changeUser1(id: Long, name: String, lastname: String,
                   adress: String, city: String, plz: String,
                   distance: Double, email: String, password: String,
@@ -221,6 +290,19 @@ object UserController extends Controller {
       activeFlag, controllers.UserController.updateUserForm))
   }
 
+  /**
+    * upgrade an user
+    * @param id
+    * @param name name
+    * @param lastname lastname
+    * @param adress adress
+    * @param city city
+    * @param plz plz
+    * @param distance distance
+    * @param email email
+    * @param password password
+    * @return an upgraded user
+    */
   def upgradeUser(id: Long, name: String, lastname: String,
                   adress: String, city: String, plz: String,
                   distance: Double, email: String,
@@ -229,10 +311,20 @@ object UserController extends Controller {
       adress, city, plz, distance, email, password))
   }
 
+  /**
+    * delete an user boolean
+    * @param deleted boolean if deleted
+    * @return t or f if deleted
+    */
   def userDeleted(deleted: Boolean): Action[AnyContent] = Action {
     Ok(views.html.userDeleted())
   }
 
+  /**
+    * set the user flag
+    * @param id the id of the user
+    * @return an updated userflag
+    */
   def setUserFlag(id: Double): Action[AnyContent] = Action {
     Ok(views.html.userFlagChanged(id))
   }
