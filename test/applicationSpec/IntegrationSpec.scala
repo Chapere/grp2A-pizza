@@ -1,4 +1,4 @@
-package ApplicationSpec
+package applicationSpec
 
 import org.junit.runner.RunWith
 import org.specs2.mutable.Specification
