@@ -76,6 +76,7 @@ GET         /changePizza         controllers.PizzaController.changePizza1(id: Lo
 GET         /showPizzas           controllers.PizzaController.showPizzas
 GET         /logout              controllers.Application.logOut
 GET         /impressum           controllers.Application.impressum
+GET         /badRequest          controllers.ExtraController.badRequest
 
 # REST API
 GET         /api                 rest.Api.api
