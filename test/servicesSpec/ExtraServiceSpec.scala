@@ -48,10 +48,10 @@ class ExtraServiceSpec extends Specification {
       ExtraService.availableExtras.length must be equalTo 8
       ExtraService.availableExtras(5).name must be equalTo "shitake"
       ExtraService.getExtraByID(5).head.price must be equalTo 1
-      ExtraService.selectExtra(6).name must be equalTo "mushrooms"
+      ExtraService.selectExtra(6).get.name must be equalTo "mushrooms"
       ExtraService.getExtraByID(6).head.price must be equalTo 0.5
       ExtraService.availableExtras(7).name must be equalTo "funghi"
-      ExtraService.selectExtra(7).price must be equalTo 0.5
+      ExtraService.selectExtra(7).get.price must be equalTo 0.5
       }
 
     "remove extra and return available extras" in memDB {
@@ -59,8 +59,8 @@ class ExtraServiceSpec extends Specification {
       ExtraService.addExtra("mushrooms",1)
       ExtraService.availableExtras.length must be equalTo 7
       ExtraService.rmExtra(5)
-      ExtraService.selectExtraByID(6).name must be equalTo "mushrooms"
-      ExtraService.selectExtraByID(6).price must be equalTo 1
+      ExtraService.selectExtraByID(6).get.name must be equalTo "mushrooms"
+      ExtraService.selectExtraByID(6).get.price must be equalTo 1
       ExtraService.availableExtras.length must be equalTo 6
     }
   }
