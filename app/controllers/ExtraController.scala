@@ -6,6 +6,7 @@ import play.api.data.Forms.{mapping, of, nonEmptyText}
 import services.ExtraService
 import forms.{IDForm, CreateExtraForm}
 import play.api.data.format.Formats.{longFormat, doubleFormat}
+import models.Extra
 
 /**
   * Controller for extra specific operations.
@@ -102,13 +103,9 @@ object ExtraController extends Controller {
       },
       selectExtraData => {
         val selectExtra = services.ExtraService.selectExtra(selectExtraData.id)
-        if (selectExtra.isDefined) {
-          Redirect(routes.ExtraController.changeExtra1(selectExtra.get.id,
-            selectExtra.get.name, selectExtra.get.price)).
-            flashing(success -> "Extras retrieved!")
-        } else {
-          Redirect(routes.ExtraController.badRequest())
-        }
+        Redirect(routes.ExtraController.changeExtra1(selectExtra.id,
+          selectExtra.name, selectExtra.price)).
+          flashing(success -> "Extras retrieved!")
       })
   }
 
@@ -160,13 +157,6 @@ object ExtraController extends Controller {
     */
   def showExtras: Action[AnyContent] = Action {
     Ok(views.html.allExtras(ExtraService.availableExtras))
-  }
-
-  /**
-    * Show view for a bad requests.
-    */
-  def badRequest: Action[AnyContent] = Action {
-    Ok(views.html.badRequest())
   }
 }
 

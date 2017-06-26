@@ -69,14 +69,13 @@ trait ExtraDaoT {
     * @param id the extra's id
     * @return the extra object
     */
-  def selectExtraByIdentification(id: Long): Option[Extra] = {
+  def selectExtraByIdentification(id: Long): Extra = {
     DB.withConnection { implicit c =>
       val selectExtra = SQL(selectExtrasMain).on(
         'id -> id)
       val extras = selectExtra().map(row => Extra(row[Long](id1),
         row[String](name), row[Double](price))).toList
-      val firstUser: Option[Extra] = extras.headOption
-      firstUser
+      extras.head
     }
   }
 

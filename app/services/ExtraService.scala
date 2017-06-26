@@ -32,7 +32,7 @@ trait ExtraServiceT {
     * @param id the extra's id
     * @return the extra object
     */
-  def selectExtra(id: Long): Option[Extra] = {
+  def selectExtra(id: Long): Extra = {
     // create Extra
     // persist and return Extra
     ExtraDao.selectExtraByIdentification(id)
@@ -72,7 +72,7 @@ trait ExtraServiceT {
     * @param id the extra's id
     * @return the extra object
     */
-  def selectExtraByID(id: Long): Option[Extra] = {
+  def selectExtraByID(id: Long): Extra = {
     // create Extra
     // persist and return Extra
     extraDao.selectExtraByIdentification(id)
